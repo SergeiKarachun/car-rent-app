@@ -13,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "name")
 @Builder
 @Entity
+@Table(name = "categories")
 public class Category {
 
     @Id

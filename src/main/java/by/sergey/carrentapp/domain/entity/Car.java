@@ -15,7 +15,7 @@ import java.util.List;
 @ToString(exclude = {"brand", "model", "category", "orders"})
 @EqualsAndHashCode(of = "vin")
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 public class Car {
 
     @Id

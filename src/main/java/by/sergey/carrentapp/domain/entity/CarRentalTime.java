@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(exclude = "order")
 @Builder
 @Entity
-@Table(name = "carrentaltime")
+@Table(name = "car_rental_time")
 public class CarRentalTime {
 
     @Id

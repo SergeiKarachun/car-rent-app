@@ -15,12 +15,14 @@ import java.util.Set;
 @ToString(exclude = {"cars", "models"})
 @EqualsAndHashCode(of = "name")
 @Entity
+@Table(name = "brands")
 public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @Builder.Default

@@ -43,7 +43,7 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus orderStatus;
 
-    @Column(nullable = false, precision = 6, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal sum;
 
     @OneToOne(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
