@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @ToString(exclude = "order")
 @EqualsAndHashCode(exclude = "order")
 @Entity
-@Table
-public class Accident {
+@Table(name = "accident")
+public class Accident implements BaseEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Accident {
     private Order order;
 
     @Column(nullable = false)
-    private LocalDate accidentDate;
+    private LocalDateTime accidentDate;
 
     private String description;
 

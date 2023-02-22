@@ -6,19 +6,19 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"user", "car", "carRentalTime", "accidents"})
-@EqualsAndHashCode(exclude = {"user", "car", "carRentalTime", "accidents"})
+@ToString(exclude = {"user", "car", "rentalTime", "accidents"})
+@EqualsAndHashCode(exclude = {"user", "car", "rentalTime", "accidents"})
 @Builder
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Order {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -47,12 +47,24 @@ public class Order {
     private BigDecimal sum;
 
     @OneToOne(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private CarRentalTime carRentalTime;
+    private RentalTime rentalTime;
 
     @Builder.Default
-    @OneToMany(mappedBy = "accident", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Accident> accidents = new HashSet<>();
 
+    public void setAccident(Accident accident){
+        accidents.add(accident);
+        accident.setOrder(this);
+    }
 
+    public void setUser(User user){
+        this.user = user;
+        user.getOrders().add(this);
+    }
 
+    public void setCar(Car car){
+        this.car = car;
+        car.getOrders().add(this);
+    }
 }

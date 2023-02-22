@@ -4,9 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -14,8 +13,7 @@ import java.util.Set;
 @Builder
 @ToString(exclude = {"user", "driverLicense"})
 @EqualsAndHashCode(exclude = {"user", "driverLicense"})
-@Entity
-@Table(name = "userdetails")
+@Entity(name = "user_details")
 public class UserDetails {
 
     @Id
@@ -36,16 +34,18 @@ public class UserDetails {
     private UserContact userContact;
 
     @Column(nullable = false)
-    private LocalDate birthday;
+    private LocalDateTime birthday;
 
     @Builder.Default
     @Column(updatable = false, nullable = false)
     @CreationTimestamp
-    private LocalDate registrationDate = LocalDate.now();
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DriverLicense> driverLicense = new HashSet<>();
+    @OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private DriverLicense driverLicense;
 
-
+    public void setUser(User user){
+        user.setUserDetails(this);
+        this.user = user;
+    }
 }

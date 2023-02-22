@@ -3,6 +3,7 @@ package by.sergey.carrentapp.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(of = "name")
 @Builder
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "category")
+public class Category implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,11 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
     @Builder.Default
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Car> cars = new ArrayList<>();
+
 }

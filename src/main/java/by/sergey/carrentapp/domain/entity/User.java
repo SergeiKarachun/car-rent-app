@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name="users")
-public class User {
+public class User implements  BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class User {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private Role role = Role.CLIENT;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private UserDetails userDetails;

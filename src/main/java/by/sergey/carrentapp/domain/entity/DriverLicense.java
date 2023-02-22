@@ -3,7 +3,7 @@ package by.sergey.carrentapp.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -12,14 +12,14 @@ import java.time.LocalDate;
 @ToString(exclude = "userDetails")
 @EqualsAndHashCode(of = "number")
 @Entity
-@Table
-public class DriverLicense {
+@Table(name = "driver_license")
+public class DriverLicense implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_details_id")
     private UserDetails userDetails;
 
@@ -27,8 +27,13 @@ public class DriverLicense {
     private String number;
 
     @Column(nullable = false)
-    private LocalDate issueDate;
+    private LocalDateTime issueDate;
 
     @Column(nullable = false)
-    private LocalDate expirationDate;
+    private LocalDateTime expirationDate;
+
+    public void setUserDetails(UserDetails userDetails){
+        userDetails.setDriverLicense(this);
+        this.userDetails = userDetails;
+    }
 }

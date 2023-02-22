@@ -4,7 +4,6 @@ import by.sergey.carrentapp.domain.model.Color;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +14,8 @@ import java.util.List;
 @ToString(exclude = {"brand", "model", "category", "orders"})
 @EqualsAndHashCode(of = "vin")
 @Entity
-@Table(name = "cars")
-public class Car {
+@Table(name = "car")
+public class Car implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,12 +48,26 @@ public class Car {
 
     private String image;
 
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
-
     @Builder.Default
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
+    private List<RentalTime> rentalTimeList = new ArrayList<>();
+
+    public void setCategory(Category category){
+        this.category = category;
+        this.category.getCars().add(this);
+    }
+
+    public void setModel(Model model){
+        this.model = model;
+        this.model.getCars().add(this);
+    }
+
+    public void setBrand(Brand brand){
+        this.brand = brand;
+        this.brand.getCars().add(this);
+    }
 }

@@ -15,8 +15,8 @@ import java.util.Set;
 @ToString(exclude = {"cars", "brand"})
 @EqualsAndHashCode(exclude = {"cars", "brand"})
 @Entity
-@Table(name = "models")
-public class Model {
+@Table(name = "model")
+public class Model implements BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,7 @@ public class Model {
     @Enumerated(EnumType.STRING)
     private EngineType engineType;
 
+    @Builder.Default
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Car> cars = new HashSet<>();
 }
