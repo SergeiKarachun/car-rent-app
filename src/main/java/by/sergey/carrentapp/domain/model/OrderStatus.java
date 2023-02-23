@@ -2,7 +2,7 @@ package by.sergey.carrentapp.domain.model;
 
 public enum OrderStatus {
     CONFIRMATION,
-    APPROVES,
+    APPROVED,
     DECLINED,
     CANCELED,
     COMPLETED
