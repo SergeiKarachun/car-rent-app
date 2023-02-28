@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(exclude = "order")
 @Entity
 @Table(name = "accident")
-public class Accident implements BaseEntity<Long> {
+public class Accident extends AuditingEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

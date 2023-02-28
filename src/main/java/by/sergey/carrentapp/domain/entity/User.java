@@ -11,18 +11,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"userDetails", "orders"})
-@EqualsAndHashCode(of = {"login", "email"})
+@EqualsAndHashCode(of = {"name", "email"})
 @Builder
 @Entity
 @Table(name="users")
-public class User implements  BaseEntity<Long>{
+public class User extends AuditingEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String login;
+    private String name;
 
     @Column(nullable = false, unique = true)
     private String email;

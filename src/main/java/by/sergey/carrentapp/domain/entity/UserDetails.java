@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @ToString(exclude = {"user", "driverLicense"})
 @EqualsAndHashCode(exclude = {"user", "driverLicense"})
 @Entity(name = "user_details")
-public class UserDetails {
+public class UserDetails extends AuditingEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
