@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <querydsl.version>5.0.0</querydsl.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
     </properties>
     <dependencies>
         <dependency>
@@ -71,6 +72,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -78,6 +84,12 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

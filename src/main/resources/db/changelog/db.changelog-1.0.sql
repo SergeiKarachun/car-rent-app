@@ -1,15 +1,15 @@
---rollback drop all;
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
+--liquibase formatted sql
 
---Brand
+
+--changeset sergei:1
 CREATE TABLE IF NOT EXISTS brand
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE
-);
+    );
+--rollback DROP TABLE brand;
 
---Model
+--changeset sergei:2
 CREATE TABLE IF NOT EXISTS model
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -18,19 +18,19 @@ CREATE TABLE IF NOT EXISTS model
     transmission VARCHAR(128),
     engine_type  VARCHAR(128),
     CONSTRAINT model_brand_fk
-        FOREIGN KEY (brand_id) REFERENCES brand (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (brand_id) REFERENCES brand (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---Category
+--changeset sergei:3
 CREATE TABLE IF NOT EXISTS category
 (
     id    BIGSERIAL PRIMARY KEY,
     name  VARCHAR(255)   NOT NULL UNIQUE              DEFAULT 'economy',
     price NUMERIC(10, 2) NOT NULL CHECK ( price > 0 ) DEFAULT '50'
-);
+    );
 
---User
+--changeset sergei:4
 CREATE TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
@@ -38,9 +38,9 @@ CREATE TABLE IF NOT EXISTS users
     email    VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role     VARCHAR(32)  NOT NULL DEFAULT 'user'
-);
+    );
 
---Car
+--changeset sergei:5
 CREATE TABLE IF NOT EXISTS car
 (
     id          BIGSERIAL PRIMARY KEY,
@@ -51,20 +51,20 @@ CREATE TABLE IF NOT EXISTS car
     year        INTEGER,
     car_number  VARCHAR(16),
     vin         VARCHAR(255) NOT NULL UNIQUE,
-    repaired    BOOLEAN DEFAULT 'TRUE',
+    repaiRED    BOOLEAN DEFAULT 'TRUE',
     image       TEXT,
     CONSTRAINT car_brand_fk
-        FOREIGN KEY (brand_id) REFERENCES brand (id)
-            ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (brand_id) REFERENCES brand (id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT car_model_fk
-        FOREIGN KEY (model_id) REFERENCES model (id)
-            ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (model_id) REFERENCES model (id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT car_category_fk
-        FOREIGN KEY (category_id) REFERENCES category (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (category_id) REFERENCES category (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---Order
+--changeset sergei:6
 CREATE TABLE IF NOT EXISTS orders
 (
     id           BIGSERIAL PRIMARY KEY,
@@ -75,14 +75,14 @@ CREATE TABLE IF NOT EXISTS orders
     order_status VARCHAR(32)    NOT NULL,
     sum          NUMERIC(10, 2) NOT NULL,
     CONSTRAINT order_user_fk
-        FOREIGN KEY (user_id) REFERENCES users (id)
-            ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT order_car_fk
-        FOREIGN KEY (car_id) REFERENCES car (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (car_id) REFERENCES car (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---Accident
+--changeset sergei:7
 CREATE TABLE IF NOT EXISTS accident
 (
     id            BIGSERIAL PRIMARY KEY,
@@ -91,11 +91,11 @@ CREATE TABLE IF NOT EXISTS accident
     description   TEXT,
     damage        NUMERIC(10, 2),
     CONSTRAINT accident_order_fk
-        FOREIGN KEY (order_id) REFERENCES orders (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (order_id) REFERENCES orders (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---CarRentalTime
+--changeset sergei:8
 CREATE TABLE IF NOT EXISTS rental_time
 (
     id                BIGSERIAL PRIMARY KEY,
@@ -104,14 +104,14 @@ CREATE TABLE IF NOT EXISTS rental_time
     start_rental_date TIMESTAMP NOT NULL,
     end_rental_date   TIMESTAMP NOT NULL,
     CONSTRAINT rentaltime_order_fk
-        FOREIGN KEY (order_id) REFERENCES orders (id)
-            ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (order_id) REFERENCES orders (id)
+    ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT rentaltime_car_fk
-        FOREIGN KEY (car_id) REFERENCES car (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (car_id) REFERENCES car (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---UserDetail
+--changeset sergei:9
 CREATE TABLE IF NOT EXISTS user_details
 (
     id                BIGSERIAL PRIMARY KEY,
@@ -123,11 +123,11 @@ CREATE TABLE IF NOT EXISTS user_details
     birthday          TIMESTAMP    NOT NULL,
     registration_date TIMESTAMP    NOT NULL DEFAULT now(),
     CONSTRAINT userdetails_user_fk
-        FOREIGN KEY (user_id) REFERENCES users (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
---DriverLicense
+--changeset sergei:10
 CREATE TABLE IF NOT EXISTS driver_license
 (
     id              BIGSERIAL PRIMARY KEY,
@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS driver_license
     issue_date      TIMESTAMP   NOT NULL,
     expiration_date TIMESTAMP   NOT NULL,
     CONSTRAINT driverlicense_userdetails_fk
-        FOREIGN KEY (user_details_id) REFERENCES user_details (id)
-            ON UPDATE CASCADE ON DELETE SET NULL
-);
+    FOREIGN KEY (user_details_id) REFERENCES user_details (id)
+    ON UPDATE CASCADE ON DELETE SET NULL
+    );
 
 
