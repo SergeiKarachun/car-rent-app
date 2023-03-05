@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS model
 CREATE TABLE IF NOT EXISTS category
 (
     id    BIGSERIAL PRIMARY KEY,
-    name  VARCHAR(255)   NOT NULL UNIQUE              DEFAULT 'economy',
+    name  VARCHAR(255)   NOT NULL UNIQUE              DEFAULT 'ECONOMY',
     price NUMERIC(10, 2) NOT NULL CHECK ( price > 0 ) DEFAULT '50'
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS category
 CREATE TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
-    name    VARCHAR(255) NOT NULL UNIQUE,
+    name     VARCHAR(255) NOT NULL UNIQUE,
     email    VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role     VARCHAR(32)  NOT NULL DEFAULT 'user'
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS orders
     id           BIGSERIAL PRIMARY KEY,
     user_id      BIGINT         NOT NULL,
     car_id       BIGINT         NOT NULL,
-    date         TIMESTAMP      NOT NULL DEFAULT now(),
+    date         DATE      NOT NULL DEFAULT now(),
     passport     VARCHAR(128)   NOT NULL,
     order_status VARCHAR(32)    NOT NULL,
     sum          NUMERIC(10, 2) NOT NULL,
@@ -100,14 +100,10 @@ CREATE TABLE IF NOT EXISTS rental_time
 (
     id                BIGSERIAL PRIMARY KEY,
     order_id          BIGINT    NOT NULL UNIQUE,
-    car_id            BIGINT    NOT NULL,
     start_rental_date TIMESTAMP NOT NULL,
     end_rental_date   TIMESTAMP NOT NULL,
     CONSTRAINT rentaltime_order_fk
         FOREIGN KEY (order_id) REFERENCES orders (id)
-            ON UPDATE CASCADE ON DELETE SET NULL,
-    CONSTRAINT rentaltime_car_fk
-        FOREIGN KEY (car_id) REFERENCES car (id)
             ON UPDATE CASCADE ON DELETE SET NULL
 );
 
@@ -120,8 +116,8 @@ CREATE TABLE IF NOT EXISTS user_details
     surname           VARCHAR(128) NOT NULL,
     address           VARCHAR(255) NOT NULL,
     phone             VARCHAR(32)  NOT NULL,
-    birthday          TIMESTAMP    NOT NULL,
-    registration_date TIMESTAMP    NOT NULL DEFAULT now(),
+    birthday          DATE    NOT NULL,
+    registration_date DATE    NOT NULL DEFAULT now(),
     CONSTRAINT userdetails_user_fk
         FOREIGN KEY (user_id) REFERENCES users (id)
             ON UPDATE CASCADE ON DELETE SET NULL
@@ -133,8 +129,8 @@ CREATE TABLE IF NOT EXISTS driver_license
     id              BIGSERIAL PRIMARY KEY,
     user_details_id BIGINT      NOT NULL,
     number          varchar(32) NOT NULL UNIQUE,
-    issue_date      TIMESTAMP   NOT NULL,
-    expiration_date TIMESTAMP   NOT NULL,
+    issue_date      DATE   NOT NULL,
+    expiration_date DATE   NOT NULL,
     CONSTRAINT driverlicense_userdetails_fk
         FOREIGN KEY (user_details_id) REFERENCES user_details (id)
             ON UPDATE CASCADE ON DELETE SET NULL

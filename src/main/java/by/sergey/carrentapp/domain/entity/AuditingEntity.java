@@ -21,7 +21,6 @@ import java.time.Instant;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditingEntity<T extends Serializable> implements BaseEntity<T>{
 
-    @Column(nullable = false)
     @Version
     @LastModifiedDate
     private Instant modifiedAt;

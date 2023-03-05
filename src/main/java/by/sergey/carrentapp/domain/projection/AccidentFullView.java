@@ -9,7 +9,7 @@ public interface AccidentFullView {
     LocalDate getAccidentDate();
     String getDescription();
     BigDecimal getDamage();
-    Long getOrdeId();
+    Long getOrderId();
     String getBrandName();
     String getModelName();
     String getCarNumber();

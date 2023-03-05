@@ -29,6 +29,7 @@ public class Car implements BaseEntity<Long>{
     @JoinColumn(name = "model_id")
     private Model model;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -52,10 +53,6 @@ public class Car implements BaseEntity<Long>{
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
-    private List<RentalTime> rentalTimeList = new ArrayList<>();
-
     public void setCategory(Category category){
         this.category = category;
         this.category.getCars().add(this);
@@ -64,6 +61,9 @@ public class Car implements BaseEntity<Long>{
     public void setModel(Model model){
         this.model = model;
         this.model.getCars().add(this);
+
+        this.brand = model.getBrand();
+        this.brand.getCars().add(this);
     }
 
     public void setBrand(Brand brand){

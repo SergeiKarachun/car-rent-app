@@ -3,12 +3,13 @@ package by.sergey.carrentapp.domain.projection;
 import by.sergey.carrentapp.domain.model.OrderStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface OrderFullView {
 
     Long getId();
-    LocalDateTime getDate();
+    LocalDate getDate();
     String getPassport();
     OrderStatus getOrderStatus();
     BigDecimal getSum();

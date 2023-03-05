@@ -10,7 +10,6 @@ public interface BrandFullView {
 
     List<ModelView> getModels();
 
-    List<CarView> getCars();
 
 
 }

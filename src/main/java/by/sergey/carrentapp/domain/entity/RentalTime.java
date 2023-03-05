@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"order", "car"})
-@EqualsAndHashCode(exclude = {"order", "car"})
+@ToString(exclude = {"order"})
+@EqualsAndHashCode(exclude = {"order"})
 @Builder
 @Entity
 @Table(name = "rental_time")
@@ -23,10 +23,6 @@ public class RentalTime extends AuditingEntity<Long>{
     @JoinColumn(name = "order_id", nullable = false, unique = true)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
-    private Car car;
-
     @Column(nullable = false)
     private LocalDateTime startRentalDate;
 
@@ -36,12 +32,6 @@ public class RentalTime extends AuditingEntity<Long>{
     public void setOrder(Order order){
         order.setRentalTime(this);
         this.order = order;
-    }
-
-    public void setCar(Car car){
-        this.car = car;
-        this.car.getRentalTimeList().add(this);
-
     }
 
 }

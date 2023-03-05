@@ -28,7 +28,7 @@ public class Category implements BaseEntity<Long>{
     private BigDecimal price;
 
     @Builder.Default
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Car> cars = new ArrayList<>();
 
 }

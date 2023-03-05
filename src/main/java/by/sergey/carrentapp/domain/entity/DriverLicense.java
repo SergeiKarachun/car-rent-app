@@ -3,7 +3,7 @@ package by.sergey.carrentapp.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -27,10 +27,10 @@ public class DriverLicense implements BaseEntity<Long>{
     private String number;
 
     @Column(nullable = false)
-    private LocalDateTime issueDate;
+    private LocalDate issueDate;
 
     @Column(nullable = false)
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
     public void setUserDetails(UserDetails userDetails){
         userDetails.setDriverLicense(this);

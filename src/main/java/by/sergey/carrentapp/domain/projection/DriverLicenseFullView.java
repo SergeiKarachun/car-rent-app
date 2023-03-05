@@ -2,7 +2,7 @@ package by.sergey.carrentapp.domain.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public interface DriverLicenseFullView {
 
@@ -10,9 +10,9 @@ public interface DriverLicenseFullView {
 
     String getNumber();
 
-    LocalDateTime getIssueDate();
+    LocalDate getIssueDate();
 
-    LocalDateTime getExpirationDate();
+    LocalDate getExpirationDate();
 
     String getFirstname();
 

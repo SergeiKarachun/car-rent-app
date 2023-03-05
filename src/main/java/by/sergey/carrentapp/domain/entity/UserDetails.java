@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Data
@@ -34,12 +34,12 @@ public class UserDetails extends AuditingEntity<Long>{
     private UserContact userContact;
 
     @Column(nullable = false)
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Builder.Default
     @Column(updatable = false, nullable = false)
     @CreationTimestamp
-    private LocalDateTime registrationDate = LocalDateTime.now();
+    private LocalDate registrationDate = LocalDate.now();
 
     @OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private DriverLicense driverLicense;
