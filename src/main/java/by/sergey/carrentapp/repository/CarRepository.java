@@ -15,18 +15,15 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long>, QuerydslPredicateExecutor<Car> {
 
-    Optional<Car> findCarByCarNumber(String carNumber);
+    Optional<Car> findCarByCarNumberIgnoreCase(String carNumber);
 
-    @Query(value = "SELECT c " +
-                   "FROM Car c " +
-                   "JOIN FETCH c.category cc " +
-                   "WHERE cc.name = :name ")
-    List<Car> findAllByCategory(String name);
+    @EntityGraph(attributePaths = {"model"})
+    List<Car> findAllByCategoryNameIgnoreCase(String categoryName);
 
     @Query(value = "SELECT c " +
                    "FROM Car c " +
                    "JOIN FETCH c.model m " +
-                   "WHERE m.transmission = lower(:transmission) ")
+                   "WHERE m.transmission = upper(:transmission) ")
     List<Car> findAllByTransmission(@Param("transmission") String transmission);
 
     @Query(value = "SELECT c " +
@@ -37,24 +34,24 @@ public interface CarRepository extends JpaRepository<Car, Long>, QuerydslPredica
 
     List<Car> findAllByYearBefore(Integer year);
 
-    @Query(value = "SELECT c " +
-                   "FROM Car c " +
-                   "WHERE c.repaired = true ")
-    List<Car> findAllRepaired();
-
-    @EntityGraph(attributePaths = {"model", "brand"})
+     @EntityGraph(attributePaths = {"model", "brand"})
     @Query(value = "SELECT c " +
                    "FROM Car c " +
                    "WHERE c.repaired = false ")
     List<Car> findAllBroken();
 
-    @Query(value = "SELECT count(o.id) " +
+    @Query(value = "SELECT c " +
+                   "FROM Car c " +
+                   "WHERE c.repaired = true ")
+    List<Car> findAllRepaired();
+
+    @Query(value = "SELECT count(o.id) !=0 " +
                    "FROM orders o " +
                    "JOIN car c on o.car_id = c.id " +
-                   "JOIN rental_time rt on c.id = rt.car_id " +
+                   "JOIN rental_time rt on o.id = rt.order_id " +
                    "WHERE c.id = :id " +
                    "AND rt.start_rental_date NOT BETWEEN :startDate AND :endDate " +
                    "AND rt.end_rental_date NOT BETWEEN :startDate AND :endDate ",
-    nativeQuery = true)
+            nativeQuery = true)
     boolean isCarAvailable(@Param("id") Long id, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

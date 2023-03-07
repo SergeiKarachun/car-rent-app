@@ -17,31 +17,29 @@ public interface BrandRepository extends JpaRepository<Brand, Long>, QuerydslPre
 
     Optional<Brand> findByName(String name);
 
-    @EntityGraph(attributePaths = {"models", "cars"})
+    @EntityGraph(attributePaths = {"models"})
     Optional<Brand> findByNameIgnoreCase(String name);
 
-    @EntityGraph(attributePaths = {"models", "cars"})
+    List<Brand> findAllByNameContainingIgnoreCase(String name);
+
+    @EntityGraph(attributePaths = {"models"})
     List<Brand> findByNameInIgnoreCase(List<String> name);
 
     @Query(value = "SELECT b " +
                    "FROM Brand b " +
-                   "JOIN FETCH b.models " +
-                   "JOIN FETCH b.cars ")
+                   "JOIN FETCH b.models ")
     List<BrandFullView> findAllByFullView();
 
     @Query(value = "SELECT b " +
                    "FROM Brand b " +
                    "JOIN FETCH b.models " +
-                   "JOIN FETCH b.cars " +
                    "WHERE b.id = :id")
     Optional<BrandFullView> findFullViewById(@Param("id") Long id);
 
     @Query(value = "SELECT b " +
                    "FROM Brand b " +
                    "JOIN FETCH b.models " +
-                   "JOIN FETCH b.cars " +
-                   "WHERE lower(b.name) LIKE lower(:name) ")
+                   "WHERE upper(b.name) LIKE upper(:name) ")
     List<BrandFullView> findAllFullViewByName(@Param("name") String name);
-
 
 }

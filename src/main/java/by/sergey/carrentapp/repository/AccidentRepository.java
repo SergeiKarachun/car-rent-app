@@ -18,8 +18,6 @@ import java.util.Optional;
 @Repository
 public interface AccidentRepository extends JpaRepository<Accident, Long>, QuerydslPredicateExecutor<Accident> {
 
-    Optional<Accident> findByOrderId(Long id);
-
     List<Accident> findAllByAccidentDateAfter(LocalDateTime date);
 
     @Query(value = "SELECT a " +
@@ -56,26 +54,24 @@ public interface AccidentRepository extends JpaRepository<Accident, Long>, Query
                    "WHERE a.id = :id")
     int updateDamage(@Param("damage") BigDecimal damage, @Param("id") Long id);
 
-    @Query(value = "SELECT a.id as id, " +
-                   "a.accident_date as accidentDate, " +
+    @Query(value = "SELECT a.id as id," +
+                   "a.accidentDate as accidentDate, " +
                    "a.description as description, " +
                    "a.damage as damage, " +
                    "o.id as orderId, " +
                    "b.name as brandName, " +
-                   "m.name as modelName," +
-                   "c.car_number as carNumber," +
+                   "m.name as modelName, " +
+                   "c.carNumber as carNumber, " +
                    "ud.name as firstname, " +
-                   "ud.surname as surname "+
-                   "FROM accident a " +
-                   "JOIN orders o on a.order_id = o.id " +
-                   "JOIN car c on o.car_id = c.id " +
-                   "JOIN brand b on c.brand_id = b.id " +
-                   "JOIN model m on c.model_id = m.id " +
-                   "JOIN users u on o.user_id = u.id " +
-                   "JOIN user_details ud on u.id = ud.user_id ",
-            nativeQuery = true)
+                   "ud.surname as surname " +
+                   "FROM Accident a " +
+                   "JOIN a.order o " +
+                   "JOIN o.car c " +
+                   "JOIN c.model m " +
+                   "JOIN m.brand b " +
+                   "JOIN o.user u " +
+                   "JOIN u.userDetails ud")
     List<AccidentFullView> findAllFull();
-
 
     @Query(value = "SELECT a.id as id, " +
                    "a.accident_date as accidentDate, " +
@@ -96,7 +92,6 @@ public interface AccidentRepository extends JpaRepository<Accident, Long>, Query
                    "JOIN user_details ud on u.id = ud.user_id " +
                    "WHERE a.id = :id ",
     nativeQuery = true)
-    List<AccidentFullView> findByIdFull(@Param("id") Long id);
-
+    Optional<AccidentFullView> findByIdFull(@Param("id") Long id);
 
 }

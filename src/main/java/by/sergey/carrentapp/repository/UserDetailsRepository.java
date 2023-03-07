@@ -7,7 +7,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>,
 
     Optional<UserDetails> findByUserId(Long userId);
 
-    List<UserDetails> findAllByRegistrationDateBetween(LocalDateTime start, LocalDateTime end);
+    List<UserDetails> findAllByRegistrationDateBetween(LocalDate start, LocalDate end);
 
     List<UserDetails> findAllByNameContainingIgnoreCaseAndSurnameContainingIgnoreCase(String name, String surname);
 
@@ -24,6 +24,5 @@ public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>,
                    "FROM user_details ud " +
                    "WHERE ud.userContact.phone = :phone ")
     Optional<UserDetails> findByPhone(@Param("phone") String phone);
-
 
 }

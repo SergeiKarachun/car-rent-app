@@ -8,7 +8,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public interface DriverLicenseRepository extends JpaRepository<DriverLicense, Lo
                    "WHERE u.id = :id ")
     Optional<DriverLicense> findByUserId(@Param("id") Long id);
 
-    List<DriverLicense> findByExpirationDateLessThanEqual(LocalDateTime expirationDate);
+    List<DriverLicense> findByExpirationDateLessThanEqual(LocalDate expirationDate);
 
     @Query(value = "SELECT dl.id as id, " +
                    "dl.number as number, " +
@@ -37,6 +37,6 @@ public interface DriverLicenseRepository extends JpaRepository<DriverLicense, Lo
                    "JOIN user_details ud on dl.user_details_id = ud.id " +
                    "WHERE dl.expiration_date <= :date ",
     nativeQuery = true)
-    List<DriverLicenseFullView> findDriverLicenseFullViewExpirationDateLess(@Param("date") LocalDateTime expirationDate);
+    List<DriverLicenseFullView> findDriverLicenseFullViewExpirationDateLess(@Param("date") LocalDate expirationDate);
 
 }

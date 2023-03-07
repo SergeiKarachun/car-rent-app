@@ -14,17 +14,17 @@ import java.util.Optional;
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long>, QuerydslPredicateExecutor<Model> {
 
-    Optional<Model> findModelByName(String name);
+    Optional<Model> findModelByNameIgnoreCase(String name);
 
     @Query(value = "SELECT m " +
                    "FROM Model m " +
-                   "JOIN FETCH Brand b " +
-                   "WHERE b.name = :name ")
+                   "JOIN FETCH m.brand b " +
+                   "WHERE upper(b.name) = upper(:name) ")
     List<Model> findModelsByBrandName(@Param("name") String name);
 
     @Query(value = "SELECT m " +
                    "FROM Model m " +
-                   "JOIN FETCH Brand b " +
+                   "JOIN FETCH m.brand b " +
                    "WHERE b.id = :id ")
     List<Model> findModelsByBrandId(@Param("id") Long id);
 

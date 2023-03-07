@@ -9,18 +9,18 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPredicateExecutor<Order> {
 
-    List<Order> findAllByDateBetween(LocalDateTime start, LocalDateTime end);
+    List<Order> findAllByDateBetween(LocalDate start, LocalDate end);
 
     @Query(value = "SELECT o " +
                    "FROM Order o " +
                    "JOIN FETCH o.car c " +
-                   "WHERE c.carNumber = :number")
+                   "WHERE upper(c.carNumber) = upper(:number)")
     List<Order> findAllByCarNumber(@Param("number") String number);
 
     @Query(value = "SELECT o " +
@@ -35,7 +35,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
                    "WHERE u.id = :id")
     List<Order> findAllByUserId(@Param("id") Long id);
 
-    List<Order> findAllByDate(LocalDateTime date);
+    List<Order> findAllByDate(LocalDate date);
 
     List<Order> findAllByOrderStatus(OrderStatus orderStatus);
 

@@ -44,13 +44,12 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
                    "WHERE size(u.orders) = 0")
     List<User> findAllWithoutOrders();
 
-    @EntityGraph(attributePaths = {"orders", "Order.accidents"})
+    @EntityGraph(attributePaths = {"orders"})
     @Query(value = "SELECT DISTINCT u " +
                    "FROM User u " +
                    "JOIN FETCH u.orders o " +
                    "WHERE size(o.accidents) > 0")
     List<User> findAllWithAccident();
-
 
     @Query(value = "SELECT u " +
                    "FROM User u " +
@@ -58,9 +57,6 @@ public interface UserRepository extends JpaRepository<User, Long>, QuerydslPredi
                    "JOIN FETCH ud.driverLicense dl " +
                    "WHERE dl.expirationDate < :expiredDate")
     List<User> findAllWithExpiredDriverLicense(@Param("expiredDate") LocalDateTime expiredDate, Pageable pageable);
-
-
-
 
 }
 
