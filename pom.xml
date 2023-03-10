@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <querydsl.version>5.0.0</querydsl.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
     </properties>
     <dependencies>
         <dependency>
@@ -43,6 +44,12 @@
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
+        </dependency>
+
 
 
         <!--<dependency>

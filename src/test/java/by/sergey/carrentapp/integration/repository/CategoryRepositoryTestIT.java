@@ -91,11 +91,11 @@ class CategoryRepositoryTestIT {
 
     @Test
     void findAllByPriceGreaterThan() {
-        List<Category> allByPriceGreaterThan = categoryRepository.findAllByPriceGreaterThan(BigDecimal.valueOf(120));
+        List<Category> allByPriceGreaterThan = categoryRepository.findAllByPriceGreaterThanEqual(BigDecimal.valueOf(120));
 
         List<String> collect = allByPriceGreaterThan.stream().map(cat -> cat.getName()).collect(Collectors.toList());
 
-        assertThat(collect).hasSize(2).containsExactlyInAnyOrder( "BUSINESS", "LUXURY");
+        assertThat(collect).hasSize(3).containsExactlyInAnyOrder( "SPORT", "BUSINESS", "LUXURY");
     }
 
     @Test

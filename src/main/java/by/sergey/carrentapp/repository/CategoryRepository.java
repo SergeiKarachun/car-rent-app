@@ -19,7 +19,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, Query
 
     List<Category> findAllByPriceLessThanEqual(BigDecimal price);
 
-    List<Category> findAllByPriceGreaterThan(BigDecimal price);
+    List<Category> findAllByPriceGreaterThanEqual(BigDecimal price);
 
     boolean existsByNameIgnoreCase(String name);
 

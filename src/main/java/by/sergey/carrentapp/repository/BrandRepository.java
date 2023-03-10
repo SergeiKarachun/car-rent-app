@@ -17,6 +17,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long>, QuerydslPre
 
     Optional<Brand> findByName(String name);
 
+    Boolean existsByNameIgnoreCase(String name);
+
     @EntityGraph(attributePaths = {"models"})
     Optional<Brand> findByNameIgnoreCase(String name);
 
