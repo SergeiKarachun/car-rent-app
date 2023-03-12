@@ -10,9 +10,9 @@ public class DriverLicenseFromUserCreateMapper implements CreateMapper<UserCreat
     @Override
     public DriverLicense mapToEntity(UserCreateRequestDto requestDto) {
         return DriverLicense.builder()
-                .number(requestDto.driverLicenseNumber())
-                .issueDate(requestDto.driverLicenseIssueDate())
-                .expirationDate(requestDto.driverLicenseExpirationDate())
+                .number(requestDto.getDriverLicenseNumber())
+                .issueDate(requestDto.getDriverLicenseIssueDate())
+                .expirationDate(requestDto.getDriverLicenseExpirationDate())
                 .build();
     }
 }

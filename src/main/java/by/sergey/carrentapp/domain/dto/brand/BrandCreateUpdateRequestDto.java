@@ -1,4 +1,8 @@
 package by.sergey.carrentapp.domain.dto.brand;
 
-public record BrandCreateUpdateRequestDto(String name) {
+import lombok.Value;
+
+@Value
+public class BrandCreateUpdateRequestDto {
+    String name;
 }

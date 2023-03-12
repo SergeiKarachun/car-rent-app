@@ -26,22 +26,22 @@ public class CarCreateMapper implements CreateMapper<CarCreateRequestDto, Car> {
 
     @Override
     public Car mapToEntity(CarCreateRequestDto requestDto) {
-        var brand = getBrand(requestDto.brandId());
-        var model = getModel(requestDto.modelId());
-        var category = getCategory(requestDto.categoryId());
+        var brand = getBrand(requestDto.getBrandId());
+        var model = getModel(requestDto.getModelId());
+        var category = getCategory(requestDto.getCategoryId());
 
         var car = Car.builder()
-                .color(requestDto.color())
-                .year(requestDto.year())
-                .carNumber(requestDto.carNumber())
-                .vin(requestDto.vin())
-                .repaired(requestDto.isRepaired())
+                .color(requestDto.getColor())
+                .year(requestDto.getYear())
+                .carNumber(requestDto.getCarNumber())
+                .vin(requestDto.getVin())
+                .repaired(requestDto.getIsRepaired())
                 .build();
         car.setBrand(brand);
         car.setModel(model);
         car.setCategory(category);
 
-        Optional.ofNullable(requestDto.image())
+        Optional.ofNullable(requestDto.getImage())
                 .filter(not(MultipartFile::isEmpty))
                 .ifPresent(image -> car.setImage(image.getOriginalFilename()));
 

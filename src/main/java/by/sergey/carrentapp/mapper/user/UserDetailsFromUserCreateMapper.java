@@ -11,13 +11,13 @@ public class UserDetailsFromUserCreateMapper implements CreateMapper<UserCreateR
     @Override
     public UserDetails mapToEntity(UserCreateRequestDto requestDto) {
         return UserDetails.builder()
-                .name(requestDto.name())
-                .surname(requestDto.surname())
+                .name(requestDto.getName())
+                .surname(requestDto.getSurname())
                 .userContact(UserContact.builder()
-                        .address(requestDto.address())
-                        .phone(requestDto.phone())
+                        .address(requestDto.getAddress())
+                        .phone(requestDto.getPhone())
                         .build())
-                .birthday(requestDto.birthday())
+                .birthday(requestDto.getBirthday())
                 .build();
     }
 }

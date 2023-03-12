@@ -11,8 +11,8 @@ public class RentalTimeCreateMapper implements CreateMapper<RentalTimeCreateRequ
     @Override
     public RentalTime mapToEntity(RentalTimeCreateRequestDto requestDto) {
         return RentalTime.builder()
-                .startRentalDate(requestDto.startRentalTime())
-                .endRentalDate(requestDto.endRentalTime())
+                .startRentalDate(requestDto.getStartRentalTime())
+                .endRentalDate(requestDto.getEndRentalTime())
                 .build();
     }
 }

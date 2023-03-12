@@ -15,7 +15,7 @@ public class CategoryUpdateMapper implements UpdateMapper<CategoryCreateUpdateRe
 
     @Override
     public void merge(CategoryCreateUpdateRequestDto dto, Category entity) {
-        entity.setName(dto.name());
-        entity.setPrice(dto.price());
+        entity.setName(dto.getName());
+        entity.setPrice(dto.getPrice());
     }
 }

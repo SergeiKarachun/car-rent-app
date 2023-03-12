@@ -21,12 +21,12 @@ public class DriverLicenseCreateMapper implements CreateMapper<DriverLicenseCrea
     @Override
     public DriverLicense mapToEntity(DriverLicenseCreateRequestDto requestDto) {
         driverLicense = DriverLicense.builder()
-                .number(requestDto.driverLicenseNumber())
-                .issueDate(requestDto.driverLicenseIssueDate())
-                .expirationDate(requestDto.driverLicenseExpirationDate())
+                .number(requestDto.getDriverLicenseNumber())
+                .issueDate(requestDto.getDriverLicenseIssueDate())
+                .expirationDate(requestDto.getDriverLicenseExpirationDate())
                 .build();
 
-        Optional<UserDetails> userDetails = getUserDetails(requestDto.userId());
+        Optional<UserDetails> userDetails = getUserDetails(requestDto.getUserId());
 
         userDetails.ifPresent(ud -> driverLicense.setUserDetails(ud));
 

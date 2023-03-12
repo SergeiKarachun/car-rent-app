@@ -15,6 +15,6 @@ public class BrandUpdateMapper implements UpdateMapper<BrandCreateUpdateRequestD
 
     @Override
     public void merge(BrandCreateUpdateRequestDto dto, Brand entity) {
-        entity.setName(dto.name());
+        entity.setName(dto.getName());
     }
 }

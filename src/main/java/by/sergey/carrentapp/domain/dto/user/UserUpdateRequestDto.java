@@ -1,9 +1,11 @@
 package by.sergey.carrentapp.domain.dto.user;
 
 import by.sergey.carrentapp.domain.model.Role;
+import lombok.Value;
 
-
-public record UserUpdateRequestDto(String username,
-                                   String email,
-                                   Role role) {
+@Value
+public class UserUpdateRequestDto {
+    String username;
+    String email;
+    Role role;
 }

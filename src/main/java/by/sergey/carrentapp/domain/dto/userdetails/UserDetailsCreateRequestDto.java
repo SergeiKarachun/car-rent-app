@@ -1,12 +1,16 @@
 package by.sergey.carrentapp.domain.dto.userdetails;
 
 
+import lombok.Value;
+
 import java.time.LocalDate;
 
-public record UserDetailsCreateRequestDto(Long userId,
-                                          String name,
-                                          String surname,
-                                          String address,
-                                          String phone,
-                                          LocalDate birthday) {
+@Value
+public class UserDetailsCreateRequestDto {
+    Long userId;
+    String name;
+    String surname;
+    String address;
+    String phone;
+    LocalDate birthday;
 }

@@ -16,8 +16,8 @@ public class ModelUpdateMapper implements UpdateMapper<ModelUpdateRequestDto, Mo
 
     @Override
     public void merge(ModelUpdateRequestDto dto, Model entity) {
-        entity.setName(dto.name());
-        entity.setTransmission(dto.transmission());
-        entity.setEngineType(dto.engineType());
+        entity.setName(dto.getName());
+        entity.setTransmission(dto.getTransmission());
+        entity.setEngineType(dto.getEngineType());
     }
 }

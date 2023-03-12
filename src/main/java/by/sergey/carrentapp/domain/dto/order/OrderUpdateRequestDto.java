@@ -1,8 +1,12 @@
 package by.sergey.carrentapp.domain.dto.order;
 
+import lombok.Value;
+
 import java.time.LocalDateTime;
 
-public record OrderUpdateRequestDto(Long carId,
-                                    LocalDateTime startRentalTime,
-                                    LocalDateTime endRentalTime) {
+@Value
+public class OrderUpdateRequestDto {
+    Long carId;
+    LocalDateTime startRentalTime;
+    LocalDateTime endRentalTime;
 }

@@ -27,7 +27,7 @@ public class OrderUpdateMapper implements UpdateMapper<OrderUpdateRequestDto, Or
 
     @Override
     public void merge(OrderUpdateRequestDto dto, Order entity) {
-        var car = getCar(dto.carId());
+        var car = getCar(dto.getCarId());
         var rentalTime = getRentalTime(entity.getRentalTime().getId());
 
         rentalTime.ifPresent(rt -> rentalTimeSetter(rt, dto, entity));
@@ -48,8 +48,8 @@ public class OrderUpdateMapper implements UpdateMapper<OrderUpdateRequestDto, Or
 
     private void rentalTimeSetter(RentalTime rt, OrderUpdateRequestDto dto, Order entity)
     {
-        rt.setStartRentalDate(dto.startRentalTime());
-        rt.setEndRentalDate(dto.endRentalTime());
+        rt.setStartRentalDate(dto.getStartRentalTime());
+        rt.setEndRentalDate(dto.getEndRentalTime());
 
         rt.setOrder(entity);
     }

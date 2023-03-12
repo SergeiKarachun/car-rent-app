@@ -26,12 +26,12 @@ public class OrderCreateMapper implements CreateMapper<OrderCreateRequestDto, Or
     @Override
     public Order mapToEntity(OrderCreateRequestDto requestDto) {
         var rentalTime = rentalTimeFromOrderCreateMapper.mapToEntity(requestDto);
-        var car = getCar(requestDto.carId());
-        var user = getUser(requestDto.userId());
+        var car = getCar(requestDto.getCarId());
+        var user = getUser(requestDto.getUserId());
 
         var order = Order.builder()
                 .date(LocalDate.now())
-                .passport(requestDto.passport())
+                .passport(requestDto.getPassport())
                 .orderStatus(OrderStatus.CONFIRMATION)
                 .build();
 

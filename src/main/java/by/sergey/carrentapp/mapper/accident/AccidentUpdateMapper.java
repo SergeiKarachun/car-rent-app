@@ -24,8 +24,8 @@ public class AccidentUpdateMapper implements UpdateMapper<AccidentUpdateRequestD
 
     @Override
     public void merge(AccidentUpdateRequestDto dto, Accident entity) {
-        entity.setDescription(dto.description());
-        entity.setDamage(dto.damage());
+        entity.setDescription(dto.getDescription());
+        entity.setDamage(dto.getDamage());
         var order = getOrder(entity.getOrder().getId());
         order.ifPresent(or -> or.setAccident(entity));
     }

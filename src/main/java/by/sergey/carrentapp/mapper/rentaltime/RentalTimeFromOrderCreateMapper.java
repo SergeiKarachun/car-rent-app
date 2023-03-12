@@ -10,8 +10,8 @@ public class RentalTimeFromOrderCreateMapper implements CreateMapper<OrderCreate
     @Override
     public RentalTime mapToEntity(OrderCreateRequestDto requestDto) {
         return RentalTime.builder()
-                .startRentalDate(requestDto.startRentalDate())
-                .endRentalDate(requestDto.endRentalTime())
+                .startRentalDate(requestDto.getStartRentalDate())
+                .endRentalDate(requestDto.getStartRentalDate())
                 .build();
     }
 }

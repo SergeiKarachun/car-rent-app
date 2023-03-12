@@ -19,10 +19,10 @@ public class AccidentCreateMapper implements CreateMapper<AccidentCreateRequestD
 
     @Override
     public Accident mapToEntity(AccidentCreateRequestDto requestDto) {
-        var order = getOrder(requestDto.orderId());
+        var order = getOrder(requestDto.getOrderId());
         accident = Accident.builder()
-                .description(requestDto.description())
-                .damage(requestDto.damage())
+                .description(requestDto.getDescription())
+                .damage(requestDto.getDamage())
                 .build();
 
         order.ifPresent(ord -> ord.setAccident(accident));

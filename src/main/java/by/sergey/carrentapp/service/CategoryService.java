@@ -31,7 +31,7 @@ public class CategoryService {
 
     @Transactional
     public Optional<CategoryResponseDto> create(CategoryCreateUpdateRequestDto categoryCreateUpdateRequestDto) {
-        checkCategoryNameIsUnique(categoryCreateUpdateRequestDto.name());
+        checkCategoryNameIsUnique(categoryCreateUpdateRequestDto.getName());
 
         return Optional.of(categoryCreateMapper.mapToEntity(categoryCreateUpdateRequestDto))
                 .map(categoryRepository::save)
@@ -42,8 +42,8 @@ public class CategoryService {
     public Optional<CategoryResponseDto> update(Long id, CategoryCreateUpdateRequestDto categoryCreateUpdateRequestDto) {
         var existingCategory = getByIdOrElseThrow(id);
 
-        if (!existingCategory.getName().equals(categoryCreateUpdateRequestDto.name())) {
-            checkCategoryNameIsUnique(categoryCreateUpdateRequestDto.name());
+        if (!existingCategory.getName().equals(categoryCreateUpdateRequestDto.getName())) {
+            checkCategoryNameIsUnique(categoryCreateUpdateRequestDto.getName());
         }
 
         return Optional.of(categoryUpdateMapper.mapToEntity(categoryCreateUpdateRequestDto, existingCategory))

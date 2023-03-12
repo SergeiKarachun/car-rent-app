@@ -20,16 +20,16 @@ public class UserDetailsCreateMapper implements CreateMapper<UserDetailsCreateRe
     @Override
     public UserDetails mapToEntity(UserDetailsCreateRequestDto requestDto) {
         UserDetails userDetails = UserDetails.builder()
-                .name(requestDto.name())
-                .surname(requestDto.surname())
+                .name(requestDto.getName())
+                .surname(requestDto.getSurname())
                 .userContact(UserContact.builder()
-                        .address(requestDto.address())
-                        .phone(requestDto.phone())
+                        .address(requestDto.getAddress())
+                        .phone(requestDto.getPhone())
                         .build())
-                .birthday(requestDto.birthday())
+                .birthday(requestDto.getBirthday())
                 .build();
 
-        var user = getUser(requestDto.userId());
+        var user = getUser(requestDto.getUserId());
         user.ifPresent(userDetails::setUser);
 
         return userDetails;

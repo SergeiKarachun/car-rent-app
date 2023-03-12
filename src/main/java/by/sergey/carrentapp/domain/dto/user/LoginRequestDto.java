@@ -1,5 +1,9 @@
 package by.sergey.carrentapp.domain.dto.user;
 
-public record LoginRequestDto(String email,
-                              String password) {
+import lombok.Value;
+
+@Value
+public class LoginRequestDto {
+    String email;
+    String password;
 }

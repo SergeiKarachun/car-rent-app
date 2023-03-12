@@ -31,19 +31,19 @@ public class CarUpdateMapper implements UpdateMapper<CarUpdateRequestDto, Car> {
 
     @Override
     public void merge(CarUpdateRequestDto dto, Car entity) {
-        entity.setColor(dto.color());
-        entity.setYear(dto.year());
-        entity.setRepaired(dto.isRepaired());
-        entity.setCarNumber(dto.catNumber());
-        entity.setCategory(getCategory(dto.categoryId()));
+        entity.setColor(dto.getColor());
+        entity.setYear(dto.getYear());
+        entity.setRepaired(dto.getIsRepaired());
+        entity.setCarNumber(dto.getCatNumber());
+        entity.setCategory(getCategory(dto.getCategoryId()));
 
-        if (!Objects.equals(dto.modelId(), entity.getModel().getId())){
-            var model = getModel(dto.modelId());
+        if (!Objects.equals(dto.getCategoryId(), entity.getModel().getId())){
+            var model = getModel(dto.getModelId());
             entity.setModel(model);
         }
 
 
-        Optional.ofNullable(dto.image())
+        Optional.ofNullable(dto.getImage())
                 .filter(not(MultipartFile::isEmpty))
                 .ifPresent(image -> entity.setImage(image.getOriginalFilename()));
     }

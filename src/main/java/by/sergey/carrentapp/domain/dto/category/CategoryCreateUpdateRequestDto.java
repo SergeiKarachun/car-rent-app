@@ -1,7 +1,11 @@
 package by.sergey.carrentapp.domain.dto.category;
 
+import lombok.Value;
+
 import java.math.BigDecimal;
 
-public record CategoryCreateUpdateRequestDto(String name,
-                                             BigDecimal price) {
+@Value
+public class CategoryCreateUpdateRequestDto {
+    String name;
+    BigDecimal price;
 }

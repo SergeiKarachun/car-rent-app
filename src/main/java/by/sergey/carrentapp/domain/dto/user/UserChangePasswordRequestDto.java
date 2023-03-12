@@ -1,5 +1,9 @@
 package by.sergey.carrentapp.domain.dto.user;
 
-public record UserChangePasswordRequestDto(String oldPassword,
-                                           String newPassword) {
+import lombok.Value;
+
+@Value
+public class UserChangePasswordRequestDto {
+    String oldPassword;
+    String newPassword;
 }

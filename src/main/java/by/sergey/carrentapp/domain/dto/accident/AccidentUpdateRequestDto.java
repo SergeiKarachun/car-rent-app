@@ -1,7 +1,11 @@
 package by.sergey.carrentapp.domain.dto.accident;
 
+import lombok.Value;
+
 import java.math.BigDecimal;
 
-public record AccidentUpdateRequestDto(String description,
-                                       BigDecimal damage) {
+@Value
+public class AccidentUpdateRequestDto {
+    String description;
+    BigDecimal damage;
 }

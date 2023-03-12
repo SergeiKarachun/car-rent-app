@@ -13,7 +13,7 @@ public class BrandCreateMapper implements CreateMapper<BrandCreateUpdateRequestD
     public Brand mapToEntity(BrandCreateUpdateRequestDto requestDto) {
 
         return Brand.builder()
-                .name(requestDto.name())
+                .name(requestDto.getName())
                 .build();
     }
 }

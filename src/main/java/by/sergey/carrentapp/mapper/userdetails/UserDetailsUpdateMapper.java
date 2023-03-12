@@ -4,7 +4,9 @@ import by.sergey.carrentapp.domain.dto.userdetails.UserDetailsUpdateRequestDto;
 import by.sergey.carrentapp.domain.entity.UserContact;
 import by.sergey.carrentapp.domain.entity.UserDetails;
 import by.sergey.carrentapp.mapper.UpdateMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserDetailsUpdateMapper implements UpdateMapper<UserDetailsUpdateRequestDto, UserDetails> {
     @Override
     public UserDetails mapToEntity(UserDetailsUpdateRequestDto dto, UserDetails entity) {
@@ -14,11 +16,11 @@ public class UserDetailsUpdateMapper implements UpdateMapper<UserDetailsUpdateRe
 
     @Override
     public void merge(UserDetailsUpdateRequestDto dto, UserDetails entity) {
-        entity.setName(dto.name());
-        entity.setSurname(dto.surname());
+        entity.setName(dto.getName());
+        entity.setSurname(dto.getSurname());
         entity.setUserContact(UserContact.builder()
-                .address(dto.address())
-                .phone(dto.phone())
+                .address(dto.getAddress())
+                .phone(dto.getPhone())
                 .build());
     }
 }

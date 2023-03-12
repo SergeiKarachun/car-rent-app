@@ -15,7 +15,7 @@ public class RentalTimeUpdateMapper implements UpdateMapper<RentalTimeUpdateRequ
 
     @Override
     public void merge(RentalTimeUpdateRequestDto dto, RentalTime entity) {
-        entity.setStartRentalDate(dto.startRentalTime());
-        entity.setEndRentalDate(dto.endRentalTime());
+        entity.setStartRentalDate(dto.getStartRentalTime());
+        entity.setEndRentalDate(dto.getEndRentalTime());
     }
 }

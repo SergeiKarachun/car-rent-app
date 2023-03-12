@@ -16,8 +16,8 @@ public class UserUpdateMapper implements UpdateMapper<UserUpdateRequestDto, User
 
     @Override
     public void merge(UserUpdateRequestDto dto, User entity) {
-        entity.setName(dto.username());
-        entity.setEmail(dto.email());
-        entity.setRole(dto.role());
+        entity.setName(dto.getUsername());
+        entity.setEmail(dto.getEmail());
+        entity.setRole(dto.getRole());
     }
 }

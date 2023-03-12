@@ -18,11 +18,11 @@ public class ModelCreateMapper implements CreateMapper<ModelCreateRequestDto, Mo
 
     @Override
     public Model mapToEntity(ModelCreateRequestDto requestDto) {
-        var brand = getBrand(requestDto.brandId());
+        var brand = getBrand(requestDto.getBrandId());
         var model = Model.builder()
-                .name(requestDto.name())
-                .engineType(requestDto.engineType())
-                .transmission(requestDto.transmission())
+                .name(requestDto.getName())
+                .engineType(requestDto.getEngineType())
+                .transmission(requestDto.getTransmission())
                 .build();
 
         brand.ifPresent(br -> br.setModel(model));

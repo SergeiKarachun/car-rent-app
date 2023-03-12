@@ -15,8 +15,8 @@ public class DriverLicenseUpdateMapper implements UpdateMapper<DriverLicenseUpda
 
     @Override
     public void merge(DriverLicenseUpdateRequestDto dto, DriverLicense entity) {
-        entity.setNumber(dto.driverLicenseNumber());
-        entity.setIssueDate(dto.driverLicenseIssueDate());
-        entity.setExpirationDate(dto.driverLicenseExpirationDate());
+        entity.setNumber(dto.getDriverLicenseNumber());
+        entity.setIssueDate(dto.getDriverLicenseIssueDate());
+        entity.setExpirationDate(dto.getDriverLicenseExpirationDate());
     }
 }

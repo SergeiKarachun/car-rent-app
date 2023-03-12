@@ -33,7 +33,7 @@ public class BrandService {
 
     @Transactional
     public Optional<BrandResponseDto> create(BrandCreateUpdateRequestDto brandCreateUpdateRequestDto) {
-        checkUniqueBrandName(brandCreateUpdateRequestDto.name());
+        checkUniqueBrandName(brandCreateUpdateRequestDto.getName());
 
         return Optional.of(brandCreateMapper.mapToEntity(brandCreateUpdateRequestDto))
                 .map(brandRepository::save)
@@ -44,8 +44,8 @@ public class BrandService {
     public Optional<BrandResponseDto> update(Long id, BrandCreateUpdateRequestDto brandCreateUpdateRequestDto) {
         var existingbrand = getByIdOrElseThrow(id);
 
-        if (!existingbrand.getName().equals(brandCreateUpdateRequestDto.name())) {
-            checkUniqueBrandName(brandCreateUpdateRequestDto.name());
+        if (!existingbrand.getName().equals(brandCreateUpdateRequestDto.getName())) {
+            checkUniqueBrandName(brandCreateUpdateRequestDto.getName());
         }
 
         return Optional.of(brandUpdateMapper.mapToEntity(brandCreateUpdateRequestDto, getByIdOrElseThrow(id)))
@@ -69,7 +69,6 @@ public class BrandService {
                 .stream().map(brandResponseMapper::mapToDto)
                 .toList();
     }
-
     public List<BrandFullView> getAllFullView() {
         return brandRepository.findAllByFullView();
     }

@@ -10,8 +10,8 @@ public class CategoryCreateMapper implements CreateMapper<CategoryCreateUpdateRe
     @Override
     public Category mapToEntity(CategoryCreateUpdateRequestDto requestDto) {
         return Category.builder()
-                .name(requestDto.name())
-                .price(requestDto.price())
+                .name(requestDto.getName())
+                .price(requestDto.getPrice())
                 .build();
     }
 }
