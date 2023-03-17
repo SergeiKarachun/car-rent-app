@@ -27,21 +27,39 @@ public interface BrandRepository extends JpaRepository<Brand, Long>, QuerydslPre
     @EntityGraph(attributePaths = {"models"})
     List<Brand> findByNameInIgnoreCase(List<String> name);
 
-    @Query(value = "SELECT b " +
-                   "FROM Brand b " +
-                   "JOIN FETCH b.models ")
+    @Query(value = "SELECT b.id as id," +
+                   "b.name as name, " +
+                   "m.id as modelId, " +
+                   "m.name as modelName," +
+                   "m.engine_type as engineType," +
+                   "m.transmission as transmission " +
+                   "FROM brand b " +
+                   "JOIN model m on b.id = m.brand_id ",
+    nativeQuery = true)
     List<BrandFullView> findAllByFullView();
 
-    @Query(value = "SELECT b " +
-                   "FROM Brand b " +
-                   "JOIN FETCH b.models " +
-                   "WHERE b.id = :id")
-    Optional<BrandFullView> findFullViewById(@Param("id") Long id);
+    @Query(value = "SELECT b.id as id," +
+                   "b.name as name, " +
+                   "m.id as modelId, " +
+                   "m.name as modelName," +
+                   "m.engine_type as engineType," +
+                   "m.transmission as transmission " +
+                   "FROM brand b " +
+                   "JOIN model m on b.id = m.brand_id " +
+                   "where b.id = :id",
+            nativeQuery = true)
+    List<BrandFullView> findFullViewById(@Param("id") Long id);
 
-    @Query(value = "SELECT b " +
-                   "FROM Brand b " +
-                   "JOIN FETCH b.models " +
-                   "WHERE upper(b.name) LIKE upper(:name) ")
+    @Query(value = "SELECT b.id as id," +
+                   "b.name as name, " +
+                   "m.id as modelId, " +
+                   "m.name as modelName," +
+                   "m.engine_type as engineType," +
+                   "m.transmission as transmission " +
+                   "FROM brand b " +
+                   "JOIN model m on b.id = m.brand_id " +
+                   "WHERE upper(b.name) LIKE upper('%'||:name||'%') ",
+    nativeQuery = true)
     List<BrandFullView> findAllFullViewByName(@Param("name") String name);
 
 }

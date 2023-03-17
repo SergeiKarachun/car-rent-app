@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Brand</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+<div class="container-fluid">
+    <h4>
+        <p> This is <span th:text="${brand.name}">Somme brandName </span>!</p>
+    </h4>
+
+    <form th:action="@{/brands/{brandId}/update(brandId=${brand.id})}" method="post" th:object="${brand}">
+        <label for="name">Update brand name:
+            <input id="name" type="text" name="name" th:value="*{name}">
+        </label><br>
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
+    <div class="my-2">
+        <form th:action="@{/brands/{id}/delete(id=${brand.id})}" method="post">
+            <button class="btn btn-danger">Delete this brand</button>
+        </form>
+    </div>
+
+</div>
+
+<div class="container-fluid">
+    <form th:action="@{/brands/brand-full-view/{id}(id=${brand.id})}" method="get">
+        <button class="btn btn-secondary">Get full info</button>
+    </form>
+</div>
+
+<div class="container-fluid my-2">
+    <form th:action="@{/brands}" method="get">
+        <button class="btn btn-outline-warning">Go back</button>
+    </form>
+</div>
+</body>
+</html>

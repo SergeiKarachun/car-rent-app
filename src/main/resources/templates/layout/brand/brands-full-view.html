@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Brand</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+<div class="container-fluid">
+
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2" >
+        <div th:each="brand : ${listfullview}">
+            <div class="col">
+                <div class="card my-2">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">
+                            <span th:text="${brand.name}">Model default name</span>
+                            <span th:text="${brand.modelName}">Model default name</span>
+                        </h5>
+                        <p class="card-text">
+                            Brand Id= <span th:text="${brand.id}">#</span>.<br/>
+                            Model Id= <span th:text="${brand.getModelId()}">#</span>.<br/>
+                            Transmission is <span th:text="${brand.transmission.name()}">manual</span>.<br/>
+                            Engine type is <span th:text="${brand.engineType.name()}">diesel</span>.<br/>
+                        </p>
+                        <a th:href="@{/models/{id}(id=${brand.getModelId()})}" class="btn btn-primary">Go to this
+                            model!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr/>
+
+<div class="container-fluid my-2">
+    <form th:action="@{/brands/}" method="get">
+        <button class="btn btn-outline-warning">All brands</button>
+    </form>
+</div>
+
+</body>
+</html>

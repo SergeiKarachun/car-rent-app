@@ -4,7 +4,6 @@ package by.sergey.carrentapp.integration.repository;
 import by.sergey.carrentapp.domain.entity.Brand;
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.projection.BrandFullView;
-import by.sergey.carrentapp.domain.projection.ModelView;
 import by.sergey.carrentapp.integration.annatation.IT;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.BRAND_ID_FOR_DELETE;
@@ -101,12 +99,9 @@ class BrandRepositoryTestIT {
         List<BrandFullView> actual = brandRepository.findAllByFullView();
         assertThat(actual).hasSize(8);
 
-        Set<String> models = actual.stream()
-                .map(BrandFullView::getModels)
-                .flatMap(model -> model.stream().map(ModelView::getName))
-                .collect(Collectors.toSet());
+        List<String> modelNames = actual.stream().map(BrandFullView::getModelName).toList();
 
-        assertThat(models).hasSize(8).containsExactlyInAnyOrder(
+        assertThat(modelNames).hasSize(8).containsExactlyInAnyOrder(
                 "A6",
                 "A8",
                 "525",
@@ -119,10 +114,10 @@ class BrandRepositoryTestIT {
 
     @Test
     void findFullViewById() {
-        BrandFullView actual = brandRepository.findFullViewById(EXISTS_BRAND_ID).get();
-        assertEquals(1L, actual.getId());
-        assertEquals("Audi", actual.getName());
-        List<String> models = actual.getModels().stream().map(ModelView::getName).collect(Collectors.toList());
+        List<BrandFullView> actual = brandRepository.findFullViewById(EXISTS_BRAND_ID);
+
+        assertThat(actual).hasSize(2);
+        List<String> models = actual.stream().map(BrandFullView::getModelName).collect(Collectors.toList());
         assertThat(models).hasSize(2).containsExactlyInAnyOrder("A6", "A8");
     }
 
@@ -130,9 +125,8 @@ class BrandRepositoryTestIT {
     void findAllFullViewByName() {
         List<BrandFullView> brands = brandRepository.findAllFullViewByName("bmw");
 
-        Set<String> models = brands.stream().map(BrandFullView::getModels)
-                .flatMap(model -> model.stream().map(ModelView::getName))
-                .collect(Collectors.toSet());
+        List<String> models = brands.stream().map(BrandFullView::getModelName)
+                .collect(Collectors.toList());
 
         assertThat(models).hasSize(2).containsExactlyInAnyOrder("525", "M5");
     }

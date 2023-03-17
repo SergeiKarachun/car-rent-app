@@ -5,7 +5,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class BrandBadRequestException extends ResponseStatusException {
 
+    public BrandBadRequestException(HttpStatus httpStatus, String message) {
+        super(HttpStatus.BAD_REQUEST, message);
+    }
     public BrandBadRequestException(String message) {
         super(HttpStatus.BAD_REQUEST, message);
     }
+
 }

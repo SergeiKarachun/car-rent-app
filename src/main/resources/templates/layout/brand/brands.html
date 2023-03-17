@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Brands</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+<div class="container-fluid my-3">
+    <form th:action="@{/brands/by-name}" method="get" th:object="${name}">
+        <label for="name">Find brand by name:
+            <input id="name" type="text" name="name" th:value="${name}">
+        </label><br>
+        <button class="btn btn-primary" type="submit">Find</button>
+    </form>
+</div>
+<hr/>
+<div class="container-fluid my-3">
+    <form th:action="@{/brands/by-names}" method="get" th:object="${names}">
+        <label for="name2">Find brands by list of names(...,...):
+            <input id="name2" type="text" name="name" th:value="${names}">
+        </label><br>
+        <button class="btn btn-primary" type="submit">Find</button>
+    </form>
+</div>
+<hr/>
+<div class="container-fluid my-3">
+    <form th:action="@{/brands/all-by-names}" method="get"> <!--th:object="${byNames}">-->
+        <label for="name3">Find brands by name:
+            <input id="name3" type="text" name="name"> <!--th:value="${byNames}"-->
+        </label><br>
+        <button class="btn btn-primary" type="submit">Find</button>
+    </form>
+</div>
+<div class="container-fluid">
+    <h3>List of brands</h3>
+    <div>
+        <table class="table table-striped table-hover w-25" >
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+            <tr th:each="brand : ${brands}">
+                <td th:text="${brand.id}">id</td>
+                <td><a th:href="@{'/brands/' + ${brand.id}}" th:text="${brand.name}">name</a></td>
+            </tr>
+        </table>
+    </div>
+    <hr/>
+    <p>
+    <form th:action="@{/brands/brand-create}" method="get">
+        <button class="btn btn-primary">Create new Brand</button>
+    </form>
+    </p>
+
+    <hr/>
+
+
+
+</div>
+
+
+</body>
+</html>

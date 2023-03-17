@@ -36,7 +36,7 @@ public class BrandService {
         checkUniqueBrandName(brandCreateUpdateRequestDto.getName());
 
         return Optional.of(brandCreateMapper.mapToEntity(brandCreateUpdateRequestDto))
-                .map(brandRepository::save)
+                .map(brandRepository::saveAndFlush)
                 .map(brandResponseMapper::mapToDto);
     }
 
@@ -49,7 +49,7 @@ public class BrandService {
         }
 
         return Optional.of(brandUpdateMapper.mapToEntity(brandCreateUpdateRequestDto, getByIdOrElseThrow(id)))
-                .map(brandRepository::save)
+                .map(brandRepository::saveAndFlush)
                 .map(brandResponseMapper::mapToDto);
     }
 
@@ -73,7 +73,7 @@ public class BrandService {
         return brandRepository.findAllByFullView();
     }
 
-    public Optional<BrandFullView> getByIdFullView(Long id) {
+    public List<BrandFullView> getByIdFullView(Long id) {
         return brandRepository.findFullViewById(id);
     }
 
@@ -82,7 +82,7 @@ public class BrandService {
     }
 
     public Optional<BrandResponseDto> getByName(String name) {
-        return brandRepository.findByName(name)
+        return brandRepository.findByNameIgnoreCase(name)
                 .map(brandResponseMapper::mapToDto);
     }
 

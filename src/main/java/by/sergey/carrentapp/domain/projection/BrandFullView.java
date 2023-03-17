@@ -1,6 +1,7 @@
 package by.sergey.carrentapp.domain.projection;
 
-import java.util.List;
+import by.sergey.carrentapp.domain.model.EngineType;
+import by.sergey.carrentapp.domain.model.Transmission;
 
 public interface BrandFullView {
 
@@ -8,8 +9,12 @@ public interface BrandFullView {
 
     String getName();
 
-    List<ModelView> getModels();
+    Long getModelId();
 
+    String getModelName();
 
+    Transmission getTransmission();
+
+    EngineType getEngineType();
 
 }

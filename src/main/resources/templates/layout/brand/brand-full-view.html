@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Brand</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+<div class="container-fluid">
+
+
+    <hr/>
+    <h4>
+        This is <span th:text="${brand.get(0).name}">Somme brandName </span>!
+    </h4>
+
+    <div class="fw-semibold">
+        <p> ID = <span th:text="${brand.get(0).id}">#</span> <br/>
+            Name = <span th:text="${brand.get(0).name}">Brand default name</span><br/>
+            This brand has <span th:text="${brand.size()}">0</span> models.
+        </p>
+
+    </div>
+    <div th:if="${not #lists.isEmpty(brand)}">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div th:each="model : ${brand}">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center"><span
+                                    th:text="${model.modelName}">Model default name</span></h5>
+                            <p class="card-text">Model Id= <span th:text="${model.modelId}">#</span>.<br/>
+                                Transmission is <span th:text="${model.transmission.name()}">manual</span>.<br/>
+                                Engine type is <span th:text="${model.engineType.name()}">diesel</span>.<br/>
+                            </p>
+                            <a th:href="@{/models/{id}(id=${model.modelId})}" class="btn btn-primary">Go to this
+                                model!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<hr/>
+
+<div class="container-fluid my-2">
+    <form th:action="@{/brands/{id}(id=${brand.get(0).id})}" method="get">
+        <button class="btn btn-outline-warning">Go back</button>
+    </form>
+</div>
+
+</body>
+</html>
