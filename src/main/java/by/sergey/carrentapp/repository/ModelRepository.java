@@ -2,17 +2,33 @@ package by.sergey.carrentapp.repository;
 
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.model.Transmission;
+import com.sun.istack.NotNull;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ModelRepository extends JpaRepository<Model, Long>, QuerydslPredicateExecutor<Model> {
+public interface ModelRepository extends JpaRepository<Model, Long>,
+        QuerydslPredicateExecutor<Model>,
+        FilterModelRepository {
+
+    @Override
+    @Query(value = "select m " +
+                   "from Model m " +
+                   "join fetch m.brand " +
+                   "where m.id = :id ")
+    Optional<Model> findById(Long id);
+
+    @Override
+    @EntityGraph(attributePaths = {"brand"})
+    List<Model> findAll();
 
     Optional<Model> findModelByNameIgnoreCase(String name);
 

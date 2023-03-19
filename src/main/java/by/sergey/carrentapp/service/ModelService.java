@@ -75,6 +75,12 @@ public class ModelService {
                 .toList();
     }
 
+    public List<ModelResponseDto> getAllByFilter(ModelFilter modelFilter){
+        return modelRepository.findAllByFilter(modelFilter)
+                .stream().map(modelResponseMapper::mapToDto)
+                .toList();
+    }
+
     public Page<ModelResponseDto> getAll(ModelFilter modelFilter, Integer page, Integer pageSize) {
         return modelRepository
                 .findAll(modelPredicateBuilder.build(modelFilter), PageableUtils.getSortedPageable(page, pageSize, Sort.Direction.ASC, "brand_name"))
