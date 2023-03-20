@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Create new model</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+<div class="container-fluid my-3">
+    <form th:action="@{/categories}" method="post" th:object="${category}">
+
+        <label for="name"> Category name:
+            <input id="name" type="text" name="name" th:value="*{name}">
+        </label><br>
+
+        <label for="price"> Category price:
+            <input id="price" type="number" name="price" th:value="*{price}">
+        </label><br>
+
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+</div>
+
+</body>
+</html>

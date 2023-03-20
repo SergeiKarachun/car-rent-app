@@ -8,4 +8,8 @@ public class CategoryBadRequestException extends ResponseStatusException {
     public CategoryBadRequestException(String message) {
         super(HttpStatus.BAD_REQUEST, message);
     }
+
+    public CategoryBadRequestException(HttpStatus httpStatus, String message) {
+        super(httpStatus, message);
+    }
 }

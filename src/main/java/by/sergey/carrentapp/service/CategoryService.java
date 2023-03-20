@@ -60,6 +60,11 @@ public class CategoryService {
         return false;
     }
 
+    public Optional<CategoryResponseDto> findByName(String name) {
+        return categoryRepository.findByNameIgnoreCase(name)
+                .map(categoryResponseMapper::mapToDto);
+    }
+
     public Optional<CategoryResponseDto> getById(Long id) {
         return Optional.of(getByIdOrElseThrow(id))
                 .map(categoryResponseMapper::mapToDto);

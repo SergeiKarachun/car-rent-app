@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ModelBadRequestException extends ResponseStatusException {
 
     public ModelBadRequestException(HttpStatus httpStatus, String message) {
-        super(HttpStatus.BAD_REQUEST, message);
+        super(httpStatus, message);
     }
     public ModelBadRequestException(String message) {
         super(HttpStatus.BAD_REQUEST, message);
