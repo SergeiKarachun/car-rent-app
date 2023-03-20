@@ -28,11 +28,11 @@ public class ModelController {
     private final BrandService brandService;
 
     @GetMapping
-    public String findAllModels(Model model){
+    public String findAllModels(Model model, @ModelAttribute ModelFilter modelFilter){
         model.addAttribute("models", modelService.getAll());
         model.addAttribute("transmissions", Transmission.values());
         model.addAttribute("engines", EngineType.values());
-        model.addAttribute("brands", brandService.getAll());
+        model.addAttribute("modelFilter", modelFilter);
         return "layout/model/models";
     }
 
@@ -71,7 +71,6 @@ public class ModelController {
         model.addAttribute("models", modelService.getAllByFilter(modelFilter));
         model.addAttribute("transmissions", Transmission.values());
         model.addAttribute("engines", EngineType.values());
-        model.addAttribute("brands", brandService.getAll());
         return "layout/model/models";
     }
 

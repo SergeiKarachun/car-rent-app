@@ -10,35 +10,33 @@
 <div class="container-fluid my-3">
 
 
-    <form action="/models/filter">
-        <label for="firstname">Brand:
-            <input id="firstname" type="text" name="brands">
+    <form action="/models/filter" method="get" th:object="${modelFilter}">
+        <label for="brandName">Brand:
+            <input id="brandName" type="text" name="brandName" th:value="*{brandName}">
         </label>
 
-        <label for="lastname">Model:
-            <input id="lastname" type="text" name="models">
+        <label for="modelName">Model:
+            <input id="modelName" type="text" name="modelName" th:value="*{modelName}">
         </label>
 
+        <div>Type of transmission:
+            <div th:each="transmission : ${transmissions}">
+                <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"  th:checked="${transmission == modelFilter.transmission}">
+                <label th:for="${transmission}" th:text="${transmission}">Type of transmission</label>
+            </div>
+        </div>
 
-        <label for="transmission">Transmission:
-            <select id="transmission" name="transmission">
-                <option th:each="transmission : ${transmissions}"
-                        th:value="${transmission.name()}"
-                        th:text="${transmission.name()}">Transmission
-                </option>
-            </select>
-        </label>
+        <div>Type of engine:
+            <div th:each="engine : ${engines}">
+                <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}" th:checked="${engine == modelFilter.engineType}">
+                <label th:for="${engine}" th:text="${engine}">Type of engine</label>
+            </div>
+        </div>
 
-        <label for="engineType">Type of engine:
-            <select id="engineType" name="engineType">
-                <option th:each="engine : ${engines}"
-                        th:value="${engine.name()}"
-                        th:text="${engine.name()}">Type of engine
-                </option>
-            </select>
-        </label>
-
-        <button type="submit">Filter</button>
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </form>
+    <form th:action="@{/models/}" method="get">
+        <button class="btn btn-secondary my-1">Clear filter</button>
     </form>
 </div>
 
@@ -68,9 +66,7 @@
 
     <hr/>
 
-
 </div>
-
 
 </body>
 </html>

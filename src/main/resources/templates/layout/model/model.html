@@ -16,7 +16,6 @@
         and <span th:text="${model.engineType.name().toLowerCase()}">Somme modelName </span> engine type.
     </h5>
 
-
     <form th:action="@{/models/{modelId}/update(modelId=${model.id})}" method="post" th:object="${model}">
         <label for="name">Update model name:
             <input id="name" type="text" name="name" th:value="*{name}">
@@ -35,9 +34,6 @@
                 <label th:for="${engine}" th:text="${engine}">Type of engine</label>
             </div>
         </div>
-
-
-
 
         <button class="btn btn-primary" type="submit">Update</button>
     </form>

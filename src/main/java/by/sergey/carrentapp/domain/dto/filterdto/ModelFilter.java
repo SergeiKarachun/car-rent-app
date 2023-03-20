@@ -5,13 +5,12 @@ import by.sergey.carrentapp.domain.model.EngineType;
 import lombok.Builder;
 import lombok.Value;
 
-import java.util.List;
 
 @Value
 @Builder
 public class ModelFilter {
-    List<String> brands;
-    List<String> models;
+    String brandName;
+    String modelName;
     Transmission transmission;
     EngineType engineType;
 }

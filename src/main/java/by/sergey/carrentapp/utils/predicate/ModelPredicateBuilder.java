@@ -11,8 +11,8 @@ public class ModelPredicateBuilder implements PredicateBuilder<Predicate, ModelF
     @Override
     public Predicate build(ModelFilter requestFilter) {
         return QPredicate.builder()
-                .add(requestFilter.getBrands(), model.brand.name::in)
-                .add(requestFilter.getModels(), model.name::in)
+                .add(requestFilter.getBrandName(), model.brand.name::containsIgnoreCase)
+                .add(requestFilter.getModelName(), model.name::containsIgnoreCase)
                 .add(requestFilter.getTransmission(), model.transmission::eq)
                 .add(requestFilter.getEngineType(), model.engineType::eq)
                 .buildAnd();

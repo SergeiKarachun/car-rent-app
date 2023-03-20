@@ -75,7 +75,7 @@ public class ModelService {
                 .toList();
     }
 
-    public List<ModelResponseDto> getAllByFilter(ModelFilter modelFilter){
+    public List<ModelResponseDto> getAllByFilter(ModelFilter modelFilter) {
         return modelRepository.findAllByFilter(modelFilter)
                 .stream().map(modelResponseMapper::mapToDto)
                 .toList();
