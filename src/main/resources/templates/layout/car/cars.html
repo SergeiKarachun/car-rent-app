@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Models</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+
+<div class="container-fluid my-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
+        <div class="col">
+            <form th:action="@{/cars/by-number}" method="get" th:object="${number}">
+                <label for="number">Find car by number:
+                    <input id="number" type="text" name="number" th:value="${number}">
+                </label><br>
+                <button class="btn btn-primary" type="submit">Find</button>
+            </form>
+
+            <form action="/cars/with-accidents" method="get">
+                <div>Get all with accidents</div>
+                <label for="page2">Page:
+                    <input id="page2" type="number" name="page" th:value="${page}">
+                </label>
+                <label for="size2">Size:
+                    <input id="size2" type="number" name="size" th:value="${size}">
+                </label>
+                <button class="btn btn-primary" type="submit">Find</button>
+
+            </form>
+            <form action="/cars/without-accidents" method="get" th:object="${carFilter}">
+                <div>Get all without accidents</div>
+                <label for="page1">Page:
+                    <input id="page1" type="number" name="page" th:value="${page}">
+                </label>
+                <label for="size1">Size:
+                    <input id="size1" type="number" name="size" th:value="${size}">
+                </label>
+                <button class="btn btn-primary" type="submit">Find</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<hr/>
+<hr/>
+
+
+<div class="container-fluid my-3">
+    <form action="/cars" method="get" th:object="${carFilter}">
+        <div>Color:
+            <div th:each="color : ${colors}">
+                <input th:id="${color}" type="radio" name="color" th:value="${color}"
+                       th:checked="${color == carFilter.color}">
+                <label th:for="${color}" th:text="${color}">Color</label>
+            </div>
+        </div>
+
+        <label for="year">Year:
+            <input id="year" type="number" name="year" th:value="*{year}">
+        </label>
+
+        <label for="brand">Brand:
+            <input id="brand" type="text" name="brandName" th:value="*{brandName}">
+        </label>
+
+        <div>Category:
+            <div th:each="categoryName : ${categories}">
+                <input th:id="${categoryName}" type="radio" name="categoryName" th:value="${categoryName.name}"
+                       th:checked="${categoryName.name == carFilter.categoryName}">
+                <label th:for="${categoryName}" th:text="${categoryName.name}">Color</label>
+            </div>
+        </div>
+
+        <div>
+            Type of transmission:
+            <div th:each="transmission : ${transmissions}">
+                <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"
+                       th:checked="${transmission == carFilter.transmission}">
+                <label th:for="${transmission}" th:text="${transmission}">Type of transmission</label>
+            </div>
+        </div>
+
+        <div>Type of engine:
+            <div th:each="engine : ${engines}">
+                <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}"
+                       th:checked="${engine == carFilter.engineType}">
+                <label th:for="${engine}" th:text="${engine}">Type of engine</label>
+            </div>
+        </div>
+
+
+        <label for="page">Page:
+            <input id="page" type="number" name="page" th:value="${page}">
+        </label>
+        <label for="size">Size:
+            <input id="size" type="number" name="size" th:value="${size}">
+        </label>
+
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </form>
+    <div class="container-fluid my-2">
+        <form th:action="@{/cars/}" method="get">
+            <button class="btn btn-secondary my-1">Clear filter</button>
+        </form>
+    </div>
+</div>
+
+
+<div th:if="${not #lists.isEmpty(carPage.content)}">
+    <div>List of result has <span th:text="${carPage.size + 1}">0</span> pages.</div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
+
+        <div th:each="car : ${carPage.getContent()}">
+            <div class="col">
+                <div class="card my-2">
+                    <img src="volkswagen-touareg.jpg" class="card-img-top" width="50" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">
+                            <span th:text="${car.brand}">Brand default name</span>
+                            <span th:text="${car.model}">Model default name</span>
+                        </h5>
+                        <p class="card-text">
+                            Car Id= <span th:text="${car.id}">#</span>.<br/>
+                            Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
+                            Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
+                            Color is <span th:text="${car.color.name()}">color</span>.<br/>
+                            Year issue: <span th:text="${car.year}">year</span>.<br/>
+                            Car number: <span th:text="${car.carNumber}">number</span>.<br/>
+                            VIN: <span th:text="${car.vin}">vin****vin</span>.<br/>
+                            Repaired: <span th:text="${car.isRepaired}">true</span>.<br/>
+                            Category: <span th:text="${car.category}">standart</span>.<br/>
+                            Price: <span th:text="${car.price}">120.00</span>.<br/>
+
+                        </p>
+                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Go to this
+                            car!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<hr/>
+<p>
+
+<div class="container-fluid my-3">
+    <form th:action="@{/cars/car-create}" method="get">
+        <button class="btn btn-primary">Create new model</button>
+    </form>
+</div>
+</p>
+
+
+</body>
+</html>

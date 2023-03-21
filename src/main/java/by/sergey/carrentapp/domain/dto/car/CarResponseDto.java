@@ -20,7 +20,7 @@ public class CarResponseDto {
     Integer year;
     String carNumber;
     String vin;
-    Boolean repaired;
+    Boolean isRepaired;
     String image;
     String category;
     BigDecimal price;

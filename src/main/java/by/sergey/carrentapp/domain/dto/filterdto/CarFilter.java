@@ -6,16 +6,15 @@ import by.sergey.carrentapp.domain.model.Transmission;
 import lombok.Builder;
 import lombok.Value;
 
-import java.util.List;
 
 @Value
 @Builder
 public class CarFilter {
     Color color;
     Integer year;
-    List<String> brandNames;
-    List<String> modelNames;
-    List<String> categoryNames;
+    String brandName;
+    String modelName;
+    String categoryName;
     Transmission transmission;
     EngineType engineType;
 }

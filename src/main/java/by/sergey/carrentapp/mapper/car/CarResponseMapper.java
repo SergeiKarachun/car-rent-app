@@ -19,7 +19,7 @@ public class CarResponseMapper implements ResponseMapper<Car, CarResponseDto> {
                 .year(car.getYear())
                 .carNumber(car.getCarNumber())
                 .vin(car.getVin())
-                .repaired(car.getRepaired())
+                .isRepaired(car.getRepaired())
                 .image(car.getImage())
                 .category(car.getCategory().getName())
                 .price(car.getCategory().getPrice())

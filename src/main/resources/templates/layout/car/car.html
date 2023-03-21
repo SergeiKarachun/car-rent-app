@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Model</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+
+<div class="container-fluid">
+
+    <div class="card-body" th:object="${car}">
+        <h5 class="card-title text-center">
+            <span th:text="${car.brand}">Brand default name</span>
+            <span th:text="${car.model}">Model default name</span>
+        </h5>
+        <p class="card-text">
+            Car Id= <span th:text="${car.id}">#</span>.<br/>
+            Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
+            Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
+            Color is <span th:text="${car.color.name()}">color</span>.<br/>
+            Year issue: <span th:text="${car.year}">year</span>.<br/>
+            Car number: <span th:text="${car.carNumber}">number</span>.<br/>
+            VIN: <span th:text="${car.vin}">vin****vin</span>.<br/>
+            Repaired: <span th:text="${car.isRepaired}">true</span>.<br/>
+            Category: <span th:text="${car.category}">standart</span>.<br/>
+            Price: <span th:text="${car.price}">120.00</span>.<br/>
+            <br>
+            <br>
+        </p>
+    </div>
+    <hr>
+    <div class="container-fluid my-3">
+        <form th:action="@{/cars/{carId}/update(carId=${car.id})}" method="post" th:object="${car}">
+            <label for="model">Model:
+                <select id="model" name="modelId">
+                    <option th:each="model : ${models}"
+                            th:value="${model.id}"
+                            th:text="${model.name}"
+                            th:selected="${model.name == car.model}">Model
+                    </option>
+                </select>
+            </label>
+
+            <label for="category">Category:
+                <select id="category" name="categoryId">
+                    <option th:each="category : ${categories}"
+                            th:value="${category.id}"
+                            th:text="${category.name}"
+                            th:selected="${category.name == car.category}">Category
+                    </option>
+                </select>
+            </label>
+
+            <label for="color">Color:
+                <select id="color" name="color">
+                    <option th:each="color : ${colors}"
+                            th:value="${color.name}"
+                            th:text="${color.name}"
+                            th:selected="${color == car.color}">
+                        Color
+                    </option>
+                </select>
+            </label>
+
+            <label for="year">Update year issue:
+                <input id="year" type="number" name="year" th:value="*{year}">
+            </label>
+
+            <label for="carNumber">Update car number:
+                <input id="carNumber" type="text" name="carNumber" th:value="*{carNumber}">
+            </label>
+
+            <label for="isRepaired">Update condition(repaired):
+                <select id="isRepaired" name="isRepaired">
+                    <option th:each="boolean : ${booleans}"
+                            th:value="${boolean}"
+                            th:text="${boolean}"
+                            th:selected="${car.isRepaired == boolean}">
+                        Repaired
+                    </option>
+                </select>
+            </label>
+
+            <!--IMAGE-->
+            <br>
+            <button class="btn btn-primary" type="submit">Update</button>
+        </form>
+    </div>
+
+
+    <br>
+    <div class="my-2">
+        <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post">
+            <button class="btn btn-danger">Delete this car</button>
+        </form>
+    </div>
+
+</div>
+
+<div class="container-fluid my-2">
+    <form th:action="@{/cars}" method="get">
+        <button class="btn btn-outline-warning">Go back</button>
+    </form>
+</div>
+</body>
+</html>

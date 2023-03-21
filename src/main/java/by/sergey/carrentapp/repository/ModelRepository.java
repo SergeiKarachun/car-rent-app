@@ -2,6 +2,7 @@ package by.sergey.carrentapp.repository;
 
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.model.Transmission;
+import by.sergey.carrentapp.repository.filter.FilterModelRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

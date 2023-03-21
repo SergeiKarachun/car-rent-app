@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Create new car</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+<div class="container-fluid my-3">
+    <form th:action="@{/cars}" method="post" th:object="${car}">
+        <label for="brand">Brand:
+            <select id="brand" name="brandId">
+                <option th:each="brand : ${brands}"
+                        th:value="${brand.id}"
+                        th:text="${brand.name}">Brand
+                </option>
+            </select>
+        </label>
+        <br>
+        <label for="model">Model:
+            <select id="model" name="modelId">
+                <option th:each="model : ${models}"
+                        th:value="${model.id}"
+                        th:text="|${model.name} ${model.engineType.name()} ${model.transmission.name()}|">Model
+                </option>
+            </select>
+        </label>
+        <br>
+        <label for="category">Category:
+            <select id="category" name="categoryId">
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">Category
+                </option>
+            </select>
+        </label>
+        <br>
+        <label for="color">Color:
+            <select id="color" name="color">
+                <option th:each="color : ${colors}"
+                        th:value="${color.name}"
+                        th:text="${color.name}">Color
+                </option>
+            </select>
+        </label>
+        <br>
+        <label for="year">Year of issue:
+            <input id="year" type="number" name="year" th:value="*{year}">
+        </label>
+        <br>
+        <label for="carNumber">Car number:
+            <input id="carNumber" type="text" name="carNumber" th:value="*{carNumber}">
+        </label>
+        <br>
+        <label for="vin">Car VIN:
+            <input id="vin" type="text" name="vin" th:value="*{vin}">
+        </label>
+        <br>
+        <label for="isRepaired">Condition(repaired):
+            <select id="isRepaired" name="isRepaired">
+                <option th:each="boolean : ${booleans}"
+                        th:value="${boolean}"
+                        th:text="${boolean}">Repaired
+                </option>
+            </select>
+        </label>
+        <br>
+
+        <!--IMAGE-->
+
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+</div>
+
+</body>
+</html>

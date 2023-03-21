@@ -1,4 +1,4 @@
-package by.sergey.carrentapp.repository;
+package by.sergey.carrentapp.repository.filter;
 
 import by.sergey.carrentapp.domain.dto.filterdto.ModelFilter;
 import by.sergey.carrentapp.domain.entity.Model;

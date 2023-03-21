@@ -34,7 +34,7 @@ public class CarUpdateMapper implements UpdateMapper<CarUpdateRequestDto, Car> {
         entity.setColor(dto.getColor());
         entity.setYear(dto.getYear());
         entity.setRepaired(dto.getIsRepaired());
-        entity.setCarNumber(dto.getCatNumber());
+        entity.setCarNumber(dto.getCarNumber());
         entity.setCategory(getCategory(dto.getCategoryId()));
 
         if (!Objects.equals(dto.getCategoryId(), entity.getModel().getId())){

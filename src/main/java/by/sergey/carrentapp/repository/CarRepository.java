@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long>, QuerydslPredicateExecutor<Car> {
 
+    @Override
+    @EntityGraph(attributePaths = {"model", "brand", "category"})
+    List<Car> findAll();
+
     Optional<Car> findCarByCarNumberIgnoreCase(String carNumber);
 
     @EntityGraph(attributePaths = {"model"})

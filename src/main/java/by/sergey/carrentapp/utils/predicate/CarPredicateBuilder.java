@@ -13,9 +13,9 @@ public class CarPredicateBuilder implements PredicateBuilder<Predicate, CarFilte
         return QPredicate.builder()
                 .add(requestFilter.getColor(), car.color::eq)
                 .add(requestFilter.getYear(), car.year::goe)
-                .add(requestFilter.getBrandNames(), car.brand.name::in)
-                .add(requestFilter.getModelNames(), car.model.name::in)
-                .add(requestFilter.getCategoryNames(), car.category.name::in)
+                .add(requestFilter.getBrandName(), car.brand.name::containsIgnoreCase)
+                .add(requestFilter.getModelName(), car.model.name::containsIgnoreCase)
+                .add(requestFilter.getCategoryName(), car.category.name::eq)
                 .add(requestFilter.getTransmission(), car.model.transmission::eq)
                 .add(requestFilter.getEngineType(), car.model.engineType::eq)
                 .buildAnd();

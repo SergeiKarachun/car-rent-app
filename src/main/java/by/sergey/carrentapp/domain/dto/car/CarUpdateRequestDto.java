@@ -10,7 +10,7 @@ public class CarUpdateRequestDto {
     Long categoryId;
     Color color;
     Integer year;
-    String catNumber;
+    String carNumber;
     Boolean isRepaired;
     MultipartFile image;
 }

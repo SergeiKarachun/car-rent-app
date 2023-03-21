@@ -35,19 +35,23 @@ public class CarService {
     private final CarResponseMapper carResponseMapper;
     private final CarCreateMapper carCreateMapper;
     private final CarUpdateMapper carUpdateMapper;
-    private final ImageService imageService;
+    //private final ImageService imageService;
     private final CarPredicateBuilder carPredicateBuilder;
 
 
     @Transactional
     public Optional<CarResponseDto> create(CarCreateRequestDto carCreateRequestDto) {
-        return Optional.of(carCreateRequestDto)
+        /*return Optional.of(carCreateRequestDto)
                 .map(dto -> {
                     if (dto.image() != null) {
                         downloadImage(dto.image());
                     }
                     return carCreateMapper.mapToEntity(dto);
                 })
+                .map(carRepository::save)
+                .map(carResponseMapper::mapToDto);*/
+
+        return Optional.of(carCreateMapper.mapToEntity(carCreateRequestDto))
                 .map(carRepository::save)
                 .map(carResponseMapper::mapToDto);
     }
@@ -56,7 +60,7 @@ public class CarService {
     public Optional<CarResponseDto> update(Long id, CarUpdateRequestDto carUpdateRequestDto) {
         var existingCar = getByIdOrElseThrow(id);
 
-        return Optional.of(carUpdateRequestDto)
+        /*return Optional.of(carUpdateRequestDto)
                 .map(dto -> {
                     if (dto.image() != null) {
                         downloadImage(dto.image());
@@ -64,6 +68,10 @@ public class CarService {
                     }
                     return carUpdateMapper.mapToEntity(dto, existingCar);
                 })
+                .map(carRepository::save)
+                .map(carResponseMapper::mapToDto);*/
+
+        return Optional.of(carUpdateMapper.mapToEntity(carUpdateRequestDto, existingCar))
                 .map(carRepository::save)
                 .map(carResponseMapper::mapToDto);
     }
@@ -129,24 +137,24 @@ public class CarService {
                 .map(carResponseMapper::mapToDto);
     }
 
-    public Optional<byte[]> findCarImage(Long id) {
+   /* public Optional<byte[]> findCarImage(Long id) {
         return carRepository.findById(id)
                 .map(Car::getImage)
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get);
-    }
+    }*/
 
     private Car getByIdOrElseThrow(Long id) {
         return carRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ExceptionMessageUtil.getNotFoundMessage("Car", "id", id)));
     }
 
-    @SneakyThrows
+   /* @SneakyThrows
     private void downloadImage(MultipartFile image) {
         if (!image.isEmpty()) {
             imageService.upload(image.getOriginalFilename(), image.getInputStream());
         }
-    }
+    }*/
 
 
 }
