@@ -109,7 +109,15 @@
 
 
 <div th:if="${not #lists.isEmpty(carPage.content)}">
-    <div>List of result has <span th:text="${carPage.size + 1}">0</span> pages.</div>
+    <div th:if="${totalPages != null}" >
+        <div>List of result has <span th:text="${totalPages}">#</span> pages.</div>
+    </div>
+    <div th:if="${totalPagesWith != null}" >
+        <div>List of result has <span th:text="${totalPagesWith}">#</span> pages.</div>
+    </div>
+    <div th:if="${totalPagesWithout != null}" >
+        <div>List of result has <span th:text="${totalPagesWithout}">#</span> pages.</div>
+    </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
 
         <div th:each="car : ${carPage.getContent()}">

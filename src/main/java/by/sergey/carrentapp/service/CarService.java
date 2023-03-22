@@ -108,16 +108,17 @@ public class CarService {
                 .map(carResponseMapper::mapToDto);
     }
 
-    public List<CarResponseDto> getAllWithAccidents() {
-        return carRepository.findAllWithAccidents().stream()
-                .map(carResponseMapper::mapToDto)
-                .toList();
+    public Page<CarResponseDto> getAllWithAccidents(Integer page, Integer pageSize) {
+        var pageRequest = PageRequest.of(page, pageSize).withSort(Sort.Direction.ASC, "id");
+        return carRepository.findAllWithAccidents(pageRequest)
+                .map(carResponseMapper::mapToDto);
     }
 
-    public List<CarResponseDto> getAllWithoutAccidents() {
-        return carRepository.findAllWithoutAccidents().stream()
-                .map(carResponseMapper::mapToDto)
-                .toList();
+    public Page<CarResponseDto> getAllWithoutAccidents(Integer page, Integer pageSize) {
+        var pageRequest = PageRequest.of(page, pageSize).withSort(Sort.Direction.ASC, "id");
+
+        return carRepository.findAllWithoutAccidents(pageRequest)
+                .map(carResponseMapper::mapToDto);
     }
 
     public List<CarResponseDto> getAllRepaired() {

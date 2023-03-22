@@ -1,6 +1,8 @@
 package by.sergey.carrentapp.repository;
 
 import by.sergey.carrentapp.domain.entity.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,15 +34,15 @@ public interface CarRepository extends JpaRepository<Car, Long>, QuerydslPredica
 
     @Query(value = "SELECT c " +
                    "FROM Car c " +
-                   "LEFT JOIN fetch c.orders o " +
+                   "LEFT JOIN  c.orders o " +
                    "WHERE size(o.accidents) > 0 ")
-    List<Car> findAllWithAccidents();
+    Page<Car> findAllWithAccidents(Pageable pageable);
 
     @Query(value = "SELECT c " +
                    "FROM Car c " +
-                   "LEFT JOIN fetch c.orders o " +
-                   "WHERE size(o.accidents) = 0 ")
-    List<Car> findAllWithoutAccidents();
+                   "LEFT JOIN  c.orders o " +
+                   "where size(o.accidents) = 0 ")
+    Page<Car> findAllWithoutAccidents(Pageable pageable);
 
     @Query(value = "SELECT c " +
                    "FROM Car c " +

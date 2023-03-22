@@ -13,12 +13,8 @@ import by.sergey.carrentapp.service.CategoryService;
 import by.sergey.carrentapp.service.ModelService;
 import by.sergey.carrentapp.service.exception.CarBadRequestException;
 import by.sergey.carrentapp.service.exception.NotFoundException;
-import by.sergey.carrentapp.utils.PageableUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +42,8 @@ public class CarController {
                          @RequestParam(required = false, defaultValue = "1") Integer page,
                          @RequestParam(required = false, defaultValue = "10") Integer size) {
         Page<CarResponseDto> carPage = carService.getAll(carFilter, page - 1, size);
+        int totalPages = carPage.getTotalPages();
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("carPage", carPage);
         model.addAttribute("brands", brandService.getAll());
         model.addAttribute("categories", categoryService.getAll());
@@ -66,10 +64,12 @@ public class CarController {
                                        @ModelAttribute CarFilter carFilter,
                                        @RequestParam(required = false, defaultValue = "1") Integer page,
                                        @RequestParam(required = false, defaultValue = "10") Integer size) {
-
+        Page<CarResponseDto> carPage = carService.getAllWithAccidents(page - 1, size);
+        int totalPagesWith = carPage.getTotalPages();
+        model.addAttribute("totalPagesWith", totalPagesWith);
+        model.addAttribute("carPage", carPage);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
-
 
         return "layout/car/cars";
     }
@@ -79,17 +79,12 @@ public class CarController {
                                           @ModelAttribute CarFilter carFilter,
                                           @RequestParam(required = false, defaultValue = "1") Integer page,
                                           @RequestParam(required = false, defaultValue = "10") Integer size) {
-        var cars = carService.getAllWithoutAccidents();
-        var carPage = new PageImpl<>(cars);
-        model.addAttribute("carPage", carPage);
-        model.addAttribute("brands", brandService.getAll());
-        model.addAttribute("categories", categoryService.getAll());
-        model.addAttribute("transmissions", Transmission.values());
-        model.addAttribute("engines", EngineType.values());
-        model.addAttribute("carFilter", carFilter);
-        model.addAttribute("colors", Color.values());
-        model.addAttribute("transmissions", Transmission.values());
-        model.addAttribute("engines", EngineType.values());
+        Page<CarResponseDto> cars = carService.getAllWithoutAccidents(page - 1, size);
+        int totalPagesWithout = cars.getTotalPages();
+        model.addAttribute("totalPagesWithout", totalPagesWithout);
+        model.addAttribute("carPage", cars);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
 
         return "layout/car/cars";
     }
@@ -157,7 +152,7 @@ public class CarController {
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id) {
         if (!carService.deleteById(id)) {
-            throw new NotFoundException(String.format("Car with id %s doesn't exist."));
+            throw new NotFoundException(String.format("Car with id %s doesn't exist.", id));
         }
         return "redirect:/cars";
     }
