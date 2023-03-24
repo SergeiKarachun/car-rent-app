@@ -75,7 +75,7 @@ public class TestEntityBuilder {
 
     public static User createUser() {
         return User.builder()
-                .name("newUser")
+                .username("newUser")
                 .email("igor@gmail.com")
                 .password("teStPassword")
                 .role(Role.CLIENT)

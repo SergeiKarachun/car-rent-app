@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+<div class="container-fluid my-3">
+    <form action="/users" method="get" th:object="${filter}">
+
+        <label for="username">Username:
+            <input id="username" type="text" name="username" th:value="*{username}">
+        </label>
+        <label for="email">Email:
+            <input id="email" type="text" name="email" th:value="*{email}">
+        </label>
+        <label for="name">Name:
+            <input id="name" type="text" name="name" th:value="*{name}">
+        </label>
+        <label for="surname">Surname:
+            <input id="surname" type="text" name="surname" th:value="*{surname}">
+        </label>
+        <label for="birthday">Birthday:
+            <input id="birthday" type="date" name="birthday" th:value="*{birthday}">
+        </label>
+        <label for="expirationDate">Date of expiration driver license:
+            <input id="expirationDate" type="date" name="expirationDate" th:value="*{expirationDate}">
+        </label>
+
+        <label for="expiredLicense">Expired License:
+            <select id="expiredLicense" name="expiredLicense">
+                <option th:each="boolean : ${booleans}"
+                        th:value="${boolean}"
+                        th:text="${boolean}"
+                        th:selected="${filter.expiredLicense == boolean}">
+                    Expired License:
+                </option>
+            </select>
+        </label>
+        <br>
+        <label for="page">Page:
+            <input id="page" type="number" name="page" th:value="${page}">
+        </label>
+        <label for="size">Size:
+            <input id="size" type="number" name="size" th:value="${size}">
+        </label>
+
+        <button class="btn btn-primary" type="submit">Filter</button>
+    </form>
+
+    <div class="container-fluid my-2">
+        <form th:action="@{/users/}" method="get">
+            <button class="btn btn-secondary my-1">Clear filter</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <h3>List of Users</h3>
+    <div>
+        <table class="table table-striped table-hover col-2">
+            <tr class="text-center">
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            <div th:if="${not #lists.isEmpty(usersPage.content)}">
+                <tr class="text-center" th:each="user : ${usersPage}">
+                    <td th:text="${user.id}">id</td>
+                    <td th:text="${user.username}">name</td>
+                    <td th:text="${user.email}">id</td>
+                    <td th:text="${user.role}">id</td>
+                    <td>
+                        <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-primary">Profile</a>
+                        <a th:href="@{/users/profile/{id}(id=${user.id})}" class="btn btn-secondary">Edit</a>
+                        <a th:href="@{/users/{id}/delete(id=${user.id})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </div>
+        </table>
+    </div>
+    <hr/>
+    <p>
+    <form th:action="@{/users/sign-up}" method="get">
+        <button class="btn btn-primary">Create new User</button>
+    </form>
+    </p>
+
+    <hr/>
+
+    <nav aria-label="Page navigation example ">
+        <ul class="pagination ">
+
+            <li th:if="${page -1 != 0}" class="page-item"><a th:href="@{'/users?' + 'year=&brandName=&page=' + ${page -1} +'&size=' + ${size}}" class="page-link" href="#">Previous</a></li>
+
+            <li th:classappend="${page==i?'active':' '}" th:each="i : ${#numbers.sequence(1, totalPages)}" class="page-item"><a th:href="@{'/users?' + 'year=&brandName=&page=' + ${i} +'&size=' + ${size}}" class="page-link" href="#"><span th:text="${i}"></span></a></li>
+
+            <li th:if="${page != totalPages}" class="page-item"><a th:href="@{'/users?' + 'year=&brandName=&page=' + ${page +1} +'&size=' + ${size}}" class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+</body>
+</html>

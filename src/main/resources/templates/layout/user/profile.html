@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<div th:replace="layout/header/header :: header"/>
+
+
+<div class="container-xl px-4 mt-4">
+    <div class="row">
+        <div class="col-xl-12">
+            <form th:action="@{/users/{id}/update(id=${user.id})}" method="post" th:object="${user}">
+                <div class="card mb-4">
+                    <div class="card-header">User info</div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="user-info-email-input" class="col-2 col-form-label">
+                                Email:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-info-email-input" name="email"
+                                       th:value="*{email}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-info-username-input" class="col-2 col-form-label">
+                                Username:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-info-username-input" name="username"
+                                       th:value="*{username}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-info-role-input" class="col-2 col-form-label">
+                                Role:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-info-role-input" name="role"
+                                       th:value="*{role}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Update user info</button>
+            </form>
+            <br>
+            <form th:action="@{/user-details/{userDetaisId}/update(userDetaisId=${user.userDetailsDto.id})}"
+                  method="post" th:object="${user}">
+                <div class="card mb-4">
+                    <div class="card-header">User details info</div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="user-details-name-input" class="col-2 col-form-label">
+                                Name:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-details-name-input" name="name"
+                                       th:value="*{userDetailsDto.name}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-details-surname-input" class="col-2 col-form-label">
+                                Surname:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-details-surname-input" name="surname"
+                                       th:value="*{userDetailsDto.surname}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-details-address-input" class="col-2 col-form-label">
+                                Address:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-details-address-input" name="address"
+                                       th:value="*{userDetailsDto.address}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-details-phone-input" class="col-2 col-form-label">
+                                Phone:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-details-phone-input" name="phone"
+                                       th:value="*{userDetailsDto.phone}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-details-birthday-input" class="col-2 col-form-label">
+                                Birthday:
+                            </label>
+                            <div class="col-10">
+                                <input type="date" class="form-control" id="user-details-birthday-input" name="birthday"
+                                       th:value="*{userDetailsDto.birthday}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-details-registration-input" class="col-2 col-form-label">
+                                Registration date:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-details-registration-input"
+                                       name="registrationAt"
+                                       th:value="*{userDetailsDto.registrationAt}" readonly/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Update details</button>
+            </form>
+            <br>
+            <form th:action="@{/driver-licenses/{driverLicenseId}/update(driverLicenseId=${user.driverLicenseDto.id})}"
+                  method="post" th:object="${user}">
+                <div class="card mb-4">
+                    <div class="card-header">Driver license info</div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="user-license-name-input" class="col-2 col-form-label">
+                                Driver license number:
+                            </label>
+                            <div class="col-10">
+                                <input type="text" class="form-control" id="user-license-name-input"
+                                       name="driverLicenseNumber"
+                                       th:value="*{driverLicenseDto.driverLicenseNumber}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-license-issue-date-input" class="col-2 col-form-label">
+                                Driver license issue date:
+                            </label>
+                            <div class="col-10">
+                                <input type="date" class="form-control" id="user-license-issue-date-input"
+                                       name="driverLicenseIssueDate"
+                                       th:value="*{driverLicenseDto.driverLicenseIssueDate}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="user-license-expired-date-input" class="col-2 col-form-label">
+                                Driver license expired date:
+                            </label>
+                            <div class="col-10">
+                                <input type="date" class="form-control" id="user-license-expired-date-input"
+                                       name="driverLicenseExpirationDate"
+                                       th:value="*{driverLicenseDto.driverLicenseExpirationDate}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Update driver license</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

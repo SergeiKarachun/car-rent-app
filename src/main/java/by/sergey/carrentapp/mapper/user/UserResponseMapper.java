@@ -13,7 +13,7 @@ public class UserResponseMapper implements ResponseMapper<User, UserResponseDto>
     public UserResponseDto mapToDto(User user) {
         return UserResponseDto.builder()
                 .id(user.getId())
-                .username(user.getName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole())
                 .userDetailsDto(UserDetailsResponseDto.builder()

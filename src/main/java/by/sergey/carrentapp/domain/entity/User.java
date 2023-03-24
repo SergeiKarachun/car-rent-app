@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"userDetails", "orders"})
-@EqualsAndHashCode(of = {"name", "email"})
+@EqualsAndHashCode(of = {"username", "email"})
 @Builder
 @Entity
 @Table(name="users")
@@ -22,7 +22,7 @@ public class User extends AuditingEntity<Long>{
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String username;
 
     @Column(nullable = false, unique = true)
     private String email;

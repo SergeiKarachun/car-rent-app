@@ -17,12 +17,12 @@ public class UserCreateMapper implements CreateMapper<UserCreateRequestDto, User
         var driverLicense = driverLicenseCreateMapper.mapToEntity(requestDto);
         var userDetails = userDetailsCreateMapper.mapToEntity(requestDto);
         var user = User.builder()
-                .name(requestDto.getUsername())
+                .username(requestDto.getUsername())
                 .email(requestDto.getEmail())
                 .password(requestDto.getPassword())
                 .build();
         userDetails.setUser(user);
-        userDetails.setDriverLicense(driverLicense);
+        driverLicense.setUserDetails(userDetails);
         return user;
     }
 }
