@@ -59,7 +59,7 @@ class UserDetailsRepositoryTestIT {
 
     @Test
     void findByUserId() {
-        Optional<UserDetails> actual = userDetailsRepository.findByUserId(EXISTS_USER_ID);
+        Optional<UserDetails> actual = Optional.of(userDetailsRepository.findByUserId(EXISTS_USER_ID));
 
         actual.ifPresent(ud -> assertEquals(ExistsEntityBuilder.getExistUserDetails(), ud));
     }

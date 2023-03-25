@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS user_details
     address           VARCHAR(255) NOT NULL,
     phone             VARCHAR(32)  NOT NULL,
     birthday          DATE    NOT NULL,
-    registration_date DATE    NOT NULL DEFAULT now(),
+    registration_date DATE    NOT NULL DEFAULT now() ,
     CONSTRAINT userdetails_user_fk
         FOREIGN KEY (user_id) REFERENCES users (id)
             ON UPDATE CASCADE ON DELETE SET NULL

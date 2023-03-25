@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface UserDetailsRepository extends JpaRepository<UserDetails, Long>, QuerydslPredicateExecutor<UserDetails> {
 
-    Optional<UserDetails> findByUserId(Long userId);
+    UserDetails findByUserId(Long userId);
 
     List<UserDetails> findAllByRegistrationDateBetween(LocalDate start, LocalDate end);
 
