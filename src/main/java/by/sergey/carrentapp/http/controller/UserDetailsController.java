@@ -107,8 +107,8 @@ public class UserDetailsController {
     }
 
     @GetMapping("/by-registration-dates")
-    public String getByRegistrationDates(@RequestParam(required = false) LocalDate from,
-                                          @RequestParam(required = false) LocalDate to,
+    public String getByRegistrationDates(@RequestParam(required = false, defaultValue = "2000-12-30") LocalDate from,
+                                          @RequestParam(required = false, defaultValue = "2051-12-30") LocalDate to,
                                           Model model,
                                           @ModelAttribute UserDetailsFilter userDetailsFilter,
                                           @RequestParam(required = false, defaultValue = "1") Integer page,

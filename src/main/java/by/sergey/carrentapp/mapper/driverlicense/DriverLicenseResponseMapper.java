@@ -12,7 +12,7 @@ public class DriverLicenseResponseMapper implements ResponseMapper<DriverLicense
     public DriverLicenseResponseDto mapToDto(DriverLicense driverLicense) {
         return DriverLicenseResponseDto.builder()
                 .id(driverLicense.getId())
-                .userId(driverLicense.getUserDetails().getId())
+                .userId(driverLicense.getUserDetails().getUser().getId())
                 .driverLicenseNumber(driverLicense.getNumber())
                 .driverLicenseIssueDate(driverLicense.getIssueDate())
                 .driverLicenseExpirationDate(driverLicense.getExpirationDate())

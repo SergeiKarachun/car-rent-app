@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Driver licenses</title>
+</head>
+
+<body>
+<div th:replace="layout/header/header :: header"/>
+<!--<div class="container-fluid mb7-l">
+    <div class="container my-5">
+        <h5> Search users details by several parameters</h5>
+        <form th:action="@{/user-details}" method="get">
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" name="name" th:value="${filter.getName()}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="surname">Surname:</label>
+                    <input class="form-control" id="surname" type="text" name="surname"
+                           th:value="${filter.getSurname()}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="birthdate">Birthdate:</label>
+                    <input class="form-control" id="birthdate" type="date" name="birthdate"
+                           th:value="${filter.getBirthday()}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="phone">Phone:
+                        <input class="form-control" id="phone" type="text" name="phone" th:value="${filter.getPhone()}">
+                    </label>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="address">Address:
+                        <input class="form-control" id="address" type="text" name="address"
+                               th:value="${filter.getAddress()}"></label>
+                </div>
+                <div class="col-md-4 mb-3">
+
+                    <label for="page">Page:
+                        <input class="form-control" id="page" type="number" name="page" th:value="${page}">
+                    </label>
+                    <label for="size">Size:
+                        <input class="form-control" id="size" type="number" name="size" th:value="${size}">
+                    </label>
+                </div>
+
+            </div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        <div class="my-2">
+            <form th:action="@{/user-details/}" method="get">
+                <button class="btn btn-secondary">Clear filter</button>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+
+<!--<div>
+    <div class="container my-5">
+        <div class="row" id="search-dates-form">
+            <span class="mr-2">Search by registration dates</span>
+            <form th:action="@{/user-details/by-registration-dates}" method="get">
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="start">Start:</label>
+                        <input class="form-control" id="start" type="date" name="from">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="end">End:</label>
+                        <input class="form-control" id="end" type="date" name="to">
+                    </div>
+                </div>
+                <div class="col-md-8 mb-3 content-center">
+                    <button class="btn btn-primary my-2" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+<!--<div>
+    <div class="container my-5">
+        <div class="row">
+            <span class="mr-2">Search by name and surname</span>
+            <form th:action="@{/user-details/by-name-surname}" method="get">
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="start">Name:</label>
+                        <input class="form-control" id="name2" type="text" name="name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="end">Surname:</label>
+                        <input class="form-control" id="surname2" type="text" name="surname">
+                    </div>
+                </div>
+                <div class="col-md-8 mb-3 content-center">
+                    <button class="btn btn-primary my-2" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>-->
+<div>
+    <div class="container my-5">
+        <div class="row">
+            <span class="mr-2">Find all expired</span>
+            <form th:action="@{/driver-licenses/all-expired}" method="get">
+                <button class="btn btn-primary my-2" type="submit">Find</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="container my-5">
+        <div class="row">
+            <span class="mr-2">Search by user id</span>
+            <form th:action="@{/driver-licenses/by-user-id}" method="get" th:object="${userId}">
+                <label for="userId">
+                    <input id="userId" type="text" name="userId" th:value="${userId}">
+                </label><br>
+                <button class="btn btn-primary my-2" type="submit">Find</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="container my-5">
+        <div class="row">
+            <span class="mr-2">Search by driver license number</span>
+            <form th:action="@{/driver-licenses/by-number}" method="get" th:object="${number}">
+                <label for="number">
+                    <input id="number" type="text" name="number" th:value="${number}">
+                </label><br>
+                <button class="btn btn-primary my-2" type="submit">Find</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<span th:if="${#lists.isEmpty(driverLicensePage.content)}">There are not available users details!</span>
+
+<div th:if="${not #lists.isEmpty(driverLicensePage.content)}">
+    <!--    <div class="container-fluid col">-->
+    <div class="col-lg-auto my-5">
+        <div class="panel panel-default">
+            <h3 class="text-center">Users details list</h3>
+            <div class="panel-body table-responsive">
+                <table class="table table-condensed table-striped text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">UserId</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Issue date</th>
+                        <th scope="col">Expiration date</th>
+                        <th>Actions</th>
+                    <tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="driverLicense, iStat: ${driverLicensePage.content}"
+                              th:style="${iStat.odd}? 'font-weight: bold;'"
+                              th:alt-title="${iStat.even}? 'even' : 'odd'">
+                        <tr>
+                            <td th:text="${driverLicense.id}"></td>
+                            <td th:text="${driverLicense.userId}"></td>
+                            <td th:text="${driverLicense.driverLicenseNumber}"></td>
+                            <td th:text="${driverLicense.driverLicenseIssueDate}"></td>
+                            <td th:text="${driverLicense.driverLicenseExpirationDate}"></td>
+                            <td>
+                                <a th:href="@{'/driver-licenses/' + ${driverLicense.id}}"
+                                   class="btn btn-secondary">Edit</a>
+                                <a th:href="@{'/driver-licenses/' + ${driverLicense.id} + '/delete'}"
+                                   class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <!-- pagination -->
+            <nav aria-label="Page navigation example ">
+                <ul class="pagination ">
+
+                    <li th:if="${page -1 != 0}" class="page-item"><a
+                            th:href="@{'/driver-licenses?' + 'page=' + ${page -1} +'&size=' + ${size}}"
+                            class="page-link" href="#">Previous</a></li>
+
+                    <li th:classappend="${page==i?'active':' '}"
+                        th:each="i : ${#numbers.sequence(1, driverLicensePage.totalPages)}" class="page-item"><a
+                            th:href="@{'/driver-licenses?' + 'page=' + ${i} +'&size=' + ${size}}" class="page-link"
+                            href="#"><span th:text="${i}"></span></a></li>
+
+                    <li th:if="${page != driverLicensePage.totalPages}" class="page-item"><a
+                            th:href="@{'/driver-licenses?' + 'page=' + ${page +1} +'&size=' + ${size}}"
+                            class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+            <!--<nav aria-label="Pagination" th:if="${usersDetailsPage.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${usersDetailsPage.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/user-details(page=${usersDetailsPage.number lt 2 ? 1 : usersDetailsPage.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq usersDetailsPage.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence( 1, usersDetailsPage.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/user-details(page=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item"
+                        th:classappend="${usersDetailsPage.number + 1 eq usersDetailsPage.totalPages} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/user-details(page=${usersDetailsPage.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -15,6 +15,8 @@ import java.util.Optional;
 @Repository
 public interface DriverLicenseRepository extends JpaRepository<DriverLicense, Long>, QuerydslPredicateExecutor<DriverLicense> {
 
+    boolean existsByNumber(String number);
+
     Optional<DriverLicense> findByNumberIgnoreCase(String number);
 
     @Query(value = "SELECT dl " +
