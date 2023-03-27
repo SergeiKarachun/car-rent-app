@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+
+<body>
+<div th:replace="layout/header/header :: header"/>
+<div class="container-fluid mb7-l">
+    <div class="container my-5">
+        <h5> Search orders by several parameters</h5>
+        <form th:action="@{/orders}" method="get">
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+                    <label for="userFirstName">Name:</label>
+                    <input class="form-control" id="userFirstName" type="text" name="userFirstName"
+                           th:value="${filter.userFirstName}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="userLastName">Surname:</label>
+                    <input class="form-control" id="userLastName" type="text" name="userLastName"
+                           th:value="${filter.userLastName}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="carNumber">Car number:</label>
+                    <input class="form-control" id="carNumber" type="text" name="carNumber"
+                           th:value="${filter.carNumber}">
+                </div>
+                <div>Status of order:
+                    <div th:each="status : ${statuses}">
+                        <input th:id="${status}" type="radio" name="orderStatus" th:value="${status}"
+                               th:checked="${status == filter.orderStatus}">
+                        <label th:for="${status}" th:text="${status}">Type of transmission</label>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="sum">Sum:
+                        <input class="form-control" id="sum" type="text" name="sum" th:value="${filter.sum}">
+                    </label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4 mb-3">
+
+                    <label for="page">Page:
+                        <input class="form-control" id="page" type="number" name="page" th:value="${page}">
+                    </label>
+                    <label for="size">Size:
+                        <input class="form-control" id="size" type="number" name="size" th:value="${size}">
+                    </label>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+        <div class="my-2">
+            <form th:action="@{/orders/}" method="get">
+                <button class="btn btn-secondary">Clear filter</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<span th:if="${#lists.isEmpty(ordersPage.content)}">There are not available users details!</span>
+
+<div th:if="${not #lists.isEmpty(ordersPage.content)}">
+    <!--    <div class="container-fluid col">-->
+    <div class="col-lg-auto my-5">
+        <div class="panel panel-default">
+            <h3 class="text-center">Orders list</h3>
+            <div class="panel-body table-responsive">
+                <table class="table table-condensed table-striped text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Order status</th>
+                        <th scope="col">Sum</th>
+                        <th>Actions</th>
+                    <tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="order, iStat: ${ordersPage.content}"
+                              th:style="${iStat.odd}? 'font-weight: bold;'"
+                              th:alt-title="${iStat.even}? 'even' : 'odd'">
+                        <tr>
+                            <td th:text="${order.id}"></td>
+                            <td th:text="${order.date}"></td>
+                            <td th:text="${order.orderStatus}"></td>
+                            <td th:text="${order.sum}"></td>
+                            <td>
+                                <a th:href="@{'/orders/' + ${order.id}}"
+                                   class="btn btn-secondary">Edit</a>
+                                <a th:href="@{'/orders/' + ${order.id} + '/delete'}"
+                                   class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+            <!-- pagination -->
+            <nav aria-label="Page navigation example ">
+                <ul class="pagination ">
+
+                    <li th:if="${page -1 != 0}" class="page-item"><a
+                            th:href="@{'/orders?' + 'page=' + ${page -1} +'&size=' + ${size}}"
+                            class="page-link" href="#">Previous</a></li>
+
+                    <li th:classappend="${page==i?'active':' '}"
+                        th:each="i : ${#numbers.sequence(1, ordersPage.totalPages)}" class="page-item"><a
+                            th:href="@{'/orders?' + 'page=' + ${i} +'&size=' + ${size}}" class="page-link"
+                            href="#"><span th:text="${i}"></span></a></li>
+
+                    <li th:if="${page != ordersPage.totalPages}" class="page-item"><a
+                            th:href="@{'/orders?' + 'page=' + ${page +1} +'&size=' + ${size}}"
+                            class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-auto my-5">
+    <p>
+    <form th:action="@{/orders/order-create}" method="get">
+        <button class="btn btn-primary">Create new order</button>
+    </form>
+    </p>
+</div>
+</body>
+</html>

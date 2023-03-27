@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<head th:replace="layout/common :: head_common(~{this :: script})">
+    <meta charset="UTF-8">
+    <title>My orders</title>
+</head>
+
+<body>
+<div th:replace="layout/header/header :: header"/>
+<div class="container-fluid">
+    <div class="col-lg-auto">
+        <h3 class="text-center">Search orders</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-8">
+                    <form class="form ml-3 mt-2" th:action="@{/orders/user/{userId}}" method="get">
+                        <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                                <label th:for="status">Status:</label>
+                                <select class="form-control" th:id="status" name="status">
+                                    <option selected value>Select</option>
+                                    <option th:id="status" th:each="status : ${statuses}"
+                                            th:value="${status}"
+                                            th:text="${status.name()}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label for="sum">Sum:</label>
+                                <input id="sum" type="number" class="form-control" name="sum">
+                            </div>
+                        </div>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span th:if="${#lists.isEmpty(ordersPage.content)}">There are not available orders!</span>
+
+<div th:if="${not #lists.isEmpty(ordersPage.content)}">
+    <div class="container-fluid col">
+        <div class="col-lg-auto">
+            <div class="panel panel-default">
+                <h3 class="text-center">Orders list</h3>
+                <div class="panel-body table-responsive">
+                    <table class="table table-condensed table-striped text-center">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Start rental date</th>
+                            <th scope="col">End rental date</th>
+                            <th>Car description</th>
+                            <th>Status</th>
+                            <th>Sum</th>
+                            <th>View</th>
+                            <th>Action</th>
+                        <tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="order, iStat: ${ordersPage.content}"
+                                  th:style="${iStat.odd}? 'font-weight: bold;'"
+                                  th:alt-title="${iStat.even}? 'even' : 'odd'">
+                            <tr>
+                                <td th:text="${order.id}"></td>
+                                <td th:text="${order.date}"></td>
+                                <td th:text="${order.startRentalDate}"></td>
+                                <td th:text="${order.endRentalDate}"></td>
+                                <td th:text="|${order.brand} ${order.model} ${order.year} ${order.color.name()} ${order.transmission.name()} ${order.engineType.name()} |"></td>
+                                <td th:text="${order.orderStatus.name()}"></td>
+                                <td th:text="${order.sum}"></td>
+                                <!--<td th:if="${order.orderStatus.name() eq 'CONFIRMATION'}"></td>
+                                <td th:if="${order.orderStatus.name() eq 'APPROVED'}"></td>
+                                <td th:if="${order.orderStatus.name() eq 'DECLINED'}"></td>
+                                <td th:if="${order.orderStatus.name() eq 'CANCELLED'}"></td>
+                                <td th:if="${order.orderStatus.name() eq 'COMPLITED'}"></td>-->
+                                <td>
+                                    <form th:action="@{/orders/{orderId}(orderId=${order.id})}"
+                                          method="get">
+                                        <button class="btn btn-dark btn-xs">View
+                                        </button>
+                                    </form>
+                                </td>
+                                <td th:if="${order.orderStatus.name() eq 'CONFIRMATION' or order.orderStatus.name() eq 'APPROVED'}">
+                                    <form id="decline-order-form" class="form-horizontal"
+                                          method="POST"
+                                          th:action="@{/orders/{orderId}/change-status(orderId=${order.id})}">
+                                        <input type="text" name="orderStatus" th:value="CANCELED"
+                                               hidden>
+                                        <button type="submit"
+                                                class="btn btn-dark btn-xs">
+                                            CANCELED
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- pagination -->
+                <nav aria-label="Page navigation example ">
+                    <ul class="pagination ">
+
+                        <li th:if="${page -1 != 0}" class="page-item"><a
+                                th:href="@{'/orders/user/id?' + 'page=' + ${page -1} +'&size=' + ${size}}"
+                                class="page-link" href="#">Previous</a></li>
+
+                        <li th:classappend="${page==i?'active':' '}"
+                            th:each="i : ${#numbers.sequence(1, ordersPage.totalPages)}" class="page-item"><a
+                                th:href="@{'/orders/user/id?' + 'page=' + ${i} +'&size=' + ${size}}" class="page-link"
+                                href="#"><span th:text="${i}"></span></a></li>
+
+                        <li th:if="${page != ordersPage.totalPages}" class="page-item"><a
+                                th:href="@{'/orders/user/id?' + 'page=' + ${page +1} +'&size=' + ${size}}"
+                                class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

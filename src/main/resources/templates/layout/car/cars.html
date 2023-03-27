@@ -109,13 +109,13 @@
 
 
 <div th:if="${not #lists.isEmpty(carPage.content)}">
-    <div th:if="${totalPages != null}" >
+    <div th:if="${totalPages != null}">
         <div>List of result has <span th:text="${totalPages}">#</span> pages.</div>
     </div>
-    <div th:if="${totalPagesWith != null}" >
+    <div th:if="${totalPagesWith != null}">
         <div>List of result has <span th:text="${totalPagesWith}">#</span> pages.</div>
     </div>
-    <div th:if="${totalPagesWithout != null}" >
+    <div th:if="${totalPagesWithout != null}">
         <div>List of result has <span th:text="${totalPagesWithout}">#</span> pages.</div>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
@@ -142,8 +142,14 @@
                             Price: <span th:text="${car.price}">120.00</span>.<br/>
 
                         </p>
-                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Go to this
-                            car!</a>
+                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Go to this car!</a>
+
+                        <form th:action="@{/orders/order-create}" method="get" th:object="${car}">
+                            <input id="carId" type="text" name="carId" th:value="${car.id}" hidden="hidden">
+                            <br>
+                            <button class="btn btn-primary" type="submit">Create new order</button>
+                        </form>
+
                     </div>
                 </div>
             </div>

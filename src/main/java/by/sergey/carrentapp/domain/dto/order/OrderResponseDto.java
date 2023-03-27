@@ -19,6 +19,6 @@ public class OrderResponseDto {
     LocalDate date;
     OrderStatus orderStatus;
     BigDecimal sum;
-    LocalDateTime startRentalTime;
-    LocalDateTime endRentalTime;
+    LocalDateTime startRentalDate;
+    LocalDateTime endRentalDate;
 }

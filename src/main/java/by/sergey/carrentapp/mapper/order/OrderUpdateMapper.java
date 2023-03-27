@@ -48,8 +48,8 @@ public class OrderUpdateMapper implements UpdateMapper<OrderUpdateRequestDto, Or
 
     private void rentalTimeSetter(RentalTime rt, OrderUpdateRequestDto dto, Order entity)
     {
-        rt.setStartRentalDate(dto.getStartRentalTime());
-        rt.setEndRentalDate(dto.getEndRentalTime());
+        rt.setStartRentalDate(dto.getStartRentalDate());
+        rt.setEndRentalDate(dto.getEndRentalDate());
 
         rt.setOrder(entity);
     }

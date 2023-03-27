@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 public class OrderUserReportDto {
     Long id;
     LocalDate date;
-    LocalDateTime startRentalTime;
-    LocalDateTime endRentalTime;
+    LocalDateTime startRentalDate;
+    LocalDateTime endRentalDate;
     String brand;
     String model;
     Color color;
     Transmission transmission;
     EngineType engineType;
-    Integer yearOfProduction;
+    Integer year;
     OrderStatus orderStatus;
     BigDecimal sum;
 }

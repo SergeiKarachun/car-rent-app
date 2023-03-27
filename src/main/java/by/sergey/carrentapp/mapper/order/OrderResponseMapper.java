@@ -18,13 +18,14 @@ public class OrderResponseMapper implements ResponseMapper<Order, OrderResponseD
     @Override
     public OrderResponseDto mapToDto(Order order) {
         return OrderResponseDto.builder()
+                .id(order.getId())
                 .user(userResponseMapper.mapToDto(order.getUser()))
                 .car(carResponseMapper.mapToDto(order.getCar()))
                 .date(order.getDate())
                 .orderStatus(order.getOrderStatus())
                 .sum(order.getSum())
-                .startRentalTime(order.getRentalTime().getStartRentalDate())
-                .endRentalTime(order.getRentalTime().getEndRentalDate())
+                .startRentalDate(order.getRentalTime().getStartRentalDate())
+                .endRentalDate(order.getRentalTime().getEndRentalDate())
                 .build();
     }
 }

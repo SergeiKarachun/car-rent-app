@@ -10,5 +10,5 @@ public class OrderCreateRequestDto {
     Long carId;
     String passport;
     LocalDateTime startRentalDate;
-    LocalDateTime endRentalTime;
+    LocalDateTime endRentalDate;
 }

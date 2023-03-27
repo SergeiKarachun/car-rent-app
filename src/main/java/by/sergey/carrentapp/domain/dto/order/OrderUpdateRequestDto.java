@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 @Value
 public class OrderUpdateRequestDto {
     Long carId;
-    LocalDateTime startRentalTime;
-    LocalDateTime endRentalTime;
+    LocalDateTime startRentalDate;
+    LocalDateTime endRentalDate;
 }

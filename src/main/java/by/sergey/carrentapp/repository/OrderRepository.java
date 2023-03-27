@@ -44,6 +44,11 @@ public interface OrderRepository extends JpaRepository<Order, Long>, QuerydslPre
                    "WHERE size(o.accidents) > 0 ")
     List<Order> findOrderWithAccident();
 
+    @Query(value = "SELECT o " +
+                   "FROM Order o " +
+                   "WHERE o.date  >= :date")
+    List<Order> findAllLimitByDate(LocalDate date);
+
     @Query(value = "SELECT o.id as id, " +
                    "o.date as date, " +
                    "o.order_status as orderStatus, " +

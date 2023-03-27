@@ -63,13 +63,24 @@ public interface CarRepository extends JpaRepository<Car, Long>, QuerydslPredica
                    "WHERE c.repaired = true ")
     List<Car> findAllRepaired();
 
-    @Query(value = "SELECT count(o.id) !=0 " +
+    @Query(value = "SELECT count(o.id) =0 " +
                    "FROM orders o " +
                    "JOIN car c on o.car_id = c.id " +
                    "JOIN rental_time rt on o.id = rt.order_id " +
-                   "WHERE c.id = :id " +
+                   "WHERE c.id = :id AND o.order_status NOT IN ('DECLINED', 'CANCELLED') " +
                    "AND rt.start_rental_date NOT BETWEEN :startDate AND :endDate " +
                    "AND rt.end_rental_date NOT BETWEEN :startDate AND :endDate ",
             nativeQuery = true)
     boolean isCarAvailable(@Param("id") Long id, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query(value = "SELECT count(o.id) =0 " +
+                   "FROM orders o " +
+                   "JOIN car c on o.car_id = c.id " +
+                   "JOIN rental_time rt on o.id = rt.order_id " +
+                   "WHERE c.id = :id AND o.order_status NOT IN ('DECLINED', 'CANCELLED') " +
+                   "AND o.id = :orderId " +
+                   "AND rt.start_rental_date NOT BETWEEN :startDate AND :endDate " +
+                   "AND rt.end_rental_date NOT BETWEEN :startDate AND :endDate ",
+            nativeQuery = true)
+    boolean isCarAvailableByOrderId(@Param("orderId") Long orderId, @Param("id") Long id, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
