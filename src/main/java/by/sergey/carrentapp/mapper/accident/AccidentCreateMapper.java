@@ -22,6 +22,7 @@ public class AccidentCreateMapper implements CreateMapper<AccidentCreateRequestD
         var order = getOrder(requestDto.getOrderId());
         accident = Accident.builder()
                 .description(requestDto.getDescription())
+                .accidentDate(requestDto.getAccidentDate())
                 .damage(requestDto.getDamage())
                 .build();
 
