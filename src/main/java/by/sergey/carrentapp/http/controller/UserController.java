@@ -14,10 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class UserController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute UserUpdateRequestDto userDto) {
+                         @ModelAttribute @Valid UserUpdateRequestDto userDto) {
         return userService.update(id, userDto)
                 .map(user -> "redirect:/users/{id}")
                 .orElseThrow(() -> new UserBadRequestException(HttpStatus.BAD_REQUEST, "Can't update user, please check input parameters"));
@@ -80,11 +82,17 @@ public class UserController {
         return "layout/user/sign-up";
     }
 
-    @PostMapping
-    public String createUser(@ModelAttribute UserCreateRequestDto userCreateRequestDto,
+    @PostMapping("/create")
+    public String createUser(@ModelAttribute @Valid UserCreateRequestDto userCreateRequestDto, BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
 
-        // ADD VALIDATION
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userCreateRequestDto", bindingResult);
+            redirectAttributes.addFlashAttribute("userCreateRequestDto", userCreateRequestDto);
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            System.out.println(bindingResult);
+            return "redirect:/users/sign-up";
+        }
 
         return userService.create(userCreateRequestDto)
                 .map(user -> {
@@ -105,14 +113,14 @@ public class UserController {
 
     @GetMapping("/change-password")
     public String changePasswordForm(Model model,
-                                     @ModelAttribute UserChangePasswordRequestDto userChangePasswordDto) {
+                                     @ModelAttribute @Valid UserChangePasswordRequestDto userChangePasswordDto) {
         model.addAttribute("change_password", userChangePasswordDto);
         return "layout/user/change-password";
     }
 
     @PostMapping("{id}/change-password")
     public String changePassword(@PathVariable("id") Long id,
-                                 @ModelAttribute UserChangePasswordRequestDto userChangePasswordDto) {
+                                 @ModelAttribute @Valid UserChangePasswordRequestDto userChangePasswordDto) {
 
         return userService.changePassword(id, userChangePasswordDto)
                 .map(result -> "redirect:/users/{id}")

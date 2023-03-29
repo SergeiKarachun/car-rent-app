@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class BrandController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute BrandCreateUpdateRequestDto requestDto,
+    public String create(@ModelAttribute @Valid BrandCreateUpdateRequestDto requestDto,
                          RedirectAttributes redirectAttributes) {
 
         return brandService.create(requestDto)
@@ -102,7 +103,7 @@ public class BrandController {
     //@PutMapping("/id")
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute BrandCreateUpdateRequestDto requestDto) {
+                         @ModelAttribute @Valid BrandCreateUpdateRequestDto requestDto) {
         return brandService.update(id, requestDto)
                 .map(brand -> "redirect:/brands/{id}")
                 .orElseThrow(() -> new BrandBadRequestException(HttpStatus.NOT_FOUND, "can not update brand. Please check input parameters."));

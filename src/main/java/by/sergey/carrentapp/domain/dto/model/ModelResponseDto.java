@@ -5,9 +5,12 @@ import by.sergey.carrentapp.domain.model.Transmission;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
+
 @Value
 @Builder
 public class ModelResponseDto {
+    @NotNull
     Long id;
     String brand;
     String name;

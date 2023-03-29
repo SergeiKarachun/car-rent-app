@@ -7,6 +7,8 @@ import by.sergey.carrentapp.domain.model.Transmission;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Value
 @Builder
 public class OrderUserReportDto {
+    @NotNull
     Long id;
     LocalDate date;
     LocalDateTime startRentalDate;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class UserDetailsController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute UserDetailsUpdateRequestDto userDetailsDto) {
+                         @ModelAttribute @Valid UserDetailsUpdateRequestDto userDetailsDto) {
         return userDetailsService.update(id, userDetailsDto)
                 .map(userDetails -> "redirect:/user-details/{id}")
                 .orElseThrow(() -> new UserDetailsBadRequestException(HttpStatus.BAD_REQUEST, "Can't update user details. please check input parameters."));
@@ -69,7 +70,7 @@ public class UserDetailsController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute UserDetailsCreateRequestDto userDetailsCreateRequestDto,
+    public String create(@ModelAttribute @Valid UserDetailsCreateRequestDto userDetailsCreateRequestDto,
                          RedirectAttributes redirectAttributes) {
         return userDetailsService.create(userDetailsCreateRequestDto)
                 .map(userDetails -> {

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/models")
 @RequiredArgsConstructor
@@ -46,7 +48,7 @@ public class ModelController {
     }
 
     @PostMapping
-    public String createModel(@ModelAttribute ModelCreateRequestDto modelDto,
+    public String createModel(@ModelAttribute @Valid ModelCreateRequestDto modelDto,
                               RedirectAttributes redirectAttributes) {
         return modelService.create(modelDto)
                 .map(model -> {
@@ -76,7 +78,7 @@ public class ModelController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute ModelUpdateRequestDto modelUpdateRequestDto) {
+                         @ModelAttribute @Valid ModelUpdateRequestDto modelUpdateRequestDto) {
         return modelService.update(id, modelUpdateRequestDto)
                 .map(model -> "redirect:/models/{id}")
                 .orElseThrow(() -> new ModelBadRequestException(HttpStatus.BAD_REQUEST, "can not update model, please check input parameters."));

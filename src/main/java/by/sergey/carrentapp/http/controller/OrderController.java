@@ -13,11 +13,13 @@ import by.sergey.carrentapp.service.exception.OrderBadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class OrderController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute OrderCreateRequestDto orderCreateRequestDto, RedirectAttributes redirectAttributes) {
+    public String create(@ModelAttribute @Valid OrderCreateRequestDto orderCreateRequestDto, RedirectAttributes redirectAttributes) {
         Optional<OrderResponseDto> order = orderService.create(orderCreateRequestDto);
 
         if (order.isEmpty()) {
@@ -80,7 +82,7 @@ public class OrderController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute OrderUpdateRequestDto orderUpdateRequestDto,
+                         @ModelAttribute @Valid OrderUpdateRequestDto orderUpdateRequestDto,
                          RedirectAttributes redirectAttributes) {
         Optional<OrderResponseDto> order = orderService.update(id, orderUpdateRequestDto);
 
@@ -92,7 +94,7 @@ public class OrderController {
     }
 
     @PostMapping("/{id}/change-status")
-    public String changeStatus(@PathVariable("id") Long id, @RequestParam OrderStatus status) {
+    public String changeStatus(@PathVariable("id") Long id, @RequestParam @Valid OrderStatus status) {
         return orderService.changeOrderStatus(id, status)
                 .map(order -> "redirect:/orders/{id}")
                 .orElseThrow(() -> new OrderBadRequestException("Order status hasn't been changed."));
@@ -122,8 +124,8 @@ public class OrderController {
     @GetMapping("/user/{id}")
     public String getAllById(Model model,
                              @PathVariable("id") Long id,
-                             @RequestParam(required = false) OrderStatus orderStatus,
-                             @RequestParam(required = false) BigDecimal sum,
+                             @RequestParam(required = false) @Nullable OrderStatus orderStatus,
+                             @RequestParam(required = false) @Nullable BigDecimal sum,
                              @RequestParam(required = false, defaultValue = "1") Integer page,
                              @RequestParam(required = false, defaultValue = "10") Integer size) {
         List<OrderUserReportDto> userOrders = orderService.getAllByUserId(id, orderStatus, sum);
