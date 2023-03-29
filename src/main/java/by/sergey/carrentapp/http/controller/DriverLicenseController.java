@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -50,7 +51,7 @@ public class DriverLicenseController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute DriverLicenseUpdateRequestDto driverLicenseUpdateRequestDto) {
+                         @ModelAttribute @Valid DriverLicenseUpdateRequestDto driverLicenseUpdateRequestDto) {
         return driverLicenseService.update(id, driverLicenseUpdateRequestDto)
                 .map(dl -> "redirect:/driver-licenses/{id}")
                 .orElseThrow(() -> new DriverLicenseBadRequestException(HttpStatus.BAD_REQUEST, "Can't update driver license, please check input parameters."));
@@ -65,7 +66,7 @@ public class DriverLicenseController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute DriverLicenseCreateRequestDto driverLicenseCreateRequestDto,
+    public String create(@ModelAttribute @Valid DriverLicenseCreateRequestDto driverLicenseCreateRequestDto,
                          RedirectAttributes redirectAttributes) {
         return driverLicenseService.create(driverLicenseCreateRequestDto)
                 .map(dl -> {

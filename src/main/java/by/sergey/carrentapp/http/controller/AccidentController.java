@@ -10,11 +10,13 @@ import by.sergey.carrentapp.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -41,7 +43,7 @@ public class AccidentController {
     public String getAllByCarNumber(@RequestParam(required = false, defaultValue = "1") Integer page,
                                     @RequestParam(required = false, defaultValue = "10") Integer size,
                                     Model model,
-                                    @RequestParam(required = false) String carNumber) {
+                                    @RequestParam(required = false) @Nullable String carNumber) {
         List<AccidentResponseDto> accidents = accidentService.getAllByCarNumber(carNumber);
         PageImpl<AccidentResponseDto> accidentsPage = new PageImpl<>(accidents);
 
@@ -56,7 +58,7 @@ public class AccidentController {
     public String getAllByOrder(@RequestParam(required = false, defaultValue = "1") Integer page,
                                 @RequestParam(required = false, defaultValue = "10") Integer size,
                                 Model model,
-                                @RequestParam(required = false) Long orderId) {
+                                @RequestParam(required = false) @Nullable Long orderId) {
         List<AccidentResponseDto> accidents = accidentService.getAllByOrderId(orderId);
         PageImpl<AccidentResponseDto> accidentsPage = new PageImpl<>(accidents);
 
@@ -78,7 +80,7 @@ public class AccidentController {
     }
 
     @PostMapping("/{id}/update")
-    public String update(@ModelAttribute AccidentUpdateRequestDto accidentUpdateRequestDto,
+    public String update(@ModelAttribute @Valid AccidentUpdateRequestDto accidentUpdateRequestDto,
                          @PathVariable("id") Long id) {
         return accidentService.update(id, accidentUpdateRequestDto)
                 .map(accident -> "redirect:/accidents/{id}")
@@ -102,7 +104,7 @@ public class AccidentController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute AccidentCreateRequestDto accidentCreateRequestDto,
+    public String create(@ModelAttribute @Valid AccidentCreateRequestDto accidentCreateRequestDto,
                          RedirectAttributes redirectAttributes) {
         return accidentService.create(accidentCreateRequestDto)
                 .map(accident -> {

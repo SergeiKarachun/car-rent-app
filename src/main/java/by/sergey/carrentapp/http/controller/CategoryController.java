@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RequestMapping("/categories")
@@ -42,7 +43,7 @@ public class CategoryController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute CategoryCreateUpdateRequestDto categoryDto) {
+                         @ModelAttribute @Valid CategoryCreateUpdateRequestDto categoryDto) {
         return categoryService.update(id, categoryDto)
                 .map(category -> "redirect:/categories/{id}")
                 .orElseThrow(() -> new CategoryBadRequestException(HttpStatus.BAD_REQUEST, "can not update model, please check input parameters."));
@@ -55,7 +56,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public String createCategory(@ModelAttribute CategoryCreateUpdateRequestDto categoryDto,
+    public String createCategory(@ModelAttribute @Valid CategoryCreateUpdateRequestDto categoryDto,
                                  RedirectAttributes redirectAttributes) {
         return categoryService.create(categoryDto)
                 .map(category -> {

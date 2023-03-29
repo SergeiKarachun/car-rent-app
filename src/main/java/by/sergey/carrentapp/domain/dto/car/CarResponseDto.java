@@ -6,11 +6,13 @@ import by.sergey.carrentapp.domain.model.Transmission;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Value
 @Builder
 public class CarResponseDto {
+    @NotNull
     Long id;
     String brand;
     String model;

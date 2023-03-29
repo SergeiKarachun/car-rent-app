@@ -6,9 +6,12 @@ import by.sergey.carrentapp.domain.model.Role;
 import lombok.Builder;
 import lombok.Value;
 
+import javax.validation.constraints.NotNull;
+
 @Value
 @Builder
 public class UserResponseDto {
+    @NotNull
     Long id;
     String username;
     String email;

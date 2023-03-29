@@ -14,6 +14,7 @@ import by.sergey.carrentapp.service.ModelService;
 import by.sergey.carrentapp.service.exception.CarBadRequestException;
 import by.sergey.carrentapp.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -130,7 +132,7 @@ public class CarController {
     }
 
     @PostMapping
-    public String createCar(@ModelAttribute CarCreateRequestDto carDto,
+    public String createCar(@ModelAttribute @Valid CarCreateRequestDto carDto,
                             RedirectAttributes redirectAttributes) {
         return carService.create(carDto)
                 .map(car -> {
@@ -142,7 +144,7 @@ public class CarController {
 
     @PostMapping("/{id}/update")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute CarUpdateRequestDto carDto) {
+                         @ModelAttribute @Valid CarUpdateRequestDto carDto) {
         return carService.update(id, carDto)
                 .map(car -> "redirect:/cars/{id}")
                 .orElseThrow(() -> new CarBadRequestException(HttpStatus.BAD_REQUEST, "Can't update car, please check input parameters"));
