@@ -1,5 +1,6 @@
 package by.sergey.carrentapp.service;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,4 +43,5 @@ public class ImageService {
     public boolean delete(String imagePath) {
         var fullImagePath = Path.of(bucket, imagePath);
         return Files.deleteIfExists(fullImagePath);
-    }}
+    }
+}

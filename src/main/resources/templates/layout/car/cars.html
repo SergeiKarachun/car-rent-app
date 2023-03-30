@@ -123,7 +123,8 @@
         <div th:each="car : ${carPage.getContent()}">
             <div class="col">
                 <div class="card my-2">
-                    <img src="volkswagen-touareg.jpg" class="card-img-top" width="50" alt="...">
+                    <img th:src="@{/api/v1/cars/{carId}/car_image(carId=${car.id})}" class="card-img" width="50"
+                         alt="Car image">
                     <div class="card-body">
                         <h5 class="card-title text-center">
                             <span th:text="${car.brand}">Brand default name</span>
@@ -165,7 +166,7 @@
 
 <div class="container-fluid my-3">
     <form th:action="@{/cars/car-create}" method="get">
-        <button class="btn btn-primary">Create new model</button>
+        <button class="btn btn-primary">Create new car</button>
     </form>
 </div>
 </p>

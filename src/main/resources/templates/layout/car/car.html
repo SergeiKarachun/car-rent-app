@@ -14,6 +14,9 @@
         <h5 class="card-title text-center">
             <span th:text="${car.brand}">Brand default name</span>
             <span th:text="${car.model}">Model default name</span>
+            <img th:src="@{/api/v1/cars/{carId}/car_image(carId=${car.id})}" class="card-img" width="50"
+                 alt="Car image">
+
         </h5>
         <p class="card-text">
             Car Id= <span th:text="${car.id}">#</span>.<br/>
@@ -32,7 +35,8 @@
     </div>
     <hr>
     <div class="container-fluid my-3">
-        <form th:action="@{/cars/{carId}/update(carId=${car.id})}" method="post" th:object="${car}">
+        <form th:action="@{/cars/{carId}/update(carId=${car.id})}" enctype="multipart/form-data" method="post"
+              th:object="${car}">
             <label for="model">Model:
                 <select id="model" name="modelId">
                     <option th:each="model : ${models}"
@@ -71,6 +75,10 @@
             <label for="carNumber">Update car number:
                 <input id="carNumber" type="text" name="carNumber" th:value="*{carNumber}">
             </label>
+            <label for="image"> Update image:
+                <input id="image" type="file" name="image">
+            </label>
+            <br>
 
             <label for="isRepaired">Update condition(repaired):
                 <select id="isRepaired" name="isRepaired">

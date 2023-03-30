@@ -18,6 +18,7 @@
         <querydsl.version>5.0.0</querydsl.version>
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <commons-collections4.version>4.4</commons-collections4.version>
+        <springdoc.version>1.6.15</springdoc.version>
     </properties>
     <dependencies>
         <dependency>
@@ -77,6 +78,12 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

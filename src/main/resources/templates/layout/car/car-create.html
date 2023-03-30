@@ -8,7 +8,7 @@
 <div th:replace="layout/header/header :: header"/>
 
 <div class="container-fluid my-3">
-    <form th:action="@{/cars}" method="post" th:object="${car}">
+    <form th:action="@{/cars}" enctype="multipart/form-data" method="post" th:object="${car}">
         <label for="brand">Brand:
             <select id="brand" name="brandId">
                 <option th:each="brand : ${brands}"
@@ -45,6 +45,7 @@
             </select>
         </label>
         <br>
+
         <label for="year">Year of issue:
             <input id="year" type="number" name="year" th:value="*{year}">
         </label>
@@ -67,7 +68,13 @@
         </label>
         <br>
 
+
         <!--IMAGE-->
+        <div class="form-group">
+            <label for="image"> Image:
+                <input type="file" name="image" id="image">
+            </label>
+        </div>
 
         <button class="btn btn-primary" type="submit">Create</button>
     </form>
