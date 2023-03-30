@@ -93,6 +93,7 @@ public class UserService {
     }
 
     public Page<UserResponseDto> getAll(UserFilter userFilter, Integer page, Integer pageSize) {
+
         return userFilter.getExpiredLicense() == null || !userFilter.getExpiredLicense()
                 ? userRepository.findAll(userPredicateBuilder.build(userFilter), PageableUtils.getSortedPageable(page, pageSize, Sort.Direction.ASC, "id")).map(userResponseMapper::mapToDto)
                 : userRepository.findAllWithExpiredDriverLicense(LocalDate.now(), PageableUtils.unSortedPageable(page, pageSize)).map(userResponseMapper::mapToDto);
