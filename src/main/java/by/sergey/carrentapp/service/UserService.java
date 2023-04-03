@@ -1,5 +1,6 @@
 package by.sergey.carrentapp.service;
 
+import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.filterdto.UserFilter;
 import by.sergey.carrentapp.domain.dto.user.*;
 import by.sergey.carrentapp.domain.entity.User;
@@ -17,17 +18,21 @@ import by.sergey.carrentapp.utils.predicate.UserPredicateBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserCreateMapper userCreateMapper;
@@ -138,4 +143,16 @@ public class UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .map(user -> new UserDetailsImpl(
+                        user.getEmail(),
+                        user.getPassword(),
+                        Collections.singleton(user.getRole()),
+                        user.getId(),
+                        user.getUsername()
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + email));
+    }
 }

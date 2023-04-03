@@ -12,6 +12,10 @@ import by.sergey.carrentapp.service.exception.UserBadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,7 +52,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String getById (@PathVariable("id") Long id, Model model) {
+    public String getById(@PathVariable("id") Long id, Model model,
+                          @CurrentSecurityContext SecurityContext securityContext,
+                          @AuthenticationPrincipal UserDetails userDetails) {
         return userService.getById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
@@ -97,8 +103,7 @@ public class UserController {
         return userService.create(userCreateRequestDto)
                 .map(user -> {
                     redirectAttributes.addAttribute(SUCCESS_ATTRIBUTE, "New user created successfully");
-                    //return "redirect:/login/";
-                    return "redirect:/users/" + user.getId();
+                    return "redirect:/login/";
                 })
                 .orElseThrow(() -> new UserBadRequestException(HttpStatus.BAD_REQUEST, "Can't create new user"));
     }
