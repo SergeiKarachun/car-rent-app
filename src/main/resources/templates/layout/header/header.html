@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en " xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body>
 <div th:fragment="header">
+
+    <div sec:authorize="hasAuthority('CLIENT')">
+        <div th:insert="layout/header/header-user"></div>
+    </div>
+    <div sec:authorize="hasAuthority('ADMIN')">
         <div th:insert="layout/header/header-admin"></div>
+    </div>
+
 </div>
 </body>
 </html>

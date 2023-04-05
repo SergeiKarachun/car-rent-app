@@ -11,20 +11,28 @@
                     <a class="nav-link" th:href="@{/cars}">Cars</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/orders}">My orders</a>
+                    <a class="nav-link" th:href="@{/orders/user/{authId}(authId=${#authentication.getPrincipal().id})}">My
+                        orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/accidents}">My accidents</a>
+                    <a class="nav-link"
+                       th:href="@{/accidents/user/{authId}(authId=${#authentication.getPrincipal().id})}">My
+                        accidents</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/users}">About me</a>
+                    <a class="nav-link"
+                       th:href="@{/users/profile/{authId}(authId=${#authentication.getPrincipal().id})}">About me</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/driver-licenses}">My driver license</a>
+                    <a class="nav-link"
+                       th:href="@{'/driver-licenses/by-user-id?userId=' + ${#authentication.getPrincipal().id}}">My
+                        driver license</a>
                 </li>
             </ul>
             <div>
-                <a class="nav-link" th:href="@{/sign-out}">Sign out</a>
+                <form action="/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
             </div>
         </div>
     </div>

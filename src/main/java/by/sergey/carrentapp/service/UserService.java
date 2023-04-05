@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ public class UserService implements UserDetailsService {
     private final UserResponseMapper userResponseMapper;
     private final UserUpdateMapper userUpdateMapper;
     private final UserPredicateBuilder userPredicateBuilder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Optional<UserResponseDto> create(UserCreateRequestDto userCreateRequestDto) {
@@ -81,7 +83,7 @@ public class UserService implements UserDetailsService {
         User existingUser = getByIdOrElseThrow(id);
 
         if (isExistByEmailAndPassword(existingUser.getEmail(), userChangePasswordRequestDto.getOldPassword())) {
-            existingUser.setPassword(userChangePasswordRequestDto.getNewPassword());
+            existingUser.setPassword(passwordEncoder.encode(userChangePasswordRequestDto.getNewPassword()));
         }
 
         return Optional.of(userRepository.save(existingUser))
@@ -104,7 +106,6 @@ public class UserService implements UserDetailsService {
                 : userRepository.findAllWithExpiredDriverLicense(LocalDate.now(), PageableUtils.unSortedPageable(page, pageSize)).map(userResponseMapper::mapToDto);
 
     }
-
 
     public List<UserResponseDto> getAllWithoutPage() {
         return userRepository.findAll().stream()
@@ -139,7 +140,10 @@ public class UserService implements UserDetailsService {
     }
 
     private boolean isExistByEmailAndPassword(String email, String password) {
-        return userRepository.existsByEmailAndPassword(email, password);
+        if (userRepository.existsByEmail(email) && passwordEncoder.matches(password, userRepository.findByEmail(email).get().getPassword())) {
+            return true;
+        }
+        return false;
     }
 
 

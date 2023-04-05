@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
 <body>
 <div th:replace="layout/header/header :: header"/>
 
-<div class="container-xl px-4 mt-4">
+<div class="container-xl px-4 mt-4" th:with="auth=${#authentication}">
     <div class="row">
         <div class="col-xl-12">
             <form id="order-form"
@@ -19,7 +19,7 @@
                     <div class="card-header content-center">Order info</div>
                     <div class="card-body">
                         <!-- id -->
-                        <div class="form-group row">
+                        <div class="form-group row" sec:authorize="hasAnyAuthority('ADMIN')">
                             <label th:for="order-id-input" class="col-2 col-form-label">Id:</label>
                             <div class="col-10"><input type="text" class="form-control" th:id="order-id-input"
                                                        th:name="id"
@@ -102,12 +102,15 @@
 
                     </div>
                 </div>
-                <button class="btn btn-primary" type="submit">Update order</button>
+                <div th:if="${(order.orderStatus.name() eq 'CONFIRMATION') or (#authentication.authorities.contains(roleAdmin))}">
+                    <button class="btn btn-primary" type="submit">Update order</button>
+                </div>
             </form>
             <div class="card-footer"></div>
 
             <div class="card-footer">
-                <div class="form-group col-5 my-1" id="order-change-status-approved">
+                <div class="form-group col-5 my-1" id="order-change-status-approved"
+                     sec:authorize="hasAnyAuthority('ADMIN')">
                     <form id="approved-order-form" class="form-horizontal" method="POST"
                           th:action="@{/orders/{orderId}/change-status(orderId=${order.id})}">
                         <input type="text" name="status" th:value="APPROVED" hidden>
@@ -116,7 +119,8 @@
                         </button>
                     </form>
                 </div>
-                <div class="form-group col-5 my-1" id="order-change-status-declined">
+                <div class="form-group col-5 my-1" id="order-change-status-declined"
+                     sec:authorize="hasAnyAuthority('ADMIN')">
                     <form id="declined-order-form" class="form-horizontal"
                           th:action="@{/orders/{orderId}/change-status(orderId=${order.id})}"
                           method="post">
@@ -126,7 +130,18 @@
                         </button>
                     </form>
                 </div>
-                <div class="form-group col-5 my-1" id="order-change-status-completed">
+                <div class="form-group col-5 my-1" id="order-change-status-canceled">
+                    <form id="canceled-order-form" class="form-horizontal"
+                          th:action="@{/orders/{orderId}/change-status(orderId=${order.id})}"
+                          method="post">
+                        <input type="text" name="status" th:value="CANCELED" hidden>
+                        <button type="submit" class="btn btn-dark">Canceled
+                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="form-group col-5 my-1" id="order-change-status-completed"
+                     sec:authorize="hasAnyAuthority('ADMIN')">
                     <form id="completed-order-form" class="form-horizontal"
                           th:action="@{/orders/{orderId}/change-status(orderId=${order.id})}"
                           method="post">

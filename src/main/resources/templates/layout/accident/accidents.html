@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Accidents</title>
@@ -7,7 +8,7 @@
 <body>
 <div th:replace="layout/header/header :: header"/>
 
-<div class="container-fluid mb7-l">
+<div class="container-fluid mb7-l" sec:authorize="hasAnyAuthority('ADMIN')">
     <div class="container my-5">
         <h5> Search accidents by car number</h5>
         <form th:action="@{/accidents/by-car}" method="get">
@@ -23,7 +24,7 @@
     </div>
 </div>
 
-<div class="container-fluid mb7-l">
+<div class="container-fluid mb7-l" sec:authorize="hasAnyAuthority('ADMIN')">
     <div class="container my-5">
         <h5> Search accidents by order id</h5>
         <form th:action="@{/accidents/by-order}" method="get">
@@ -51,14 +52,14 @@
                 <table class="table table-condensed table-striped text-center">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">OrderId</th>
+                        <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">Id</th>
+                        <th scope="col" sec:authorize="hasAnyAuthority('ADMIN')">OrderId</th>
                         <th scope="col">Date</th>
                         <th scope="col">Car description</th>
                         <th scope="col">User description</th>
                         <th scope="col">Accident description</th>
                         <th scope="col">Damage</th>
-                        <th>Actions</th>
+                        <th sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
                     <tr>
                     </thead>
                     <tbody>
@@ -66,14 +67,14 @@
                               th:style="${iStat.odd}? 'font-weight: bold;'"
                               th:alt-title="${iStat.even}? 'even' : 'odd'">
                         <tr>
-                            <td th:text="${accident.id}"></td>
-                            <td th:text="${accident.orderId}"></td>
+                            <td th:text="${accident.id}" sec:authorize="hasAnyAuthority('ADMIN')"></td>
+                            <td th:text="${accident.orderId}" sec:authorize="hasAnyAuthority('ADMIN')"></td>
                             <td th:text="${accident.accidentDate}"></td>
                             <td th:text="|${accident.brand} ${accident.model} ${accident.carNumber}|"></td>
                             <td th:text="|${accident.userFirstName} ${accident.userLastName}|"></td>
                             <td th:text="${accident.description}"></td>
                             <td th:text="${accident.damage}"></td>
-                            <td>
+                            <td sec:authorize="hasAnyAuthority('ADMIN')">
                                 <a th:href="@{'/accidents/' + ${accident.id}}"
                                    class="btn btn-secondary">Edit</a>
                                 <a th:href="@{'/accidents/' + ${accident.id} + '/delete'}"
@@ -106,7 +107,7 @@
     </div>
 </div>
 
-<div class="col-lg-auto my-5">
+<div class="col-lg-auto my-5" sec:authorize="hasAnyAuthority('ADMIN')">
     <p>
     <form th:action="@{/accidents/accident-create}" method="get">
         <button class="btn btn-primary">Create new accident</button>

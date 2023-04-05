@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Category</title>
@@ -8,7 +9,7 @@
 <div th:replace="layout/header/header :: header"/>
 <div class="container-fluid">
     <h4>
-         This is <span th:text="${category.name.toLowerCase()}">Somme CategoryName </span> category!
+        This is <span th:text="${category.name.toLowerCase()}">Somme CategoryName </span> category!
     </h4>
     <h5>
         ID = <span th:text="${category.id}">Somme id </span>.<br>
@@ -16,20 +17,23 @@
         Price is <span th:text="${category.price}">Somme price </span> dollars.
     </h5>
 
-    <form th:action="@{/categories/{Id}/update(Id=${category.id})}" method="post" th:object="${category}">
-        <label for="name">Update category name:
-            <input id="name" type="text" name="name" th:value="*{name}">
-        </label><br>
-        <label for="price">Update category price:
-            <input id="price" type="text" name="price" th:value="*{price}">
-        </label><br>
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <form th:action="@{/categories/{Id}/update(Id=${category.id})}" method="post" th:object="${category}">
+            <label for="name">Update category name:
+                <input id="name" type="text" name="name" th:value="*{name}">
+            </label><br>
+            <label for="price">Update category price:
+                <input id="price" type="text" name="price" th:value="*{price}">
+            </label><br>
 
 
-        <button class="btn btn-primary" type="submit">Update</button>
-    </form>
+            <button class="btn btn-primary" type="submit">Update</button>
+        </form>
+    </div>
+
 
     <br>
-    <div class="my-2">
+    <div class="my-2" sec:authorize="hasAnyAuthority('ADMIN')">
         <form th:action="@{/categories/{id}/delete(id=${category.id})}" method="post">
             <button class="btn btn-danger">Delete this category</button>
         </form>

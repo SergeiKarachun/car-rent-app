@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
@@ -20,11 +21,12 @@
         </div>
         <div class="card-body">
             <!-- user -->
-            <div class="form-group">
+            <div class="form-group" hidden="hidden">
                 <label class="col-form-label" th:for="create-order-user"
                 >User id: </label>
                 <input type="number" name="userId" class="form-control" th:id="create-order-user"
-                       required>
+                       th:value="${#authentication.principal.id}"
+                       required readonly/>
             </div>
             <!-- /user -->
             <!-- car -->
@@ -33,7 +35,7 @@
                     description: </label>
                 <input type="text" name="carId" class="form-control" th:id="create-order-car"
                        th:text="|${car.getBrand()} ${car.getModel()}|" th:value="${car.getId()}"
-                       required>
+                       required hidden="hidden" readonly/>
             </div>
             <!-- /car -->
             <div class="form-group">

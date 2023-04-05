@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Model</title>
@@ -8,42 +9,46 @@
 <div th:replace="layout/header/header :: header"/>
 <div class="container-fluid">
     <h4>
-         This is <span th:text="${model.brand}">Somme brandName </span> <span th:text="${model.name}">Somme modelName </span>!
+        This is <span th:text="${model.brand}">Somme brandName </span> <span
+            th:text="${model.name}">Somme modelName </span>!
     </h4>
     <h5>
         ID = <span th:text="${model.id}">Somme modelName </span>.
         Has <span th:text="${model.transmission.name().toLowerCase()}">Somme modelName </span> transmission
         and <span th:text="${model.engineType.name().toLowerCase()}">Somme modelName </span> engine type.
     </h5>
-
-    <form th:action="@{/models/{modelId}/update(modelId=${model.id})}" method="post" th:object="${model}">
-        <label for="name">Update model name:
-            <input id="name" type="text" name="name" th:value="*{name}">
-        </label><br>
-        <div>Type of transmission:
-            <div th:each="transmission : ${transmissions}">
-                <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"  th:checked="${transmission == model.transmission}">
-                <label th:for="${transmission}" th:text="${transmission}">Type of transmission</label>
+    <dib sec:authorize="hasAnyAuthority('ADMIN')">
+        <form th:action="@{/models/{modelId}/update(modelId=${model.id})}" method="post" th:object="${model}">
+            <label for="name">Update model name:
+                <input id="name" type="text" name="name" th:value="*{name}">
+            </label><br>
+            <div>Type of transmission:
+                <div th:each="transmission : ${transmissions}">
+                    <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"
+                           th:checked="${transmission == model.transmission}">
+                    <label th:for="${transmission}" th:text="${transmission}">Type of transmission</label>
+                </div>
             </div>
-        </div>
 
-        <br>
-        <div>Type of engine:
-            <div th:each="engine : ${engines}">
-                <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}" th:checked="${engine == model.engineType}">
-                <label th:for="${engine}" th:text="${engine}">Type of engine</label>
+            <br>
+            <div>Type of engine:
+                <div th:each="engine : ${engines}">
+                    <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}"
+                           th:checked="${engine == model.engineType}">
+                    <label th:for="${engine}" th:text="${engine}">Type of engine</label>
+                </div>
             </div>
-        </div>
 
-        <button class="btn btn-primary" type="submit">Update</button>
-    </form>
-
-    <br>
-    <div class="my-2">
-        <form th:action="@{/models/{id}/delete(id=${model.id})}" method="post">
-            <button class="btn btn-danger">Delete this model</button>
+            <button class="btn btn-primary" type="submit">Update</button>
         </form>
-    </div>
+</div>
+
+<br>
+<div class="my-2" sec:authorize="hasAnyAuthority('ADMIN')">
+    <form th:action="@{/models/{id}/delete(id=${model.id})}" method="post">
+        <button class="btn btn-danger">Delete this model</button>
+    </form>
+</div>
 
 </div>
 

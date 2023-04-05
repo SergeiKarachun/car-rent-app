@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Brands</title>
@@ -25,7 +26,7 @@
     </form>
 </div>
 <hr/>
-<div class="container-fluid my-3">
+<div class="container-fluid my-3" sec:authorize="hasAnyAuthority('ADMIN')">
     <form th:action="@{/brands/all-by-names}" method="get"> <!--th:object="${byNames}">-->
         <label for="name3">Find brands by name:
             <input id="name3" type="text" name="name"> <!--th:value="${byNames}"-->
@@ -36,7 +37,7 @@
 <div class="container-fluid">
     <h3>List of brands</h3>
     <div>
-        <table class="table table-striped table-hover w-25" >
+        <table class="table table-striped table-hover w-25">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
@@ -49,13 +50,14 @@
     </div>
     <hr/>
     <p>
-    <form th:action="@{/brands/brand-create}" method="get">
-        <button class="btn btn-primary">Create new Brand</button>
-    </form>
-    </p>
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <form th:action="@{/brands/brand-create}" method="get">
+            <button class="btn btn-primary">Create new Brand</button>
+        </form>
+        </p>
 
-    <hr/>
-
+        <hr/>
+    </div>
 
 
 </div>

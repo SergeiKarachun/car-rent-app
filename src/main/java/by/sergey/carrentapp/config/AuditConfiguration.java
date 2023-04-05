@@ -1,6 +1,7 @@
 package by.sergey.carrentapp.config;
 
 import by.sergey.carrentapp.CarRentApplication;
+import by.sergey.carrentapp.domain.UserDetailsImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -18,10 +19,9 @@ public class AuditConfiguration {
 
     @Bean
     public AuditorAware<String> auditorAware() {
-        //SecurityContext.getCurrentUser().getEmail();
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+        return () -> Optional.of("sergey");
+        /*return () ->  Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(authentication -> (UserDetails) authentication.getPrincipal())
-                .map(UserDetails::getUsername);
-
+                .map(UserDetails::getUsername);*/
     }
 }

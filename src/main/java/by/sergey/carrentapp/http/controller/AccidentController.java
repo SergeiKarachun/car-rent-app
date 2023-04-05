@@ -1,8 +1,11 @@
 package by.sergey.carrentapp.http.controller;
 
+import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.accident.AccidentCreateRequestDto;
 import by.sergey.carrentapp.domain.dto.accident.AccidentResponseDto;
 import by.sergey.carrentapp.domain.dto.accident.AccidentUpdateRequestDto;
+import by.sergey.carrentapp.domain.model.OrderStatus;
+import by.sergey.carrentapp.domain.model.Role;
 import by.sergey.carrentapp.service.AccidentService;
 import by.sergey.carrentapp.service.OrderService;
 import by.sergey.carrentapp.service.exception.AccidentBadRequestException;
@@ -11,12 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -30,6 +36,7 @@ public class AccidentController {
     private final OrderService orderService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getAll(@RequestParam(required = false, defaultValue = "1") Integer page,
                          @RequestParam(required = false, defaultValue = "10") Integer size,
                          Model model) {
@@ -39,7 +46,23 @@ public class AccidentController {
         return "layout/accident/accidents";
     }
 
+    @GetMapping("/user/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
+    public String getAllByUser(@PathVariable("id") Long id,
+                               @RequestParam(required = false, defaultValue = "1") Integer page,
+                               @RequestParam(required = false, defaultValue = "10") Integer size,
+                               Model model,
+                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<AccidentResponseDto> accidentsByUser = accidentService.getAllByUserId(userDetails.getId());
+        PageImpl<AccidentResponseDto> accidentsPage = new PageImpl<>(accidentsByUser);
+        model.addAttribute("accidentsPage", accidentsPage);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        return "layout/accident/accidents";
+    }
+
     @GetMapping("/by-car")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getAllByCarNumber(@RequestParam(required = false, defaultValue = "1") Integer page,
                                     @RequestParam(required = false, defaultValue = "10") Integer size,
                                     Model model,
@@ -55,6 +78,7 @@ public class AccidentController {
     }
 
     @GetMapping("/by-order")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getAllByOrder(@RequestParam(required = false, defaultValue = "1") Integer page,
                                 @RequestParam(required = false, defaultValue = "10") Integer size,
                                 Model model,
@@ -70,6 +94,7 @@ public class AccidentController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getById(@PathVariable("id") Long id, Model model) {
         return accidentService.getById(id)
                 .map(accident -> {
@@ -80,6 +105,7 @@ public class AccidentController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String update(@ModelAttribute @Valid AccidentUpdateRequestDto accidentUpdateRequestDto,
                          @PathVariable("id") Long id) {
         return accidentService.update(id, accidentUpdateRequestDto)
@@ -88,6 +114,7 @@ public class AccidentController {
     }
 
     @GetMapping("/{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!accidentService.deleteById(id)) {
             throw new AccidentBadRequestException(HttpStatus.NOT_FOUND, "Accident with id %s doesn't exist.");
@@ -96,6 +123,7 @@ public class AccidentController {
     }
 
     @GetMapping("/accident-create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createAccident(@ModelAttribute AccidentCreateRequestDto accidentCreateRequestDto,
                                  Model model) {
         model.addAttribute("accident", accidentCreateRequestDto);
@@ -104,6 +132,7 @@ public class AccidentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String create(@ModelAttribute @Valid AccidentCreateRequestDto accidentCreateRequestDto,
                          RedirectAttributes redirectAttributes) {
         return accidentService.create(accidentCreateRequestDto)
@@ -113,6 +142,4 @@ public class AccidentController {
                 })
                 .orElseThrow(() -> new AccidentBadRequestException(HttpStatus.BAD_REQUEST, "Can't create new accident, please check input parameters."));
     }
-
-
 }
