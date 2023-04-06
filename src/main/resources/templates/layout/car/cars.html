@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Models</title>
@@ -10,7 +11,7 @@
 
 <div class="container-fluid my-3">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
-        <div class="col">
+        <div class="col" sec:authorize="hasAnyAuthority('ADMIN')">
             <form th:action="@{/cars/by-number}" method="get" th:object="${number}">
                 <label for="number">Find car by number:
                     <input id="number" type="text" name="number" th:value="${number}">
@@ -131,16 +132,19 @@
                             <span th:text="${car.model}">Model default name</span>
                         </h5>
                         <p class="card-text">
-                            Car Id= <span th:text="${car.id}">#</span>.<br/>
-                            Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
-                            Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
-                            Color is <span th:text="${car.color.name()}">color</span>.<br/>
-                            Year issue: <span th:text="${car.year}">year</span>.<br/>
+                        <div sec:authorize="hasAnyAuthority('ADMIN')">Car Id= <span th:text="${car.id}">#</span>.<br/>
+                        </div>
+                        Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
+                        Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
+                        Color is <span th:text="${car.color.name()}">color</span>.<br/>
+                        Year issue: <span th:text="${car.year}">year</span>.<br/>
+                        <div sec:authorize="hasAnyAuthority('ADMIN')">
                             Car number: <span th:text="${car.carNumber}">number</span>.<br/>
                             VIN: <span th:text="${car.vin}">vin****vin</span>.<br/>
                             Repaired: <span th:text="${car.isRepaired}">true</span>.<br/>
-                            Category: <span th:text="${car.category}">standart</span>.<br/>
-                            Price: <span th:text="${car.price}">120.00</span>.<br/>
+                        </div>
+                        Category: <span th:text="${car.category}">standart</span>.<br/>
+                        Price: <span th:text="${car.price}">120.00</span>.<br/>
 
                         </p>
                         <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Go to this car!</a>
@@ -164,7 +168,7 @@
 <hr/>
 <p>
 
-<div class="container-fluid my-3">
+<div class="container-fluid my-3" sec:authorize="hasAnyAuthority('ADMIN')">
     <form th:action="@{/cars/car-create}" method="get">
         <button class="btn btn-primary">Create new car</button>
     </form>

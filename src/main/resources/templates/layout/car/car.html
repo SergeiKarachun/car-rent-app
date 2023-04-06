@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Model</title>
@@ -19,22 +20,29 @@
 
         </h5>
         <p class="card-text">
-            Car Id= <span th:text="${car.id}">#</span>.<br/>
-            Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
-            Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
-            Color is <span th:text="${car.color.name()}">color</span>.<br/>
-            Year issue: <span th:text="${car.year}">year</span>.<br/>
+        <div sec:authorize="hasAnyAuthority('ADMIN')">Car Id= <span th:text="${car.id}">#</span>.<br/>
+        </div>
+        Transmission is <span th:text="${car.transmission.name()}">manual</span>.<br/>
+        Engine type is <span th:text="${car.engineType.name()}">diesel</span>.<br/>
+        Color is <span th:text="${car.color.name()}">color</span>.<br/>
+        Year issue: <span th:text="${car.year}">year</span>.<br/>
+        <div sec:authorize="hasAnyAuthority('ADMIN')">
             Car number: <span th:text="${car.carNumber}">number</span>.<br/>
             VIN: <span th:text="${car.vin}">vin****vin</span>.<br/>
             Repaired: <span th:text="${car.isRepaired}">true</span>.<br/>
-            Category: <span th:text="${car.category}">standart</span>.<br/>
-            Price: <span th:text="${car.price}">120.00</span>.<br/>
-            <br>
-            <br>
+        </div>
+        Category: <span th:text="${car.category}">standart</span>.<br/>
+        Price: <span th:text="${car.price}">120.00</span>.<br/>
+
         </p>
     </div>
+    <form th:action="@{/orders/order-create}" method="get" th:object="${car}">
+        <input id="carId" type="text" name="carId" th:value="${car.id}" hidden="hidden">
+        <br>
+        <button class="btn btn-primary" type="submit">Create new order</button>
+    </form>
     <hr>
-    <div class="container-fluid my-3">
+    <div class="container-fluid my-3" sec:authorize="hasAnyAuthority('ADMIN')">
         <form th:action="@{/cars/{carId}/update(carId=${car.id})}" enctype="multipart/form-data" method="post"
               th:object="${car}">
             <label for="model">Model:
@@ -99,7 +107,7 @@
 
 
     <br>
-    <div class="my-2">
+    <div class="my-2" sec:authorize="hasAnyAuthority('ADMIN')">
         <form th:action="@{/cars/{id}/delete(id=${car.id})}" method="post">
             <button class="btn btn-danger">Delete this car</button>
         </form>

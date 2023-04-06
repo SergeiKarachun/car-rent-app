@@ -11,6 +11,7 @@ import by.sergey.carrentapp.service.exception.ModelBadRequestException;
 import by.sergey.carrentapp.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class ModelController {
     private final BrandService brandService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findAllModels(Model model, @ModelAttribute ModelFilter modelFilter){
         model.addAttribute("models", modelService.getAll());
         model.addAttribute("transmissions", Transmission.values());
@@ -39,6 +41,7 @@ public class ModelController {
     }
 
     @GetMapping("/model-create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String create(Model model, @ModelAttribute ModelCreateRequestDto modelDto) {
         model.addAttribute("model", modelDto);
         model.addAttribute("transmissions", Transmission.values());
@@ -48,6 +51,7 @@ public class ModelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createModel(@ModelAttribute @Valid ModelCreateRequestDto modelDto,
                               RedirectAttributes redirectAttributes) {
         return modelService.create(modelDto)
@@ -69,6 +73,7 @@ public class ModelController {
     }
 
     @GetMapping("/filter")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findAllByFilter(Model model, ModelFilter modelFilter) {
         model.addAttribute("models", modelService.getAllByFilter(modelFilter));
         model.addAttribute("transmissions", Transmission.values());
@@ -77,6 +82,7 @@ public class ModelController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute @Valid ModelUpdateRequestDto modelUpdateRequestDto) {
         return modelService.update(id, modelUpdateRequestDto)
@@ -86,6 +92,7 @@ public class ModelController {
 
 
     @PostMapping("{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!modelService.deleteById(id)) {
             throw new NotFoundException(String.format("Model with id %s doesn't exist.", id));

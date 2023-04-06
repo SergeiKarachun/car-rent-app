@@ -24,13 +24,19 @@ public interface AccidentRepository extends JpaRepository<Accident, Long>, Query
                    "FROM Accident a " +
                    "WHERE a.damage >= :damage " +
                    "ORDER BY a.damage DESC ")
-    List<Accident> findAllByDamage(@Param("damage")BigDecimal damage);
+    List<Accident> findAllByDamage(@Param("damage") BigDecimal damage);
 
     @Query(value = "SELECT a " +
                    "FROM Accident a " +
                    "JOIN FETCH a.order o " +
                    "WHERE o.id = :orderId ")
     List<Accident> findAllByOrderId(@Param("orderId") Long id);
+
+    @Query(value = "SELECT a " +
+                   "FROM Accident a " +
+                   "JOIN FETCH a.order o " +
+                   "WHERE o.user.id = :userId ")
+    List<Accident> findAllByUserId(@Param("userId") Long id);
 
     @Query(value = "SELECT a " +
                    "FROM Accident a " +

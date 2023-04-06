@@ -1,5 +1,6 @@
 package by.sergey.carrentapp.http.controller;
 
+import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.filterdto.UserFilter;
 import by.sergey.carrentapp.domain.dto.user.UserChangePasswordRequestDto;
 import by.sergey.carrentapp.domain.dto.user.UserCreateRequestDto;
@@ -12,6 +13,11 @@ import by.sergey.carrentapp.service.exception.UserBadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +38,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getAllUsers(Model model,
                               @ModelAttribute UserFilter userFilter,
                               @RequestParam(required = false, defaultValue = "1") Integer page,
@@ -48,7 +55,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String getById (@PathVariable("id") Long id, Model model) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String getById(@PathVariable("id") Long id, Model model,
+                          @CurrentSecurityContext SecurityContext securityContext,
+                          @AuthenticationPrincipal UserDetails userDetails) {
         return userService.getById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
@@ -58,16 +68,19 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    public String getProfileById (@PathVariable("id") Long id, Model model) {
-        return userService.getById(id)
-                .map(user -> {
-                    model.addAttribute("user", user);
-                    return "layout/user/profile";
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
+    public String getProfileById(@PathVariable("id") Long id, Model model,
+                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (userDetails.getAuthorities().contains(Role.ADMIN)) {
+            return getContent(id, model);
+        } else {
+            return getContent(userDetails.getId(), model);
+        }
+
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute @Valid UserUpdateRequestDto userDto) {
         return userService.update(id, userDto)
@@ -97,13 +110,13 @@ public class UserController {
         return userService.create(userCreateRequestDto)
                 .map(user -> {
                     redirectAttributes.addAttribute(SUCCESS_ATTRIBUTE, "New user created successfully");
-                    //return "redirect:/login/";
-                    return "redirect:/users/" + user.getId();
+                    return "redirect:/login";
                 })
                 .orElseThrow(() -> new UserBadRequestException(HttpStatus.BAD_REQUEST, "Can't create new user"));
     }
 
     @GetMapping("/{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!userService.deleteById(id)) {
             throw new NotFoundException(String.format("User with id %s doesn't exist.", id));
@@ -112,22 +125,31 @@ public class UserController {
     }
 
     @GetMapping("/change-password")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String changePasswordForm(Model model,
-                                     @ModelAttribute @Valid UserChangePasswordRequestDto userChangePasswordDto) {
+                                     @ModelAttribute UserChangePasswordRequestDto userChangePasswordDto) {
         model.addAttribute("change_password", userChangePasswordDto);
         return "layout/user/change-password";
     }
 
     @PostMapping("{id}/change-password")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String changePassword(@PathVariable("id") Long id,
-                                 @ModelAttribute @Valid UserChangePasswordRequestDto userChangePasswordDto) {
+                                 @ModelAttribute @Valid UserChangePasswordRequestDto userChangePasswordDto,
+                                 @AuthenticationPrincipal UserDetailsImpl user) {
 
         return userService.changePassword(id, userChangePasswordDto)
-                .map(result -> "redirect:/users/{id}")
+                .map(result -> {
+                            if (user.getAuthorities().contains(Role.ADMIN)) {
+                                return "redirect:/users/{id}";
+                            } else return "redirect:/users/profile/" + user.getId();
+                        }
+                )
                 .orElseThrow(() -> new UserBadRequestException("Password has not been changed. Please check if old password is correct"));
     }
 
     @PostMapping("/{id}/change-role")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String changeRole(@PathVariable("id") Long id,
                              @PathParam(value = "role") Role role) {
         return userService.changeRole(id, role)
@@ -135,4 +157,12 @@ public class UserController {
                 .orElseThrow(() -> new UserBadRequestException("Role have not been changed"));
     }
 
+    private String getContent(Long id, Model model) {
+        return userService.getById(id)
+                .map(user -> {
+                    model.addAttribute("user", user);
+                    return "layout/user/profile";
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
 }

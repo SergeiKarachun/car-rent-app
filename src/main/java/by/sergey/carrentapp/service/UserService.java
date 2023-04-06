@@ -1,5 +1,7 @@
 package by.sergey.carrentapp.service;
 
+import by.sergey.carrentapp.domain.CustomUserDetails;
+import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.filterdto.UserFilter;
 import by.sergey.carrentapp.domain.dto.user.*;
 import by.sergey.carrentapp.domain.entity.User;
@@ -17,23 +19,28 @@ import by.sergey.carrentapp.utils.predicate.UserPredicateBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserCreateMapper userCreateMapper;
     private final UserResponseMapper userResponseMapper;
     private final UserUpdateMapper userUpdateMapper;
     private final UserPredicateBuilder userPredicateBuilder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Optional<UserResponseDto> create(UserCreateRequestDto userCreateRequestDto) {
@@ -76,7 +83,7 @@ public class UserService {
         User existingUser = getByIdOrElseThrow(id);
 
         if (isExistByEmailAndPassword(existingUser.getEmail(), userChangePasswordRequestDto.getOldPassword())) {
-            existingUser.setPassword(userChangePasswordRequestDto.getNewPassword());
+            existingUser.setPassword(passwordEncoder.encode(userChangePasswordRequestDto.getNewPassword()));
         }
 
         return Optional.of(userRepository.save(existingUser))
@@ -99,7 +106,6 @@ public class UserService {
                 : userRepository.findAllWithExpiredDriverLicense(LocalDate.now(), PageableUtils.unSortedPageable(page, pageSize)).map(userResponseMapper::mapToDto);
 
     }
-
 
     public List<UserResponseDto> getAllWithoutPage() {
         return userRepository.findAll().stream()
@@ -134,8 +140,23 @@ public class UserService {
     }
 
     private boolean isExistByEmailAndPassword(String email, String password) {
-        return userRepository.existsByEmailAndPassword(email, password);
+        if (userRepository.existsByEmail(email) && passwordEncoder.matches(password, userRepository.findByEmail(email).get().getPassword())) {
+            return true;
+        }
+        return false;
     }
 
 
+    @Override
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email)
+                .map(user -> new UserDetailsImpl(
+                        user.getEmail(),
+                        user.getPassword(),
+                        Collections.singleton(user.getRole()),
+                        user.getId(),
+                        user.getUsername()
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + email));
+    }
 }

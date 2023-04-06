@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +40,11 @@ public class CarController {
     private final BrandService brandService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String getAll(Model model,
                          @ModelAttribute CarFilter carFilter,
                          @RequestParam(required = false, defaultValue = "1") Integer page,
-                         @RequestParam(required = false, defaultValue = "10") Integer size) {
+                         @RequestParam(required = false, defaultValue = "9") Integer size) {
         Page<CarResponseDto> carPage = carService.getAll(carFilter, page - 1, size);
         int totalPages = carPage.getTotalPages();
         model.addAttribute("totalPages", totalPages);
@@ -62,10 +64,11 @@ public class CarController {
     }
 
     @GetMapping("/with-accidents")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String findAllWithAccidents(Model model,
                                        @ModelAttribute CarFilter carFilter,
                                        @RequestParam(required = false, defaultValue = "1") Integer page,
-                                       @RequestParam(required = false, defaultValue = "10") Integer size) {
+                                       @RequestParam(required = false, defaultValue = "9") Integer size) {
         Page<CarResponseDto> carPage = carService.getAllWithAccidents(page - 1, size);
         int totalPagesWith = carPage.getTotalPages();
         model.addAttribute("totalPagesWith", totalPagesWith);
@@ -77,10 +80,11 @@ public class CarController {
     }
 
     @GetMapping("/without-accidents")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String findAllWithoutAccidents(Model model,
                                           @ModelAttribute CarFilter carFilter,
                                           @RequestParam(required = false, defaultValue = "1") Integer page,
-                                          @RequestParam(required = false, defaultValue = "10") Integer size) {
+                                          @RequestParam(required = false, defaultValue = "9") Integer size) {
         Page<CarResponseDto> cars = carService.getAllWithoutAccidents(page - 1, size);
         int totalPagesWithout = cars.getTotalPages();
         model.addAttribute("totalPagesWithout", totalPagesWithout);
@@ -106,6 +110,7 @@ public class CarController {
     }
 
     @GetMapping("/by-number")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String getByNumber(@RequestParam("number") String number, Model model) {
         return carService.getByCarNumber(number)
                 .map(car -> {
@@ -120,6 +125,7 @@ public class CarController {
     }
 
     @GetMapping("/car-create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createView(Model model, @ModelAttribute CarCreateRequestDto carDto) {
         model.addAttribute("car", carDto);
         model.addAttribute("brands", brandService.getAll());
@@ -132,6 +138,7 @@ public class CarController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createCar(@ModelAttribute @Valid CarCreateRequestDto carDto,
                             RedirectAttributes redirectAttributes) {
         return carService.create(carDto)
@@ -143,6 +150,7 @@ public class CarController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute @Valid CarUpdateRequestDto carDto) {
         return carService.update(id, carDto)
@@ -150,14 +158,12 @@ public class CarController {
                 .orElseThrow(() -> new CarBadRequestException(HttpStatus.BAD_REQUEST, "Can't update car, please check input parameters"));
     }
 
-
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!carService.deleteById(id)) {
             throw new NotFoundException(String.format("Car with id %s doesn't exist.", id));
         }
         return "redirect:/cars";
     }
-
-
 }

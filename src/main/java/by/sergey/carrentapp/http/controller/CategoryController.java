@@ -7,6 +7,7 @@ import by.sergey.carrentapp.service.exception.CategoryBadRequestException;
 import by.sergey.carrentapp.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String getAll(Model model, @ModelAttribute CategoryFilter categoryFilter) {
         model.addAttribute("categoryFilter", categoryFilter);
         model.addAttribute("categories", categoryService.getAll());
@@ -33,6 +35,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String getById(@PathVariable("id") Long id, Model model) {
         return categoryService.getById(id)
                 .map(categoryResponseDto -> {
@@ -42,6 +45,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute @Valid CategoryCreateUpdateRequestDto categoryDto) {
         return categoryService.update(id, categoryDto)
@@ -50,12 +54,14 @@ public class CategoryController {
     }
 
     @GetMapping("/category-create")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createView(Model model, @ModelAttribute CategoryCreateUpdateRequestDto categoryDto) {
         model.addAttribute("category", categoryDto);
         return "layout/category/category-create";
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String createCategory(@ModelAttribute @Valid CategoryCreateUpdateRequestDto categoryDto,
                                  RedirectAttributes redirectAttributes) {
         return categoryService.create(categoryDto)
@@ -67,6 +73,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!categoryService.deleteById(id)) {
             throw new NotFoundException(String.format("Category with id %s doesn't exist.", id));
@@ -75,6 +82,7 @@ public class CategoryController {
     }
 
     @GetMapping("/by-name")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findByName(@RequestParam String name, Model model) {
         return categoryService.findByName(name)
                 .map(category -> {
@@ -85,6 +93,7 @@ public class CategoryController {
     }
 
     @GetMapping("/by-price-less")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findByPriceLess(BigDecimal priceLs, Model model) {
         model.addAttribute("priceLs", priceLs);
         model.addAttribute("categories", categoryService.getAllByPriceLess(priceLs));
@@ -92,6 +101,7 @@ public class CategoryController {
     }
 
     @GetMapping("/by-price-greater")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findByPriceGreater(BigDecimal priceGr, Model model) {
         model.addAttribute("priceGr", priceGr);
         model.addAttribute("categories", categoryService.getAllByPriceGreater(priceGr));
@@ -99,6 +109,7 @@ public class CategoryController {
     }
 
     @GetMapping("/filter")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'CLIENT')")
     public String findAllByFilter(Model model, CategoryFilter categoryFilter) {
         model.addAttribute("categories", categoryService.getAllByPrice(categoryFilter));
         return "layout/category/categories";

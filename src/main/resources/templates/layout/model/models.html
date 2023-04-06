@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="layout/common :: head_common(~{this :: script})">
     <meta charset="UTF-8">
     <title>Models</title>
@@ -21,14 +22,16 @@
 
         <div>Type of transmission:
             <div th:each="transmission : ${transmissions}">
-                <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"  th:checked="${transmission == modelFilter.transmission}">
+                <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"
+                       th:checked="${transmission == modelFilter.transmission}">
                 <label th:for="${transmission}" th:text="${transmission}">Type of transmission</label>
             </div>
         </div>
 
         <div>Type of engine:
             <div th:each="engine : ${engines}">
-                <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}" th:checked="${engine == modelFilter.engineType}">
+                <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}"
+                       th:checked="${engine == modelFilter.engineType}">
                 <label th:for="${engine}" th:text="${engine}">Type of engine</label>
             </div>
         </div>
@@ -59,12 +62,14 @@
     </div>
     <hr/>
     <p>
-    <form th:action="@{/models/model-create}" method="get">
-        <button class="btn btn-primary">Create new model</button>
-    </form>
-    </p>
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <form th:action="@{/models/model-create}" method="get">
+            <button class="btn btn-primary">Create new model</button>
+        </form>
+        </p>
+        <hr/>
+    </div>
 
-    <hr/>
 
 </div>
 

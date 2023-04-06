@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head th:replace="layout/common :: head_common(~{this :: script})">
   <meta charset="UTF-8">
@@ -9,7 +10,7 @@
 <body>
 <div th:replace="layout/header/header :: header"/>
 
-<div class="container-xl px-4 mt-4"  th:object="${user}">
+<div class="container-xl px-4 mt-4" th:object="${user}">
   <div class="row">
     <div class="col-xl-12">
       <div class="card mb-4">
@@ -37,7 +38,7 @@
             <label for="user-info-role-input" class="col-2 col-form-label">
               Role:
             </label>
-            <div class="col-10">
+            <div class="col-10" sec:authorize="hasAnyAuthority('ADMIN')">
               <input type="text" class="form-control" id="user-info-role-input" name="role"
                      th:value="*{role}" readonly/>
             </div>

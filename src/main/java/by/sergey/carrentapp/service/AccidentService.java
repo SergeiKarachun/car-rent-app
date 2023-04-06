@@ -82,6 +82,13 @@ public class AccidentService {
                 .toList();
     }
 
+    public List<AccidentResponseDto> getAllByUserId(Long userId) {
+        return accidentRepository.findAllByUserId(userId)
+                .stream()
+                .map(accidentResponseMapper::mapToDto)
+                .toList();
+    }
+
     public List<AccidentResponseDto> getAllByCarNumber(String number) {
         return accidentRepository.findByCarNumber(number)
                 .stream()
