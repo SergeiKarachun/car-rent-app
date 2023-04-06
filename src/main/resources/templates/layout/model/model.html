@@ -17,7 +17,7 @@
         Has <span th:text="${model.transmission.name().toLowerCase()}">Somme modelName </span> transmission
         and <span th:text="${model.engineType.name().toLowerCase()}">Somme modelName </span> engine type.
     </h5>
-    <dib sec:authorize="hasAnyAuthority('ADMIN')">
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
         <form th:action="@{/models/{modelId}/update(modelId=${model.id})}" method="post" th:object="${model}">
             <label for="name">Update model name:
                 <input id="name" type="text" name="name" th:value="*{name}">
@@ -41,6 +41,7 @@
 
             <button class="btn btn-primary" type="submit">Update</button>
         </form>
+    </div>
 </div>
 
 <br>

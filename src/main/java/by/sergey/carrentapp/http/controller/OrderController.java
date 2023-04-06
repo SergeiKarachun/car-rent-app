@@ -1,5 +1,6 @@
 package by.sergey.carrentapp.http.controller;
 
+import by.sergey.carrentapp.domain.CustomUserDetails;
 import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.filterdto.OrderFilter;
 import by.sergey.carrentapp.domain.dto.order.OrderCreateRequestDto;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -141,13 +144,15 @@ public class OrderController {
                              @RequestParam(required = false) @Nullable BigDecimal sum,
                              @RequestParam(required = false, defaultValue = "1") Integer page,
                              @RequestParam(required = false, defaultValue = "10") Integer size,
+                             @CurrentSecurityContext SecurityContext securityContext,
                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails.getAuthorities().contains(Role.ADMIN)) {
+        CustomUserDetails principal = (CustomUserDetails) securityContext.getAuthentication().getPrincipal();
+        if (principal.getAuthorities().contains(Role.ADMIN)) {
             createContent(model, id, orderStatus, sum, page, size);
         } else {
-            if (userDetails.getId().equals(id)) {
+            if (principal.getId().equals(id)) {
                 createContent(model, id, orderStatus, sum, page, size);
-            } else return "redirect:/orders/user/" + userDetails.getId();
+            } else return "redirect:/orders/user/" + principal.getId();
         }
         return "layout/order/user-orders";
     }

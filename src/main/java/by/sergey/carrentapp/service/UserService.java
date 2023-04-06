@@ -1,5 +1,6 @@
 package by.sergey.carrentapp.service;
 
+import by.sergey.carrentapp.domain.CustomUserDetails;
 import by.sergey.carrentapp.domain.UserDetailsImpl;
 import by.sergey.carrentapp.domain.dto.filterdto.UserFilter;
 import by.sergey.carrentapp.domain.dto.user.*;
@@ -18,7 +19,6 @@ import by.sergey.carrentapp.utils.predicate.UserPredicateBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -148,7 +148,7 @@ public class UserService implements UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .map(user -> new UserDetailsImpl(
                         user.getEmail(),

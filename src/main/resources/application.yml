@@ -17,6 +17,22 @@ spring:
       date: iso
       date-time: iso
       time: iso
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 632177132177-o1rdqcr5feald1rn491a1g9rn1b8jtv6.apps.googleusercontent.com
+            clientSecret: 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
+            redirectUri: http://localhost:8080/login/oauth2/code/google
+            scope: openid,email,profile
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: 632177132177-o1rdqcr5feald1rn491a1g9rn1b8jtv6.apps.googleusercontent.com
+      client-secret: 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
+      scope: openid,email,profile
+    oauth2-redirect-url: http://localhost:8080/swagger-ui/oauth2-redirect.html
 logging:
   level:
     root: INFO
