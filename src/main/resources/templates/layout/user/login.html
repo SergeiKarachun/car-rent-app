@@ -7,32 +7,41 @@
 
 
 <body>
+<div th:fragment="locale">
+    <form action="">
+        <select name="lang" onchange="this.form.submit()">
+            <option></option>
+            <option value="en">EN</option>
+            <option value="ru">RU</option>
+        </select>
+    </form>
+</div>
 <div class="form mb-5 w-50 my-3" style="margin: auto;width: 220px;">
     <form action="/login" method="post">
         <div class="form-group" style="color: red" th:if="${param.error}">
-            Bad credentials
+            <span th:text="#{login.bad.credentials}">Bad credentials</span>
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">Email address:</label>
+            <label for="email" class="form-label"><span th:text="#{login.email}">Email address:</span></label>
             <input type="email" class="form-control" id="email" name="email">
 
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
+            <label for="password" class="form-label"><span th:text="#{login.password}">Password:</span></label>
             <input type="password" class="form-control" id="password" name="password">
         </div>
 
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary"><span th:text="#{login.login}">Login</span></button>
     </form>
 </div>
 <div class="form mb-5 w-50 my-3" style="margin: auto;width: 220px;">
-    <div>Login with:</div>
+    <div><span th:text="#{login.with}">Login with:</span></div>
     <a href="/oauth2/authorization/google">Google</a>
 </div>
 
 <div class="form mb-5 w-50 my-3" style="margin: auto;width: 220px;">
     <form action="/users/sign-up">
-        <button type="submit" class="btn btn-secondary">Registration</button>
+        <button type="submit" class="btn btn-secondary" th:text="#{login.registration}">Registration</button>
     </form>
 </div>
 
