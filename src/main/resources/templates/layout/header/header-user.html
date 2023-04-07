@@ -8,30 +8,40 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/cars}">Cars</a>
+                    <a class="nav-link" th:href="@{/cars}"><span th:text="#{header.user.cars}">Cars</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/orders/user/{authId}(authId=${#authentication.getPrincipal().id})}">My
-                        orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link"
-                       th:href="@{/accidents/user/{authId}(authId=${#authentication.getPrincipal().id})}">My
-                        accidents</a>
+                    <a class="nav-link" th:href="@{/orders/user/{authId}(authId=${#authentication.getPrincipal().id})}"
+                       th:text="#{header.user.my.orders}">My orders</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:href="@{/users/profile/{authId}(authId=${#authentication.getPrincipal().id})}">About me</a>
+                       th:href="@{/accidents/user/{authId}(authId=${#authentication.getPrincipal().id})}"
+                       th:text="#{header.user.my.accidents}">My accidents</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
-                       th:href="@{'/driver-licenses/by-user-id?userId=' + ${#authentication.getPrincipal().id}}">My
-                        driver license</a>
+                       th:href="@{/users/profile/{authId}(authId=${#authentication.getPrincipal().id})}"
+                       th:text="#{header.user.profile}">About me</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{'/driver-licenses/by-user-id?userId=' + ${#authentication.getPrincipal().id}}"
+                       th:text="#{header.user.driver.license}">My driver license</a>
                 </li>
             </ul>
             <div>
                 <form action="/logout" method="post">
-                    <button type="submit">Logout</button>
+                    <button type="submit" th:text="#{header.logout}">Logout</button>
+                </form>
+            </div>
+            <div th:fragment="locale">
+                <form action="">
+                    <select name="lang" onchange="this.form.submit()">
+                        <option></option>
+                        <option value="en">EN</option>
+                        <option value="ru">RU</option>
+                    </select>
                 </form>
             </div>
         </div>

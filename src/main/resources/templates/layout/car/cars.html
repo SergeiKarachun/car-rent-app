@@ -13,35 +13,34 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-2">
         <div class="col" sec:authorize="hasAnyAuthority('ADMIN')">
             <form th:action="@{/cars/by-number}" method="get" th:object="${number}">
-                <label for="number">Find car by number:
+                <label for="number"><span th:text="#{find.car.by.number}">Find car by number:</span>
                     <input id="number" type="text" name="number" th:value="${number}">
                 </label><br>
-                <button class="btn btn-primary" type="submit">Find</button>
+                <button class="btn btn-primary" type="submit" th:text="#{button.find}">Find</button>
             </form>
 
             <form action="/cars/with-accidents" method="get">
-                <div>Get all with accidents</div>
-                <label for="page2">Page:
+                <div th:text="#{get.all.with.accidents}">Get all with accidents</div>
+                <label for="page2"> <span th:text="#{pagination.page}">Page:</span>
                     <input id="page2" type="number" name="page" th:value="${page}">
                 </label>
-                <label for="size2">Size:
+                <label for="size2"><span th:text="#{pagination.size}">Size:</span>
                     <input id="size2" type="number" name="size" th:value="${size}">
                 </label>
-                <button class="btn btn-primary" type="submit">Find</button>
+                <button class="btn btn-primary" type="submit" th:text="#{button.find}">Find</button>
 
             </form>
             <form action="/cars/without-accidents" method="get" th:object="${carFilter}">
-                <div>Get all without accidents</div>
-                <label for="page1">Page:
+                <div th:text="#{get.all.without.accidents}">Get all without accidents</div>
+                <label for="page1"><span th:text="#{pagination.page}">Page:</span>
                     <input id="page1" type="number" name="page" th:value="${page}">
                 </label>
-                <label for="size1">Size:
+                <label for="size1"><span th:text="#{pagination.size}">Size:</span>
                     <input id="size1" type="number" name="size" th:value="${size}">
                 </label>
-                <button class="btn btn-primary" type="submit">Find</button>
+                <button class="btn btn-primary" type="submit" th:text="#{button.find}">Find</button>
             </form>
         </div>
-
     </div>
 </div>
 <hr/>
@@ -50,7 +49,7 @@
 
 <div class="container-fluid my-3">
     <form action="/cars" method="get" th:object="${carFilter}">
-        <div>Color:
+        <div><span th:text="#{car.color}">Color:</span>
             <div th:each="color : ${colors}">
                 <input th:id="${color}" type="radio" name="color" th:value="${color}"
                        th:checked="${color == carFilter.color}">
@@ -58,15 +57,15 @@
             </div>
         </div>
 
-        <label for="year">Year:
+        <label for="year"><span th:text="#{car.year}">Year:</span>
             <input id="year" type="number" name="year" th:value="*{year}">
         </label>
 
-        <label for="brand">Brand:
+        <label for="brand"><span th:text="#{car.brand}">Brand:</span>
             <input id="brand" type="text" name="brandName" th:value="*{brandName}">
         </label>
 
-        <div>Category:
+        <div><span th:text="#{car.category}">Category:</span>
             <div th:each="categoryName : ${categories}">
                 <input th:id="${categoryName}" type="radio" name="categoryName" th:value="${categoryName.name}"
                        th:checked="${categoryName.name == carFilter.categoryName}">
@@ -74,8 +73,7 @@
             </div>
         </div>
 
-        <div>
-            Type of transmission:
+        <div><span th:text="#{car.transmission}">Type of transmission:</span>
             <div th:each="transmission : ${transmissions}">
                 <input th:id="${transmission}" type="radio" name="transmission" th:value="${transmission}"
                        th:checked="${transmission == carFilter.transmission}">
@@ -83,7 +81,7 @@
             </div>
         </div>
 
-        <div>Type of engine:
+        <div><span th:text="#{car.engine}">Type of engine:</span>
             <div th:each="engine : ${engines}">
                 <input th:id="${engine}" type="radio" name="engineType" th:value="${engine}"
                        th:checked="${engine == carFilter.engineType}">
@@ -92,18 +90,18 @@
         </div>
 
 
-        <label for="page">Page:
+        <label for="page"><span th:text="#{pagination.page}">Page:</span>
             <input id="page" type="number" name="page" th:value="${page}">
         </label>
-        <label for="size">Size:
+        <label for="size"><span th:text="#{pagination.size}">Size:</span>
             <input id="size" type="number" name="size" th:value="${size}">
         </label>
 
-        <button class="btn btn-primary" type="submit">Filter</button>
+        <button class="btn btn-primary" type="submit" th:text="#{button.filter}">Filter</button>
     </form>
     <div class="container-fluid my-2">
         <form th:action="@{/cars/}" method="get">
-            <button class="btn btn-secondary my-1">Clear filter</button>
+            <button class="btn btn-secondary my-1" th:text="#{button.clear.filter}">Clear filter</button>
         </form>
     </div>
 </div>
@@ -147,12 +145,15 @@
                         Price: <span th:text="${car.price}">120.00</span>.<br/>
 
                         </p>
-                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary">Go to this car!</a>
+                        <a th:href="@{/cars/{id}(id=${car.id})}" class="btn btn-primary" th:text="#{button.car}">Go to
+                            this car!</a>
 
                         <form th:action="@{/orders/order-create}" method="get" th:object="${car}">
                             <input id="carId" type="text" name="carId" th:value="${car.id}" hidden="hidden">
                             <br>
-                            <button class="btn btn-primary" type="submit">Create new order</button>
+                            <button class="btn btn-primary" type="submit" th:text="#{button.new.order}">Create new
+                                order
+                            </button>
                         </form>
 
                     </div>
