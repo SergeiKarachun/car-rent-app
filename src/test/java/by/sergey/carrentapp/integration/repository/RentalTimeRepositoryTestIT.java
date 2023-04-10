@@ -2,7 +2,7 @@ package by.sergey.carrentapp.integration.repository;
 
 import by.sergey.carrentapp.domain.entity.Order;
 import by.sergey.carrentapp.domain.entity.RentalTime;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.OrderRepository;
@@ -18,9 +18,8 @@ import java.util.stream.Collectors;
 import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
 
-@IT
 @RequiredArgsConstructor
-class RentalTimeRepositoryTestIT {
+class RentalTimeRepositoryTestIT extends IntegrationTestBase {
 
     private final RentalTimeRepository rentalTimeRepository;
     private final OrderRepository orderRepository;

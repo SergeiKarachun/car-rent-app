@@ -2,7 +2,7 @@ package by.sergey.carrentapp.integration.repository;
 
 import by.sergey.carrentapp.domain.entity.User;
 import by.sergey.carrentapp.domain.model.Role;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.UserRepository;
@@ -14,11 +14,9 @@ import java.util.Optional;
 
 import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-@IT
 @RequiredArgsConstructor
-class UserRepositoryTestIT {
+class UserRepositoryTestIT extends IntegrationTestBase {
 
     private final UserRepository userRepository;
 
@@ -34,13 +32,13 @@ class UserRepositoryTestIT {
     @Test
     void updateUser() {
         User userToUpdate = userRepository.findById(EXISTS_USER_ID).get();
-        userToUpdate.setName("vasek");
+        userToUpdate.setUsername("vasek");
         userToUpdate.setEmail("vasel@mail.com");
         userToUpdate.setRole(Role.CLIENT);
 
         User updatedUser = userRepository.saveAndFlush(userToUpdate);
 
-        assertThat(updatedUser.getName()).isEqualTo("vasek");
+        assertThat(updatedUser.getUsername()).isEqualTo("vasek");
         assertThat(updatedUser.getEmail()).isEqualTo("vasel@mail.com");
         assertThat(updatedUser.getRole()).isEqualTo(Role.CLIENT);
         assertThat(updatedUser).isEqualTo(userToUpdate);

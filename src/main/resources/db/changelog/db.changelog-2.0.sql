@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset sergey:db.changelog-2.0 splitStatements:false logicalFilePath:classpath:/db/changelog/db.changelog-2.0.sql
 --accident
 ALTER TABLE orders
     ADD COLUMN modified_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -33,6 +36,7 @@ ALTER TABLE user_details
     ADD COLUMN modified_by VARCHAR(32),
     ADD COLUMN created_at TIMESTAMP,
     ADD COLUMN created_by VARCHAR(32);
+
 
 
 

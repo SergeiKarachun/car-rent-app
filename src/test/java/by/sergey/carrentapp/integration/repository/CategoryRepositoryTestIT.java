@@ -1,7 +1,7 @@
 package by.sergey.carrentapp.integration.repository;
 
 import by.sergey.carrentapp.domain.entity.Category;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.TestEntityIdConst;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@IT
+
 @RequiredArgsConstructor
-class CategoryRepositoryTestIT {
+class CategoryRepositoryTestIT extends IntegrationTestBase {
 
     private final CategoryRepository categoryRepository;
 

@@ -3,7 +3,7 @@ package by.sergey.carrentapp.integration.repository;
 import by.sergey.carrentapp.domain.entity.Accident;
 import by.sergey.carrentapp.domain.entity.Order;
 import by.sergey.carrentapp.domain.projection.AccidentFullView;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.AccidentRepository;
@@ -21,9 +21,8 @@ import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@IT
 @RequiredArgsConstructor
-class AccidentRepositoryTestIT {
+class AccidentRepositoryTestIT extends IntegrationTestBase {
 
     private final AccidentRepository accidentRepository;
     private final OrderRepository orderRepository;
@@ -43,8 +42,8 @@ class AccidentRepositoryTestIT {
     void updateAccident() {
         Accident accidentToUpdate = accidentRepository.findById(EXISTS_ACCIDENT_ID).get();
         Order existOrder = orderRepository.findById(EXISTS_ORDER_ID).get();
+        existOrder.setAccident(accidentToUpdate);
         accidentToUpdate.setDescription("test description");
-        accidentToUpdate.setOrder(existOrder);
 
         Accident updatedAccident = accidentRepository.saveAndFlush(accidentToUpdate);
 
@@ -84,7 +83,7 @@ class AccidentRepositoryTestIT {
 
     @Test
     void findAllByNameAndSurname() {
-        List<Accident> actualAccidents = accidentRepository.findAllByNameAndSurname("SeRgeY", "IvaNoN");
+        List<Accident> actualAccidents = accidentRepository.findAllByNameAndSurname("SeRgeY", "IvaNoV");
         assertThat(actualAccidents).hasSize(2).containsExactlyInAnyOrder(ExistsEntityBuilder.getExistAccident(),
                 accidentRepository.findById(ACCIDENT_ID_FOR_DELETE).get());
     }
@@ -107,7 +106,7 @@ class AccidentRepositoryTestIT {
     void findByIdFull() {
         AccidentFullView actual = accidentRepository.findByIdFull(EXISTS_ACCIDENT_ID).get();
 
-        assertThat(actual.getFullName()).isEqualTo("Sergey Ivanon");
+        assertThat(actual.getFullName()).isEqualTo("Sergey Ivanov");
         assertThat(actual.getCarNumber()).isEqualTo("7594AB-7");
         assertThat(actual.getBrandName()).isEqualTo("Audi");
         assertThat(actual.getDamage()).isEqualByComparingTo("50.00");

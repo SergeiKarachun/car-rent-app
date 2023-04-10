@@ -3,7 +3,7 @@ package by.sergey.carrentapp.integration.repository;
 import by.sergey.carrentapp.domain.entity.*;
 import by.sergey.carrentapp.domain.model.OrderStatus;
 import by.sergey.carrentapp.domain.projection.OrderFullView;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.CarRepository;
@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
 
-@IT
+
 @RequiredArgsConstructor
-class OrderRepositoryTestIT {
+class OrderRepositoryTestIT extends IntegrationTestBase {
 
     private final OrderRepository orderRepository;
     private final CarRepository carRepository;

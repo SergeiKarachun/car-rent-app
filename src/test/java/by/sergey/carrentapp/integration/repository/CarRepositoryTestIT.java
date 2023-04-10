@@ -5,7 +5,7 @@ import by.sergey.carrentapp.domain.entity.Car;
 import by.sergey.carrentapp.domain.entity.Category;
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.model.Color;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.BrandRepository;
@@ -23,9 +23,9 @@ import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@IT
+
 @RequiredArgsConstructor
-class CarRepositoryTestIT {
+class CarRepositoryTestIT extends IntegrationTestBase {
 
     private final BrandRepository brandRepository;
     private final ModelRepository modelRepository;
@@ -150,24 +150,24 @@ class CarRepositoryTestIT {
     void isCarAvailable() {
         Car existCar = ExistsEntityBuilder.getExistCar();
 
-        boolean carAvailable = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 12, 0, 0, 0),
-                LocalDateTime.of(20022, 7, 12, 11, 30, 0));
+        boolean carAvailable = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 12, 0, 0, 1),
+                LocalDateTime.of(2022, 7, 12, 11, 30, 0));
         assertFalse(carAvailable);
 
         boolean carAvailable2 = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 14, 0, 0, 0),
-                LocalDateTime.of(20022, 7, 15, 11, 30, 0));
+                LocalDateTime.of(2022, 7, 15, 11, 30, 0));
         assertTrue(carAvailable2);
 
         boolean carAvailable3 = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 10, 0, 0, 0),
-                LocalDateTime.of(20022, 7, 11, 11, 30, 0));
+                LocalDateTime.of(2022, 7, 11, 11, 30, 0));
         assertFalse(carAvailable3);
 
         boolean carAvailable4 = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 11, 1, 0, 0),
-                LocalDateTime.of(20022, 7, 11, 11, 30, 0));
+                LocalDateTime.of(2022, 7, 11, 11, 30, 0));
         assertFalse(carAvailable4);
 
         boolean carAvailable5 = carRepository.isCarAvailable(existCar.getId(), LocalDateTime.of(2022, 7, 8, 1, 0, 0),
-                LocalDateTime.of(20022, 7, 10, 11, 30, 0));
-        assertFalse(carAvailable5);
+                LocalDateTime.of(2022, 7, 10, 11, 30, 0));
+        assertTrue(carAvailable5);
     }
 }

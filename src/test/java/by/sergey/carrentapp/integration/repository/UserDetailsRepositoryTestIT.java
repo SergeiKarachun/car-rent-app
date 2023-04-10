@@ -2,7 +2,7 @@ package by.sergey.carrentapp.integration.repository;
 
 import by.sergey.carrentapp.domain.entity.User;
 import by.sergey.carrentapp.domain.entity.UserDetails;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.UserDetailsRepository;
@@ -18,9 +18,8 @@ import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@IT
 @RequiredArgsConstructor
-class UserDetailsRepositoryTestIT {
+class UserDetailsRepositoryTestIT extends IntegrationTestBase {
 
     private final UserDetailsRepository userDetailsRepository;
     private final UserRepository userRepository;

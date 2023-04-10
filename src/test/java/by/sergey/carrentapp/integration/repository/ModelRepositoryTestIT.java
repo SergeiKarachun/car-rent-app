@@ -4,7 +4,7 @@ import by.sergey.carrentapp.domain.entity.Brand;
 import by.sergey.carrentapp.domain.entity.Car;
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.model.Transmission;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.TestEntityIdConst;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
@@ -21,9 +21,8 @@ import static by.sergey.carrentapp.integration.utils.TestEntityIdConst.MODEL_ID_
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@IT
 @RequiredArgsConstructor
-class ModelRepositoryTestIT {
+class ModelRepositoryTestIT extends IntegrationTestBase {
 
     private final ModelRepository modelRepository;
 

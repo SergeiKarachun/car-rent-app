@@ -97,7 +97,7 @@ public class ExistsEntityBuilder {
         return UserDetails.builder()
                 .id(EXISTS_USER_DETAILS_ID)
                 .name("Sergey")
-                .surname("Ivanon")
+                .surname("Ivanov")
                 .userContact(UserContact.builder()
                         .address("Minsk")
                         .phone("+37533 1234567")
@@ -111,7 +111,7 @@ public class ExistsEntityBuilder {
     public static User getExistUser() {
         return User.builder()
                 .id(EXISTS_USER_ID)
-                .name("admin")
+                .username("admin")
                 .email("admin@gmail.com")
                 .password("admin")
                 .role(Role.ADMIN)

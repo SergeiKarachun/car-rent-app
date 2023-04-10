@@ -27,13 +27,13 @@ VALUES (1, 'ECONOMY', 50),
 SELECT SETVAL('category_id_seq', (SELECT MAX(id) FROM category));
 
 
-INSERT INTO users (id, name, email, password, role)
+INSERT INTO users (id, username, email, password, role)
 VALUES (1, 'admin', 'admin@gmail.com', 'admin', 'ADMIN'),
        (2, 'client', 'client@gmail.com', 'client', 'CLIENT');
 SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 
 INSERT INTO user_details (id, user_id, name, surname, address, phone, birthday, registration_date)
-VALUES (1, (SELECT u.id FROM users u WHERE email = 'admin@gmail.com'), 'Sergey', 'Ivanon', 'Minsk',
+VALUES (1, (SELECT u.id FROM users u WHERE email = 'admin@gmail.com'), 'Sergey', 'Ivanov', 'Minsk',
         '+37533 1234567', '1990-08-10 00:00:00', '2022-09-22 00:00:00'),
        (2, (SELECT u.id FROM users u WHERE email = 'client@gmail.com'), 'Petr', 'Petrov', 'Minsk',
         '+37533 2345678', '1989-02-05 00:00:00', '2021-04-18 00:00:00');

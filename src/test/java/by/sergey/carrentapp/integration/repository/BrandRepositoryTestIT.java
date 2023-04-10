@@ -4,7 +4,7 @@ package by.sergey.carrentapp.integration.repository;
 import by.sergey.carrentapp.domain.entity.Brand;
 import by.sergey.carrentapp.domain.entity.Model;
 import by.sergey.carrentapp.domain.projection.BrandFullView;
-import by.sergey.carrentapp.integration.annatation.IT;
+import by.sergey.carrentapp.integration.IntegrationTestBase;
 import by.sergey.carrentapp.integration.utils.builder.ExistsEntityBuilder;
 import by.sergey.carrentapp.integration.utils.builder.TestEntityBuilder;
 import by.sergey.carrentapp.repository.BrandRepository;
@@ -23,15 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 /*@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = CarRentApplication.class,
 initializers = ConfigDataApplicationContextInitializer.class) equals SpringBootTest */
-@IT
 @RequiredArgsConstructor
 //@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-class BrandRepositoryTestIT {
+class BrandRepositoryTestIT extends IntegrationTestBase {
 
     private final BrandRepository brandRepository;
 
     @Test
-    void saveBrand(){
+    void saveBrand() {
         Brand brandToSave = TestEntityBuilder.createBrand();
         Brand savedBrand = brandRepository.saveAndFlush(brandToSave);
         assertNotNull(savedBrand.getId());
