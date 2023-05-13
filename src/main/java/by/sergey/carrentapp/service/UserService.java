@@ -135,7 +135,7 @@ public class UserService implements UserDetailsService {
 
     public void checkEmailIsUnique(String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new CarBadRequestException(ExceptionMessageUtil.getAlreadyExistsMessage("User", "email", email));
+            throw new UserBadRequestException(ExceptionMessageUtil.getAlreadyExistsMessage("User", "email", email));
         }
     }
 
