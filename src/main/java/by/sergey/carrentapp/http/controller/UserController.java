@@ -115,7 +115,7 @@ public class UserController {
                 .orElseThrow(() -> new UserBadRequestException(HttpStatus.BAD_REQUEST, "Can't create new user"));
     }
 
-    @GetMapping("/{id}/delete")
+    @PostMapping("/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!userService.deleteById(id)) {

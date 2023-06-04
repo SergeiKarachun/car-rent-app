@@ -127,7 +127,7 @@ public class OrderController {
         return "layout/order/orders";
     }
 
-    @GetMapping("/{id}/delete")
+    @PostMapping("/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!orderService.deleteById(id)) {

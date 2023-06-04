@@ -75,7 +75,7 @@ public class UserDetailsController {
                 .orElseThrow(() -> new UserDetailsBadRequestException(HttpStatus.BAD_REQUEST, "Can't update user details. please check input parameters."));
     }
 
-    @GetMapping("/{id}/delete")
+    @PostMapping("/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!userDetailsService.deleteById(id)) {

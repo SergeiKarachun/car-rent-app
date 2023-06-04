@@ -28,8 +28,8 @@ SELECT SETVAL('category_id_seq', (SELECT MAX(id) FROM category));
 
 
 INSERT INTO users (id, username, email, password, role)
-VALUES (1, 'admin', 'admin@gmail.com', 'admin', 'ADMIN'),
-       (2, 'client', 'client@gmail.com', 'client', 'CLIENT');
+VALUES (1, 'admin', 'admin@gmail.com', '{noop}admin', 'ADMIN'),
+       (2, 'client', 'client@gmail.com', '{noop}client', 'CLIENT');
 SELECT SETVAL('users_id_seq', (SELECT MAX(id) FROM users));
 
 INSERT INTO user_details (id, user_id, name, surname, address, phone, birthday, registration_date)

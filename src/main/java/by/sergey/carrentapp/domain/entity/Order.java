@@ -46,7 +46,7 @@ public class Order extends AuditingEntity<Long>{
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal sum;
 
-    @OneToOne(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, optional = false)
     private RentalTime rentalTime;
 
     @Builder.Default

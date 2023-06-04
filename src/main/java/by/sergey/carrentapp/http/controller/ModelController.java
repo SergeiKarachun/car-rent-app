@@ -69,7 +69,7 @@ public class ModelController {
                     model.addAttribute("transmissions", Transmission.values());
                     model.addAttribute("engines", EngineType.values());
                     return "layout/model/model";
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                }).orElseThrow(() -> new NotFoundException(String.format("Model with id %s doesn't exist.", id)));
     }
 
     @GetMapping("/filter")
@@ -91,7 +91,7 @@ public class ModelController {
     }
 
 
-    @PostMapping("{id}/delete")
+    @PostMapping("/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id) {
         if (!modelService.deleteById(id)) {

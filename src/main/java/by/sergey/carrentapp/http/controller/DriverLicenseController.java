@@ -74,7 +74,7 @@ public class DriverLicenseController {
                 .orElseThrow(() -> new DriverLicenseBadRequestException(HttpStatus.BAD_REQUEST, "Can't update driver license. Please check input parameters."));
     }
 
-    @GetMapping("/{id}/delete")
+    @PostMapping("/{id}/delete")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public String deleteById(@PathVariable("id") Long id) {
         if (!driverLicenseService.deleteById(id)) {

@@ -4,9 +4,11 @@ import by.sergey.carrentapp.domain.dto.brand.BrandCreateUpdateRequestDto;
 import by.sergey.carrentapp.domain.dto.car.CarCreateRequestDto;
 import by.sergey.carrentapp.domain.dto.car.CarUpdateRequestDto;
 import by.sergey.carrentapp.domain.dto.category.CategoryCreateUpdateRequestDto;
+import by.sergey.carrentapp.domain.dto.driverlicense.DriverLicenseUpdateRequestDto;
 import by.sergey.carrentapp.domain.dto.model.ModelCreateRequestDto;
 import by.sergey.carrentapp.domain.dto.model.ModelUpdateRequestDto;
 import by.sergey.carrentapp.domain.dto.order.OrderCreateRequestDto;
+import by.sergey.carrentapp.domain.dto.order.OrderUpdateRequestDto;
 import by.sergey.carrentapp.domain.dto.user.LoginRequestDto;
 import by.sergey.carrentapp.domain.dto.user.UserCreateRequestDto;
 import by.sergey.carrentapp.domain.dto.user.UserUpdateRequestDto;
@@ -87,7 +89,21 @@ public class TestDtoBuilder {
                 LocalDateTime.of(2023, 5, 16, 12, 00));
     }
 
+    public static OrderUpdateRequestDto createOrderUpdateRequestDTO(Long carId) {
+        return new OrderUpdateRequestDto(
+                carId,
+                LocalDateTime.now().plusDays(4),
+                LocalDateTime.now().plusDays(10));
+    }
+
     public static OrderCreateRequestDto createOrderRequestDtoWithNecessaryData(Long userId, Long carId, LocalDateTime start, LocalDateTime end) {
         return new OrderCreateRequestDto(userId, carId, "passport", start, end);
+    }
+
+    public static DriverLicenseUpdateRequestDto createDriverLicenseUpdateRequestDto() {
+        return new DriverLicenseUpdateRequestDto(
+                "AB123456Updated",
+                LocalDate.of(2022, 8, 9),
+                LocalDate.of(2032, 8, 9));
     }
 }
