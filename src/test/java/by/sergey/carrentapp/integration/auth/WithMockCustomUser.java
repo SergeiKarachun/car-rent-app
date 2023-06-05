@@ -14,7 +14,7 @@ public @interface WithMockCustomUser {
 
     String password() default "Testtest!123";
 
-    String[] authorities() default {"c"};
+    String[] authorities() default {"TEST"};
 
     long id() default 1L;
 

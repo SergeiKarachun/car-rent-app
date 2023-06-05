@@ -50,7 +50,7 @@ public class UserRestController {
                 .expirationDate(expirationDate)
                 .expiredLicense(expiredLicense)
                 .build();
-        Page<UserResponseDto> usersPage = userService.getAll(userFilter, pageable.getPageNumber() - 1, pageable.getPageSize());
+        Page<UserResponseDto> usersPage = userService.getAll(userFilter, pageable.getPageNumber(), pageable.getPageSize());
         return PageResponse.of(usersPage);
     }
 
